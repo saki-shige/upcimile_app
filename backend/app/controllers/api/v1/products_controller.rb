@@ -22,6 +22,12 @@ class Api::V1::ProductsController < ApplicationController
     end
   end
 
+  def destroy
+    product = Product.find(params[:id])
+    product.destroy
+    render json: {status:201, message:"#{product.name}を削除しました"}
+  end
+
   def product_params
     params.permit(:name, :introduction, :available_from, :available_to, :can_be_provided, :company_id, :category_id)
   end
