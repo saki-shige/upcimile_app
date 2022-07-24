@@ -13,6 +13,15 @@ class Api::V1::ProductsController < ApplicationController
     end
   end
 
+  def update
+    product = Product.find(params[:id])
+    if product.update(product_params)
+      render json: {status:201, message: "#{product.name}を更新しました"}
+    else
+      render json: {status:400, message: "#{product.name}の更新に失敗しました"}
+    end
+  end
+
   def product_params
     params.permit(:name, :introduction, :available_from, :available_to, :can_be_provided, :company_id, :category_id)
   end
