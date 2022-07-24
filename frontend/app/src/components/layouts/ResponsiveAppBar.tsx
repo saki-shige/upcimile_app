@@ -11,13 +11,19 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from '@mui/material';
+import { Link } from 'react-router-dom';
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { useContext } from 'react';
 
+import { signOut } from '../../lib/api/auth';
+import { AuthContext } from '../providers/AuthProvider';
 
 const pages = ['Products', 'Creators', 'Companies'];
 const settings = ['Profile', 'Account', 'MyProducts', 'Logout'];
 
 const ResponsiveAppBar = () => {
+  const { setIsSignedIn } = useContext(AuthContext)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,6 +40,30 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const navigation = useNavigate()
+
+  const handleSignOut = async () => {
+    try {
+      const res = await signOut()
+
+      if (res.data.success === true) {
+        Cookies.remove("_access_token")
+        Cookies.remove("_client")
+        Cookies.remove("_uid")
+
+        setIsSignedIn(false)
+        navigation("/signin")
+
+        console.log("Succeeded in sign out")
+      } else {
+        console.log("Failed in sign out")
+      }
+    } catch (err) {
+      console.log(err)
+    }
+    setAnchorElUser(null);
+  }
 
   return (
     <AppBar position="static" color='primary'>
@@ -88,16 +118,8 @@ const ResponsiveAppBar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography
-                      textAlign="center"
-                      component={Link}
-                      href="/"
-                      color="inherit"
-                      variant="inherit"
-                      underline="none"
-                    >
-                      {page}
-                    </Typography>
+                  {/* [pending]リンク先は要編集 */}
+                  <Link to={'/'}>{page}</Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -127,16 +149,8 @@ const ResponsiveAppBar = () => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                <Typography
-                      textAlign="center"
-                      component={Link}
-                      href="/"
-                      color="inherit"
-                      variant="inherit"
-                      underline="none"
-                    >
-                      {page}
-                    </Typography>
+                {/* [pending]リンク先は要編集 */}
+                <Link to={'/'}>{page}</Link>
               </Button>
             ))}
           </Box>
@@ -165,16 +179,13 @@ const ResponsiveAppBar = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography
-                      textAlign="center"
-                      component={Link}
-                      href="/"
-                      color="inherit"
-                      underline="none"
-                      variant="inherit"
-                    >{setting}</Typography>
+                  {/* [pending]リンク先は要編 */}
+                  <Link to={'/'}>{setting}</Link>
                 </MenuItem>
               ))}
+                <MenuItem onClick={handleSignOut}>
+                  logout
+                </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
