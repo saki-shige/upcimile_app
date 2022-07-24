@@ -10,7 +10,7 @@ import Box from "@material-ui/core/Box";
 import Cookies from "js-cookie"
 import { SignInData } from "../../interface/index"
 import { signIn } from "../../lib/api/auth"
-import { AuthContext } from "../../App"
+import { AuthContext } from "../providers/AuthProvider";
 
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';

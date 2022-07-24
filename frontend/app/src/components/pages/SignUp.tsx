@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 
 import { signUp } from "../../lib/api/auth"
 import { SignUpData } from "../../interface/index"
-import { AuthContext } from "../../App"
+import { AuthContext } from "../providers/AuthProvider";
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState<string>("")
