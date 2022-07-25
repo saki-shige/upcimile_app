@@ -20,3 +20,15 @@ export interface Company {
   image?: string
   allowPasswordChange: boolean
 }
+
+export interface Product {
+  id: number
+  name: string
+  introduction: string
+  available_from: Date
+  available_to?: Date
+  can_be_provided: boolean
+  company_id: number
+  createdAt?: Date
+  updatedAt?: Date
+}
