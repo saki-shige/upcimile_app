@@ -19,7 +19,7 @@ import { useContext } from 'react';
 import { signOut } from '../../lib/api/auth';
 import { AuthContext } from '../providers/AuthProvider';
 
-const pages = ['Products', 'Creators', 'Companies'];
+const pages = [['Products','/products'], ['Creators','/'], ['Companies','/']];
 const settings = ['Profile', 'Account', 'MyProducts', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -117,9 +117,9 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page[0]} onClick={handleCloseNavMenu}>
                   {/* [pending]リンク先は要編集 */}
-                  <Link to={'/'}>{page}</Link>
+                  <Link to={page[1]}>{page[0]}</Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -145,12 +145,12 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page[0]}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {/* [pending]リンク先は要編集 */}
-                <Link to={'/'}>{page}</Link>
+                <Link to={page[1]}>{page[0]}</Link>
               </Button>
             ))}
           </Box>
