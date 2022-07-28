@@ -22,13 +22,31 @@ export interface Company {
 }
 
 export interface Product {
-  id: number
+  id?: number
   name: string
-  introduction: string
-  available_from: Date
-  available_to?: Date
-  can_be_provided: boolean
-  company_id: number
-  createdAt?: Date
-  updatedAt?: Date
+  introduction?: string
+  availableFrom: string
+  availableTo?: string
+  canBeProvided: boolean
+  companyId: number
+  categoryId?: number
+  image: {
+    url: string
+  }
+}
+
+export interface UpdateProductData {
+  id: number | undefined | null
+  name?: string
+  introduction?: string
+  availableFrom: string
+  availableTo?: string
+  canBeProvided: boolean
+  companyId: number
+  categoryId?: number
+  image?: string
+}
+
+export interface UpdateProductFormData extends FormData {
+  append(name: keyof UpdateProductData, value: String | Blob, fileName?: string): any
 }

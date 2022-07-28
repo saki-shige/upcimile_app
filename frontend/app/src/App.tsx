@@ -5,6 +5,9 @@ import Home from './components/pages/Home';
 import SignIn from './components/pages/SignIn';
 import SignUp from './components/pages/SignUp';
 import Products from './components/pages/Products';
+import SingleProduct from './components/pages/SingleProduct';
+import CreateProduct from './components/pages/CreateProduct';
+
 
 function App() {
   return (
@@ -15,6 +18,8 @@ function App() {
         <Route path='/signin' element={<SignIn />} />;
         <Route path='/signup' element={<SignUp />} />;
         <Route path='/products' element={<Products />} />;
+        <Route path='/products/*' element={<SingleProduct />} />;
+        <Route path='/products/new' element={<CreateProduct />} />;
       </Routes>
     </BrowserRouter>
   );

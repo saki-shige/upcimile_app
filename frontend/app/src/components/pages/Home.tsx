@@ -13,6 +13,7 @@ const Home: React.FC = () => {
       <h2>{isSignedIn ? <p>{currentCompany.name}としてサインインしています</p> : <p>サインインしていません</p>}</h2>
       <Link to={'/signin'}>sign in</Link>
       <Link to={'/signup'}>sign up</Link>
+      <Link to={'/products/new'}>商品登録</Link>
     </>
   );
 };

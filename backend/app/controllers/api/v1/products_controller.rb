@@ -1,15 +1,24 @@
 class Api::V1::ProductsController < ApplicationController
   def index
     products = Product.all
-    render json: products
+    render json:products
+  end
+
+  def show
+    product = Product.find(params[:id])
+    render json: product
   end
 
   def create
-    product = Product.create(product_params)
+    # render json: {message:'product_params', data:product_params}
+    product = Product.new(product_params)
+    # product.images.attach(product_params[:images]) if product_params[:images] != ""
+    # render json: product.images
+
     if product.save
-      render json: {status:201}
+      render json: {message:"#{product.name}を保存しました", data:product}
     else
-      render json: {status:400, message:'保存できませんでした'}
+      render json: {message:'保存できませんでした'}
     end
   end
 
@@ -28,7 +37,9 @@ class Api::V1::ProductsController < ApplicationController
     render json: {status:201, message:"#{product.name}を削除しました"}
   end
 
+  private
+
   def product_params
-    params.permit(:name, :introduction, :available_from, :available_to, :can_be_provided, :company_id, :category_id)
+    params.require(:product).permit(:name, :introduction, :available_from, :available_to, :can_be_provided, :company_id, :category_id, :image)
   end
 end
