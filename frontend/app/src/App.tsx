@@ -7,6 +7,9 @@ import SignUp from './components/pages/SignUp';
 import Products from './components/pages/Products';
 import SingleProduct from './components/pages/SingleProduct';
 import CreateProduct from './components/pages/CreateProduct';
+import Companies from './components/pages/Companies';
+import SingleCompany from './components/pages/SingleCompany';
+import EditCompany from './components/pages/EditCompany';
 
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
         <Route path='/products' element={<Products />} />;
         <Route path='/products/*' element={<SingleProduct />} />;
         <Route path='/products/new' element={<CreateProduct />} />;
+        <Route path='/companies' element={<Companies />} />;
+        <Route path='/companies/*' element={<SingleCompany />} />;
+        <Route path='/companies/edit/:id' element={<EditCompany />} />;
       </Routes>
     </BrowserRouter>
   );
