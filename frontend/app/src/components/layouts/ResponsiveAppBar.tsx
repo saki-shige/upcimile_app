@@ -19,7 +19,7 @@ import { useContext } from 'react';
 import { signOut } from '../../lib/api/auth';
 import { AuthContext } from '../providers/AuthProvider';
 
-const pages = [['Products','/products'], ['Creators','/'], ['Companies','/']];
+const pages = [['Products','/products'], ['Creators','/'], ['Companies','/companies']];
 const settings = ['Profile', 'Account', 'MyProducts', 'Logout'];
 
 const ResponsiveAppBar = () => {
