@@ -17,8 +17,31 @@ export interface Company {
   email: string
   name: string
   nickname?: string
-  image?: string
+  image?: {
+    url: string
+  }
   allowPasswordChange: boolean
+  introduction?: string
+  address?: string
+  numberOfEmployees?: number
+  capital?: number
+  dateOfEstablishment?: Date
+  corporateSite?: string
+}
+
+export interface UpdateCompanyData {
+  name: string
+  image?: string
+  introduction?: string
+  address?: string
+  number_of_employees?: number
+  capital?: number
+  date_of_establishment?: string
+  corporate_site?: string
+}
+
+export interface UpdateCompanyFormData extends FormData {
+  append(name: keyof UpdateProductData, value: String | Blob, fileName?: string): any
 }
 
 export interface Product {

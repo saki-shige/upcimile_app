@@ -7,7 +7,7 @@ const SingleProduct = () => {
   const [ product, setProduct ] = useState<Product>();
 
   const handleGetProduct = async() => {
-    let id = window.location.pathname.split('/product')[1];
+    let id = window.location.pathname.split('/products')[1];
     if (id !== '') {
       id = id.split('/')[1];
     }
