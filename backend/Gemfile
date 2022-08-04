@@ -44,3 +44,9 @@ gem "net-smtp"
 gem 'devise'
 gem 'devise_token_auth'
 gem 'carrierwave'
+
+gem 'dotenv-rails'
+
+gem 'firebase-auth-rails'
+
+gem 'google-apis-youtube_v3'

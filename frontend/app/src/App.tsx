@@ -10,6 +10,7 @@ import CreateProduct from './components/pages/CreateProduct';
 import Companies from './components/pages/Companies';
 import SingleCompany from './components/pages/SingleCompany';
 import EditCompany from './components/pages/EditCompany';
+import CreatorLogin from './components/pages/CreatorLogin';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path='/companies' element={<Companies />} />;
         <Route path='/companies/*' element={<SingleCompany />} />;
         <Route path='/companies/edit/:id' element={<EditCompany />} />;
+        <Route path='/creators/login' element={<CreatorLogin />} />;
       </Routes>
     </BrowserRouter>
   );

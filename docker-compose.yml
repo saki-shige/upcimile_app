@@ -13,6 +13,13 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     security_opt:
       - seccomp:unconfined
+  redis:
+    image: "redis:5.0.5"
+    ports:
+      - "6379:6379"
+    command: redis-server
+    volumes:
+      - "./data/redis:/data"
   backend:
     build:
       context: ./backend/
@@ -29,6 +36,7 @@ services:
       - "3001:3000"
     environment:
       TZ: Asia/Tokyo
+      REDIS_URL: redis://redis:6379/0
   frontend:
     build:
       context: ./frontend/

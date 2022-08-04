@@ -14,6 +14,7 @@ const Home: React.FC = () => {
       <Link to={'/signin'}>sign in</Link>
       <Link to={'/signup'}>sign up</Link>
       <Link to={'/products/new'}>商品登録</Link>
+      <Link to={'/creators/login'}>クリエイターログイン</Link>
     </>
   );
 };
