@@ -2,7 +2,9 @@ import React, { createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material';
 
+import {appTheme} from './assets/theme';
 import ResponsiveAppBar from './components/layouts/ResponsiveAppBar';
 import Home from './components/pages/Home';
 import SignIn from './components/pages/SignIn';
@@ -15,10 +17,9 @@ import SingleCompany from './components/pages/SingleCompany';
 import EditCompany from './components/pages/EditCompany';
 import CreatorLogin from './components/pages/CreatorLogin';
 
-
 function App() {
   return (
-    <>
+    <ThemeProvider theme={appTheme}>
     <CssBaseline />
       <BrowserRouter>
         <ResponsiveAppBar />
@@ -35,7 +36,7 @@ function App() {
           <Route path='/creators/login' element={<CreatorLogin />} />;
         </Routes>
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   );
 }
 
