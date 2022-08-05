@@ -17,10 +17,6 @@ const Home: React.FC = () => {
 
   useEffect(()=>{
     const f = async() => {
-      // const products = await handleGetProducts();
-      // const creators = await handleGetCreators();
-      // setProducts(products.slice(0,4));
-      // setCreators(creators.slice(0,4));
       Promise.all([handleGetProducts(), handleGetCreators()]).then((results)=>{
         setProducts(results[0].slice(0,4));
         setCreators(results[1].slice(0,4));
