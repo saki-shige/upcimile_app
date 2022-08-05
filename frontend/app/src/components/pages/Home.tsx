@@ -1,13 +1,25 @@
-import React, { useContext } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../providers/AuthProvider";
+
+import { handleGetProducts } from "../functionals/products";
+import { Product } from "../../interface";
 import Image from "../../assets/images/24238523_m.jpg";
 
-import { Box, Paper, Grid, Typography } from "@mui/material";
+import { Box, Paper, Grid, Typography, Container, Card, CardMedia, CardContent, CardActionArea } from "@mui/material";
 
 const Home: React.FC = () => {
   const { isSignedIn, currentCompany } = useContext(AuthContext);
+  const [ products, setProducts ] = useState<Product[]>([])
+
+  useEffect(()=>{
+    const f = async() => {
+      const products = await handleGetProducts();
+      setProducts(products.slice(0,4));
+    }
+    f();
+  },[]);
 
   return (
     <>
@@ -17,7 +29,6 @@ const Home: React.FC = () => {
           position: 'relative',
           color: '#fff',
           height: 500,
-          mb: 4,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
@@ -64,6 +75,42 @@ const Home: React.FC = () => {
         </Grid>
       </Paper>
       {/* End hero unit */}
+
+      <Container sx={{ pb:8, bgcolor: 'primary.main'}} maxWidth={false}>
+        <Box sx={{ pt:3, px:12, display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="h6" color="inherit" paragraph>
+            新着商品
+          </Typography>
+          <Typography variant="h6" color="inherit" paragraph>
+            <Link to='/products'>商品一覧はこちら</Link>
+          </Typography>
+        </Box>
+        <Grid container spacing={3} sx={{ px:8 }}>
+          {products.map((product,index) => (
+            <Grid item key={index} xs={12} sm={6} md={3}>
+              <Card
+                sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 3 }}
+              >
+                <CardActionArea component={Link} to={`/products/${product.id}`}>
+                  <CardMedia
+                    component="img"
+                    image={product.image.url}
+                    alt={product.name}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {product.name}
+                    </Typography>
+                    <Typography>
+                      {product.introduction}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
       <p>Home</p>
     {/* // (仮）サインインしているユーザー（カンパニー名）を表示 */}
