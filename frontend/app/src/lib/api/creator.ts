@@ -14,5 +14,5 @@ export const getChannelId = (access_token: string) => {
 }
 
 export const getCreators = () => {
-  return client.get('/channels')
+  return client.get('/creators')
 }
