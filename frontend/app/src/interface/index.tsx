@@ -73,3 +73,11 @@ export interface UpdateProductData {
 export interface UpdateProductFormData extends FormData {
   append(name: keyof UpdateProductData, value: String | Blob, fileName?: string): any
 }
+
+export interface Creator {
+  id: number
+  channelTitle: string
+  subscriberCount: string
+  description: string
+  icon:string
+}

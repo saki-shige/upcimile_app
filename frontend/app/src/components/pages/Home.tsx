@@ -4,19 +4,28 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 
 import { handleGetProducts } from "../functionals/products";
-import { Product } from "../../interface";
+import { handleGetCreators } from "../functionals/creators";
+import { Product, Creator } from "../../interface";
 import Image from "../../assets/images/24238523_m.jpg";
 
-import { Box, Paper, Grid, Typography, Container, Card, CardMedia, CardContent, CardActionArea } from "@mui/material";
+import { Box, Paper, Grid, Typography, Container, Card, CardMedia, CardContent, CardActionArea, Avatar } from "@mui/material";
 
 const Home: React.FC = () => {
   const { isSignedIn, currentCompany } = useContext(AuthContext);
-  const [ products, setProducts ] = useState<Product[]>([])
+  const [ products, setProducts ] = useState<Product[]>([]);
+  const [ creators, setCreators ] = useState<Creator[]>([]);
 
   useEffect(()=>{
     const f = async() => {
-      const products = await handleGetProducts();
-      setProducts(products.slice(0,4));
+      // const products = await handleGetProducts();
+      // const creators = await handleGetCreators();
+      // setProducts(products.slice(0,4));
+      // setCreators(creators.slice(0,4));
+      Promise.all([handleGetProducts(), handleGetCreators()]).then((results)=>{
+        setProducts(results[0].slice(0,4));
+        setCreators(results[1].slice(0,4));
+        console.log(results);
+      })
     }
     f();
   },[]);
@@ -107,6 +116,51 @@ const Home: React.FC = () => {
                   </CardContent>
                 </CardActionArea>
               </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
+      <Container sx={{ pb:8, bgcolor: 'primary.main'}} maxWidth={false}>
+        <Box sx={{ pt:3, px:12, display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="h6" color="inherit" paragraph>
+            creators
+          </Typography>
+          <Typography variant="h6" color="inherit" paragraph>
+            <Link to='/products'>creator一覧はこちら</Link>
+          </Typography>
+        </Box>
+        <Grid container spacing={3} sx={{ px:8 }}>
+          {creators.map((creator) => (
+            <Grid item xs={12} sm={12} md={6}>
+              <CardActionArea component={Link} to={`/creators/${creator.id}`}>
+                <Card sx={{ height: 150, display: 'flex', boxShadow: 3 }}>
+                  {/* <CardMedia
+                      component="img"
+                      sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+                      image={creator.icon}
+                      alt={creator.channelTitle}
+                  /> */}
+                  <CardContent sx={{my:'auto'}}>
+                    <Avatar
+                      alt={creator.channelTitle}
+                      src={creator.icon}
+                      sx={{ width: 110, height: 110 }}
+                    />
+                  </CardContent>
+                  <CardContent sx={{ flex: 1 }}>
+                    <Typography component="h2" variant="h5" sx={{ textOverflow: 'ellipsis' }}>
+                      {creator.channelTitle}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary">
+                      登録者数：{creator.subscriberCount}人
+                    </Typography>
+                    <Typography variant="subtitle1" paragraph sx={{ textOverflow: 'ellipsis' }}>
+                      {creator.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </CardActionArea>
             </Grid>
           ))}
         </Grid>
