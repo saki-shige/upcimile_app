@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material';
 
-import {appTheme} from './assets/theme';
+import {appTheme} from './assets/theme/theme';
 import ResponsiveAppBar from './components/layouts/ResponsiveAppBar';
 import Home from './components/pages/Home';
 import SignIn from './components/pages/SignIn';
