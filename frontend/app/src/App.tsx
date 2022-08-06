@@ -2,10 +2,11 @@ import React, { createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Typography } from '@mui/material';
 
 import {appTheme} from './assets/theme/theme';
 import ResponsiveAppBar from './components/layouts/ResponsiveAppBar';
+import Footer from './components/layouts/Footer';
 import Home from './components/pages/Home';
 import SignIn from './components/pages/SignIn';
 import SignUp from './components/pages/SignUp';
@@ -22,6 +23,16 @@ function App() {
     <ThemeProvider theme={appTheme}>
     <CssBaseline />
       <BrowserRouter>
+      <Typography
+        component="div"
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          paddingBottom: 120,
+          boxSizing: 'border-box',
+        }}
+      >
         <ResponsiveAppBar />
         <Routes>
           <Route path='/' element={<Home />} />;
@@ -35,6 +46,11 @@ function App() {
           <Route path='/companies/edit/:id' element={<EditCompany />} />;
           <Route path='/creators/login' element={<CreatorLogin />} />;
         </Routes>
+        <Footer
+        title="UPCIMILE"
+        description="upcicle with smile!"
+        />
+      </Typography>
       </BrowserRouter>
     </ThemeProvider>
   );
