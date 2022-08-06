@@ -5,7 +5,8 @@ import { AuthContext } from "../providers/AuthProvider";
 
 import { handleGetProducts } from "../functionals/products";
 import { handleGetCreators } from "../functionals/creators";
-import { Product, Creator } from "../../interface";
+import { handleGetCompanies } from "../functionals/companies";
+import { Product, Creator, Company } from "../../interface";
 import Image from "../../assets/images/24238523_m.jpg";
 
 import { Box, Paper, Grid, Typography, Container, Card, CardMedia, CardContent, CardActionArea, Avatar } from "@mui/material";
@@ -14,12 +15,14 @@ const Home: React.FC = () => {
   const { isSignedIn, currentCompany } = useContext(AuthContext);
   const [ products, setProducts ] = useState<Product[]>([]);
   const [ creators, setCreators ] = useState<Creator[]>([]);
+  const [ companies, setCompanies ] = useState<Company[]>([]);
 
   useEffect(()=>{
     const f = async() => {
-      Promise.all([handleGetProducts(), handleGetCreators()]).then((results)=>{
+      Promise.all([handleGetProducts(), handleGetCreators(), handleGetCompanies()]).then((results)=>{
         setProducts(results[0].slice(0,4));
         setCreators(results[1].slice(0,4));
+        setCompanies(results[2].slice(0,4));
         console.log(results);
       })
     }
@@ -131,12 +134,6 @@ const Home: React.FC = () => {
             <Grid item xs={12} sm={12} md={6}>
               <CardActionArea component={Link} to={`/creators/${creator.id}`}>
                 <Card sx={{ height: 150, display: 'flex', boxShadow: 3 }}>
-                  {/* <CardMedia
-                      component="img"
-                      sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-                      image={creator.icon}
-                      alt={creator.channelTitle}
-                  /> */}
                   <CardContent sx={{my:'auto'}}>
                     <Avatar
                       alt={creator.channelTitle}
@@ -155,6 +152,41 @@ const Home: React.FC = () => {
                       {creator.description}
                     </Typography>
                   </CardContent>
+                </Card>
+              </CardActionArea>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
+      <Container sx={{ pb:8, bgcolor: 'primary.main'}} maxWidth={false}>
+        <Box sx={{ pt:3, px:12, display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="h6" color="inherit" paragraph>
+            companies
+          </Typography>
+          <Typography variant="h6" color="inherit" paragraph>
+            <Link to='/companies'>企業一覧はこちら</Link>
+          </Typography>
+        </Box>
+        <Grid container spacing={3} sx={{ px:8 }}>
+          {companies.map((company) => (
+            <Grid item xs={12} sm={12} md={6}>
+              <CardActionArea component={Link} to={`/companies/${company.id}`}>
+                <Card sx={{ height: 150, display: 'flex', boxShadow: 3 }}>
+                  <CardContent sx={{ flex: 1 }}>
+                    <Typography component="h2" variant="h5" sx={{ textOverflow: 'ellipsis' }}>
+                      {company.name}
+                    </Typography>
+                    <Typography variant="subtitle1" paragraph sx={{ textOverflow: 'ellipsis' }}>
+                    {company.introduction}
+                    </Typography>
+                  </CardContent>
+                  <CardMedia
+                      component="img"
+                      sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+                      image={company.image ? company.image.url : ''}
+                      alt={company.name}
+                  />
                 </Card>
               </CardActionArea>
             </Grid>
