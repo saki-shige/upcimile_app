@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react"
 
+import { Typography, CardContent, Container, Box} from "@mui/material";
+
 import { getSingleCompany } from '../../lib/api/company';
 import { Company } from "../../interface";
+import { IntroductionCard } from "../layouts/IntroductionCard";
+import { ProductCard } from "../layouts/ProductCard";
 
 const SingleCompany = () => {
   const [ company, setCompany ] = useState<Company>();
@@ -37,14 +41,47 @@ const SingleCompany = () => {
 
   return(
     <>
-      {company?(
-          <div>
-             <img src={company.image ? company.image.url : ''} />
-             <p>{company.name}</p>
-             <p>{company.introduction}</p>
-             <a target="_blank" href={company.corporateSite}>企業HPへ</a>
-          </div>
-      ):''}
+    {company ? (
+      <IntroductionCard avatarImage={company.image? company.image.url : 'no image'}>
+        <Container
+          sx={{
+            width: 400,
+            py: 10,
+            mx: 'auto'
+          }}
+        >
+          <CardContent>
+            <Typography variant="h5" component="div" sx={{textAlign:'center', pb:5}}>
+              {company.name}
+            </Typography>
+            <Typography variant="body2" sx={{textAlign:'center', pb:3}}>
+              {company.introduction}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              住所: {company.address || 'Unregistered'}<br />
+              連絡先: {company.email || 'Unregistered'}<br />
+              創業: {company.dateOfEstablishment ? company.dateOfEstablishment : 'Unregistered'}<br />
+              従業員数: {company.numberOfEmployees || 'Unregistered'}<br />
+              資本金: {company.capital || 'Unregistered'}<br />
+            </Typography>
+            <Typography component='a' href={company.corporateSite} variant="body2" sx={{textAlign:'center', pb:3}}>
+              詳しくは企業HPへ
+            </Typography>
+          </CardContent>
+        </Container>
+
+        <Container sx={{ pb:8 }} maxWidth={false}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant="h6" color="inherit" paragraph>
+              {`${company.name}の商品`}
+            </Typography>
+          </Box>
+          {company.products ? (
+            <ProductCard products={company.products}></ProductCard>
+          ) : '商品が登録されていません'}
+        </Container>
+      </IntroductionCard>
+      ) : 'no company infomation'}
     </>
   )
 }
