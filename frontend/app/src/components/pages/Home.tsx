@@ -138,7 +138,7 @@ const Home: React.FC = () => {
                     <Avatar
                       alt={creator.channelTitle}
                       src={creator.icon}
-                      sx={{ width: 110, height: 110 }}
+                      sx={{ width: 110, height: 110, display: { xs: 'none', sm: 'block' } }}
                     />
                   </CardContent>
                   <CardContent sx={{ flex: 1 }}>
