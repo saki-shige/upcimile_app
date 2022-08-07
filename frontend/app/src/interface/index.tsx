@@ -25,8 +25,9 @@ export interface Company {
   address?: string
   numberOfEmployees?: number
   capital?: number
-  dateOfEstablishment?: Date
+  dateOfEstablishment?: string
   corporateSite?: string
+  products?: Product[]
 }
 
 export interface UpdateCompanyData {
@@ -80,4 +81,11 @@ export interface Creator {
   subscriberCount: string
   description: string
   icon:string
+}
+
+export interface Video {
+  title: string
+  thumbnail: string
+  description: string
+  url: string
 }
