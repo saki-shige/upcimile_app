@@ -85,11 +85,11 @@ const SingleCreator = () => {
                       image={video.thumbnail}
                       alt={video.title}
                     />
-                    <CardContent sx={{ height: 90, flexGrow: 1 }}>
-                      <Typography gutterBottom variant="h5" component="h2" sx={{ height: 30, textOverflow: 'ellipsis' }} >
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography gutterBottom variant="h5" component="h2">
                         {video.title}
                       </Typography>
-                      <Typography sx={{ height: 30, textOverflow: 'ellipsis' }}>
+                      <Typography>
                         {video.description}
                       </Typography>
                       <Typography component='a' href={video.url}>
