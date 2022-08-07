@@ -17,6 +17,7 @@ import Companies from './components/pages/Companies';
 import SingleCompany from './components/pages/SingleCompany';
 import EditCompany from './components/pages/EditCompany';
 import CreatorLogin from './components/pages/CreatorLogin';
+import SingleCreator from './components/pages/SingleCreator';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path='/companies/*' element={<SingleCompany />} />;
           <Route path='/companies/edit/:id' element={<EditCompany />} />;
           <Route path='/creators/login' element={<CreatorLogin />} />;
+          <Route path='/creators/*' element={<SingleCreator />} />;
         </Routes>
         <Footer
         title="UPCIMILE"
