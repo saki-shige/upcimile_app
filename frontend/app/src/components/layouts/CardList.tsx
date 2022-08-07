@@ -4,31 +4,32 @@ import { Link } from "react-router-dom";
 
 import { Card, Typography, CardContent, Grid, CardActionArea, CardMedia } from "@mui/material";
 
-import { Product } from "../../interface";
+import { Product, Company } from "../../interface";
 
 type Props = {
-  products: Product[];
+  items: Product[] | Company[];
+  type: 'products' | 'companies';
 }
-export const ProductCard: FC<Props> = (props) => {
+export const CardList: FC<Props> = (props) => {
   return(
     <Grid container spacing={1} sx={{ px:8 }}>
-      {props.products.map((product,index) => (
+      {props.items.map((item,index) => (
         <Grid item key={index} xs={12} sm={6} md={3}>
           <Card
-            sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 1 }}
+            sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 0, borderRadius: 0 }}
           >
-            <CardActionArea component={Link} to={`/products/${product.id}`}>
+            <CardActionArea component={Link} to={`/${props.type}/${item.id}`}>
               <CardMedia
                 component="img"
-                image={product.image.url}
-                alt={product.name}
+                image={item.image? item.image.url : ''}
+                alt={item.name}
               />
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {product.name}
+                  {item.name}
                 </Typography>
                 <Typography>
-                  {product.introduction}
+                  {item.introduction}
                 </Typography>
               </CardContent>
             </CardActionArea>

@@ -5,7 +5,7 @@ import { Typography, CardContent, Container, Box} from "@mui/material";
 import { getSingleCompany } from '../../lib/api/company';
 import { Company } from "../../interface";
 import { IntroductionCard } from "../layouts/IntroductionCard";
-import { ProductCard } from "../layouts/ProductCard";
+import { CardList } from "../layouts/CardList";
 
 const SingleCompany = () => {
   const [ company, setCompany ] = useState<Company>();
@@ -77,7 +77,7 @@ const SingleCompany = () => {
             </Typography>
           </Box>
           {company.products ? (
-            <ProductCard products={company.products}></ProductCard>
+            <CardList items={company.products} type='products'></CardList>
           ) : '商品が登録されていません'}
         </Container>
       </IntroductionCard>

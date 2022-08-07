@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { handleGetCompanies } from "../functionals/companies";
 import { Company } from "../../interface";
+import { CardList } from "../layouts/CardList";
 
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
+import { Card, Box, Typography } from "@mui/material";
 
 const Companies: React.FC = () => {
-  const [ Companies, setCompanies ] = useState<Company[]>([])
-  const navigation = useNavigate();
-
-  const handleShowCompany = (e : React.MouseEvent<HTMLDivElement>) => {
-    const id = e.currentTarget.dataset.id;
-    navigation(`/companies/${id}`);
-  }
+  const [ companies, setCompanies ] = useState<Company[]>([])
 
    useEffect(()=>{
     const f = async() => {
@@ -26,20 +18,27 @@ const Companies: React.FC = () => {
   },[]);
 
   return (
-    <ImageList sx={{ width: 500, height: 450 }}>
-      {Companies.map((item) => (
-        <div className={'itembox'} onClick={handleShowCompany} data-id={item.id}>
-          <ImageListItem key={item.id}>
-            <img src={item.image? item.image.url:''} alt={item.name} loading="lazy"/>
-            <ImageListItemBar
-              title={item.name}
-              subtitle={<span>{item.introduction}</span>}
-              position="below"
-            />
-          </ImageListItem>
-        </div>
-      ))}
-    </ImageList>
+    <>
+    <Box sx={{my: 5, px:10, mx: 'auto'}}>
+      <Typography sx={{textAlign:'center'}}>
+        企業一覧
+      </Typography>
+    </Box>
+    <Card
+      sx={{
+        backgroundColor: 'white',
+        width: '80%',
+        maxWidth: 1100,
+        py: 10,
+        mx: 'auto',
+        mb: 10,
+        zIndex: 'modal',
+        borderRadius: 2,
+      }}
+    >
+      <CardList items={companies} type='companies'/>
+    </Card>
+    </>
   );
 
 }
