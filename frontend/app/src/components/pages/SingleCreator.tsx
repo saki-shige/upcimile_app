@@ -6,7 +6,6 @@ import { getSingleCreator } from '../../lib/api/creator';
 import { Creator } from "../../interface";
 import { Video } from "../../interface";
 import { IntroductionCard } from "../layouts/IntroductionCard";
-import { ProductCard } from "../layouts/ProductCard";
 
 const SingleCreator = () => {
   const [ creator, setCreator ] = useState<Creator>();
