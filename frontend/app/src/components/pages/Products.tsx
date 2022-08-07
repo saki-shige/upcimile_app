@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { handleGetProducts } from "../functionals/products";
 import { Product } from "../../interface";
+import { CardList } from "../layouts/CardList";
 
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
+import { Card, Box, Typography } from "@mui/material";
 
 const Products: React.FC = () => {
   const [ products, setProducts ] = useState<Product[]>([])
-  const navigation = useNavigate();
-
-  const handleShowProduct = (e : React.MouseEvent<HTMLDivElement>) => {
-    const id = e.currentTarget.dataset.id;
-    navigation(`/products/${id}`);
-  }
 
   useEffect(()=>{
     const f = async() => {
@@ -26,20 +18,27 @@ const Products: React.FC = () => {
   },[]);
 
   return (
-    <ImageList sx={{ width: 500, height: 450 }}>
-      {products.map((item) => (
-        <div className={'itembox'} onClick={handleShowProduct} data-id={item.id}>
-          <ImageListItem key={item.id}>
-            <img src={item.image.url} alt={item.name} loading="lazy"/>
-            <ImageListItemBar
-              title={item.name}
-              subtitle={<span>{item.introduction}</span>}
-              position="below"
-            />
-          </ImageListItem>
-        </div>
-      ))}
-    </ImageList>
+    <>
+      <Box sx={{my: 5, px:10, mx: 'auto'}}>
+        <Typography sx={{textAlign:'center'}}>
+          商品一覧
+        </Typography>
+      </Box>
+      <Card
+        sx={{
+          backgroundColor: 'white',
+          width: '80%',
+          maxWidth: 1100,
+          py: 10,
+          mx: 'auto',
+          mb: 10,
+          zIndex: 'modal',
+          borderRadius: 2,
+        }}
+      >
+        <CardList items={products} type='products'/>
+      </Card>
+    </>
   );
 
 }
