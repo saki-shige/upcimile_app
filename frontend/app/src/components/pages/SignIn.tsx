@@ -2,22 +2,16 @@ import React, { useState, useContext } from "react"
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 
-import { Typography } from "@material-ui/core"
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
+import { TextField, Avatar, Container, Box, Grid, Typography, Button} from "@mui/material";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import Cookies from "js-cookie"
 import { SignInData } from "../../interface/index"
 import { signIn } from "../../lib/api/auth"
 import { AuthContext } from "../providers/AuthProvider";
 
-import Avatar from '@mui/material/Avatar';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Container from '@mui/material/Container';
 
-export default function SignIn() {
+const SignIn: React.FC = ()  => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const { setIsSignedIn, setCurrentCompany } = useContext(AuthContext)
@@ -56,24 +50,25 @@ export default function SignIn() {
   }
 
   return (
-      <Container component="main" maxWidth="xs" sx={{mb:10}}>
+      <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            m: 20,
+            m: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ my: 3, mx: 'auto', bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ my: 1, mx: 'auto', bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" style={{ textAlign: 'center'}}>
-            Sign in
+            Company Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Box component="form" sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+              <Grid item xs={12}>
             <TextField
-              margin="normal"
               required
               fullWidth
               id="email"
@@ -83,8 +78,9 @@ export default function SignIn() {
               autoFocus
               onChange={event => setEmail(event.target.value)}
             />
+            </Grid>
+            <Grid item xs={12}>
             <TextField
-              margin="normal"
               required
               fullWidth
               name="password"
@@ -94,18 +90,22 @@ export default function SignIn() {
               autoComplete="current-password"
               onChange={event => setPassword(event.target.value)}
             />
+            </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth
               variant="outlined"
               onClick={handleSubmit}
+              sx={{ mt: 3, mb: 2 }}
+              disabled={ !email || !password ? true : false}
             >
-              送信
+              サインイン
             </Button>
-            <Grid container>
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to={'/signup'}>
-                  {"Don't have an account? Sign Up"}
+                  {"アカウント作成はこちら"}
                 </Link>
               </Grid>
             </Grid>
@@ -114,3 +114,5 @@ export default function SignIn() {
       </Container>
   );
 }
+
+export default SignIn;

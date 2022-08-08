@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import Cookies from "js-cookie"
 
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import { TextField, Avatar, Container, Box, Grid, Typography, Button } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import { signUp } from "../../lib/api/auth"
 import { SignUpData } from "../../interface/index"
@@ -54,65 +54,93 @@ const SignUp: React.FC = () => {
   }
 
   return (
-    <>
-      <p>SignUp</p>
-      <Link to={'/'}>home</Link>
-      <Link to={'/signin'}>sign in</Link>
-      <form noValidate autoComplete="off">
-        <TextField
-          variant="outlined"
-          required
-          fullWidth
-          label="名前"
-          value={name}
-          margin="dense"
-          onChange={event => setName(event.target.value)}
-        />
-          <TextField
-            variant="outlined"
-            required
-            fullWidth
-            label="メールアドレス"
-            value={email}
-            margin="dense"
-            onChange={event => setEmail(event.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            required
-            fullWidth
-            label="パスワード"
-            type="password"
-            value={password}
-            margin="dense"
-            autoComplete="current-password"
-            onChange={event => setPassword(event.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            required
-            fullWidth
-            label="パスワード（確認用）"
-            type="password"
-            value={passwordConfirmation}
-            margin="dense"
-            autoComplete="current-password"
-            onChange={event => setPasswordConfirmation(event.target.value)}
-          />
-          <div>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Conpany Sign up
+          </Typography>
+          <Box component="form" noValidate sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="given-name"
+                  name="name"
+                  required
+                  fullWidth
+                  id="name"
+                  label="名前"
+                  autoFocus
+                  onChange={event => setName(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="メールアドレス"
+                  name="email"
+                  autoComplete="email"
+                  onChange={event => setEmail(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="パスワード"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  onChange={event => setPassword(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="パスワード（確認用）"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  onChange={event => setPasswordConfirmation(event.target.value)}
+                />
+              </Grid>
+            </Grid>
             <Button
               type="submit"
+              fullWidth
               variant="outlined"
               color="primary"
               disabled={!name || !email || !password || !passwordConfirmation ? true : false}
               onClick={handleSubmit}
+              sx={{ mt: 3, mb: 2 }}
             >
-              送信
+              登録
             </Button>
-          </div>
-    </form>
-  </>
-  );
-};
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link to="/signin">
+                  {"アカウントをお持ちですか？"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    );
+}
 
 export default SignUp;
