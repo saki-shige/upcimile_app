@@ -23,7 +23,7 @@ export default function Footer(props: FooterProps) {
   const { description, title } = props;
 
   return (
-    <Box component="footer" sx={{ position: 'absolute', width: '100%', bottom: 0, bgcolor: 'background.paper', py: 6 }}>
+    <Box component="footer" sx={{ py: 3, px: 2, mt: 'auto', bgcolor: 'background.paper'}}>
       <Container maxWidth="lg">
         <Typography variant="h6" align="center" gutterBottom>
           {title}
