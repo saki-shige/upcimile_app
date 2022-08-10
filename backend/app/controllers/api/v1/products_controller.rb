@@ -6,7 +6,9 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     product = Product.find(params[:id])
-    render json: product
+    related_products = Product.where(category_id: product.category_id).where.not(id: product.id)
+    company = product.company
+    render json: {product: product, related_products: related_products, company: company }
   end
 
   def create
