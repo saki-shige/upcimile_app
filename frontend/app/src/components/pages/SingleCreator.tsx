@@ -44,7 +44,7 @@ const SingleCreator = () => {
   return(
     <>
     {creator ? (
-      <IntroductionCard avatarImage={creator.icon}>
+      <IntroductionCard avatarImage={creator.image.url}>
         <Container
           sx={{
             width: 400,
@@ -57,7 +57,7 @@ const SingleCreator = () => {
               {creator.channelTitle}
             </Typography>
             <Typography variant="body2" sx={{textAlign:'center', pb:3}}>
-              {creator.description}
+              {creator.introduction}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               登録者数: {creator.subscriberCount}<br />
@@ -89,7 +89,7 @@ const SingleCreator = () => {
                         {video.title}
                       </Typography>
                       <Typography>
-                        {video.description}
+                        {video.introduction}
                       </Typography>
                       <Typography component='a' href={video.url}>
                         Youtubeでこの動画を見る

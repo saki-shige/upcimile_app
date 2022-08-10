@@ -79,13 +79,15 @@ export interface Creator {
   id: number
   channelTitle: string
   subscriberCount: string
-  description: string
-  icon:string
+  introduction: string
+  image:{
+    url: string
+  }
 }
 
 export interface Video {
   title: string
   thumbnail: string
-  description: string
+  introduction: string
   url: string
 }

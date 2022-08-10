@@ -45,7 +45,7 @@ const Creators: React.FC = () => {
             <CardActionArea component={Link} to={`/creators`}>
               <CardMedia
                 component="img"
-                image={creator.icon}
+                image={creator.image.url}
                 alt={creator.channelTitle}
               />
               <CardContent sx={{ flexGrow: 1 }}>
@@ -53,7 +53,7 @@ const Creators: React.FC = () => {
                   {creator.channelTitle}
                 </Typography>
                 <Typography>
-                  {creator.description}
+                  {creator.introduction}
                 </Typography>
               </CardContent>
             </CardActionArea>

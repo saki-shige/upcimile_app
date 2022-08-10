@@ -137,7 +137,7 @@ const Home: React.FC = () => {
                   <CardContent sx={{my:'auto'}}>
                     <Avatar
                       alt={creator.channelTitle}
-                      src={creator.icon}
+                      src={creator.image.url}
                       sx={{ width: 110, height: 110, display: { xs: 'none', sm: 'block' } }}
                     />
                   </CardContent>
@@ -149,7 +149,7 @@ const Home: React.FC = () => {
                       登録者数：{creator.subscriberCount}人
                     </Typography>
                     <Typography variant="subtitle1" paragraph sx={{ textOverflow: 'ellipsis' }}>
-                      {creator.description}
+                      {creator.introduction}
                     </Typography>
                   </CardContent>
                 </Card>
