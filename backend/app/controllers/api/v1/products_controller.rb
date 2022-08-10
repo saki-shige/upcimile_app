@@ -1,7 +1,7 @@
 class Api::V1::ProductsController < ApplicationController
   def index
     products = Product.all
-    render json:products
+    render json: products
   end
 
   def show
@@ -12,10 +12,7 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def create
-    # render json: {message:'product_params', data:product_params}
     product = Product.new(product_params)
-    # product.images.attach(product_params[:images]) if product_params[:images] != ""
-    # render json: product.images
 
     if product.save
       render json: {message:"#{product.name}を保存しました", data:product}
