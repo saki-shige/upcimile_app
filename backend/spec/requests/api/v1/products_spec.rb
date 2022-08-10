@@ -18,8 +18,8 @@ RSpec.describe "Products", :type => :request do
 
     it '全ての商品を取得する' do
       json = JSON.parse(response.body)
-      # product(1つ)＋related_product(４つ)+other_product(5つ）=10
-      expect(json['data'].length).to eq(10)
+      # product(1つ)＋related_product+other_product
+      expect(json['data'].length).to eq(1+related_products.length+other_products.length)
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe "Products", :type => :request do
     end
 
     it '同じカテゴリーに属する商品を取得する' do
-      expect(@json['related_products'].length).to eq(4)
+      expect(@json['related_products'].length).to eq(related_products.length)
       expect(@json['related_products'][0]['name']).to eq(related_products[0].name)
     end
 
