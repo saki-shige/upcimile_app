@@ -24,7 +24,7 @@ class Api::V1::ProductsController < ApplicationController
   def update
     product = Product.find(params[:id])
     if product.update(product_params)
-      render json: {status:201, message: "#{product.name}を更新しました"}
+      render json: {data: product, message: "#{product.name}を更新しました"}
     else
       render json: {status:400, message: "#{product.name}の更新に失敗しました"}
     end
