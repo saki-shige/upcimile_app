@@ -1,54 +1,63 @@
-
-import React, { FC, useContext, useState, useEffect,useCallback } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import { Button, Box, MenuItem, Grid, Typography,TextField, Container, Paper } from "@mui/material";
+
+import ImageForm from '../layouts/ImageForm';
 import { AuthContext } from '../providers/AuthProvider';
 import { createProduct } from '../../lib/api/product';
+import { FormProduct } from '../../interface';
 
-import { FormControl, InputLabel, Input, MenuItem, Box, Button, TextField} from '@mui/material';
-
-const CreateProduct: FC = () => {
-  const { currentCompany } = useContext(AuthContext);
-  const [name, setName] = useState<string>('');
-  const [introduction, setIntroduction] = useState<string>();
-  const [availableFrom, setAvailableFrom] = useState<string>('');
-  const [availableTo, setAvailableTo] = useState<string>();
-  const [canBeProvided, setCanBeProvided] = useState<boolean>(true);
-  // companyIdとcategoryIdのデフォルトを便宜上設定。最終的には削除
-  const [companyId, setCompanyId] = useState<number>(1);
-  const [categoryId, setCategoryId] = useState<number>(1);
-  const [image, setImage] = useState<File>();
-  const [preview, setPreview] = useState<string>("");
-
+export default function CreateProduct() {
+  // const { currentCompany } = useContext(AuthContext);
+  const [croppedFile, setCroppedFile] = useState<File | null>(null);
+  const today = new Date();
   const navigation = useNavigate();;
+  const formatted = today
+    .toLocaleDateString("ja-JP", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/")
+    .join("-");
+
+  const [ product, setProduct ] = useState<FormProduct>({
+    name: '',
+    introduction: '',
+    availableFrom: formatted,
+    availableTo: undefined,
+    canBeProvided: true,
+    companyId: 1,
+    categoryId: 1,
+  });
 
   const categories = [
     {value: 1, label:'食べ物'},
     {value: 2, label:'場所'}
   ];
 
-  useEffect(()=>{
-    console.log('商品情報取得開始');
-    // companyIdとcategoryIdのデフォルトを便宜上設定。最終的にはログイン中のカンパニーのIDを設定
-    // setCompanyId(currentCompany.id);
-  },[]);
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setProduct({ ...product, [name]: value });
+  };
 
   const handleFormData = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
-      const formData = new FormData();
-      formData.append("product[name]", name);
-      formData.append("product[introduction]", introduction || "");
-      // [pending]利用開始日はデフォルトで登録日を設定したい
-      formData.append("product[availableFrom]", availableFrom || "");
-      formData.append("product[availableTo]", availableTo || "");
-      formData.append("product[canBeProvided]", String(canBeProvided));
-      formData.append("product[companyId]", String(companyId));
-      formData.append("product[categoryId]", String(categoryId));
-      formData.append("product[image]", image || "");
+    console.log(croppedFile)
+
+    const formData = new FormData();
+      formData.append("product[name]", product.name || '');
+      formData.append("product[image]", croppedFile || '');
+      formData.append("product[introduction]", product.introduction || "");
+      formData.append("product[availableFrom]", String(product.availableFrom) || "");
+      formData.append("product[availableTo]", String(product.availableTo) || "");
+      formData.append("product[companyId]", String(product.companyId) || "");
+      formData.append("product[categoryId]", String(product.categoryId) || "");
 
     try {
-      console.log(image)
+      console.log(formData)
       const res = await createProduct(formData);
       console.log(res);
 
@@ -63,67 +72,103 @@ const CreateProduct: FC = () => {
     };
   };
 
-  const uploadImage = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0]
-    setImage(file)
-  }, [])
-
-  const previewImage = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0]
-    setPreview(window.URL.createObjectURL(file))
-  }, [])
-
-
   return (
     <>
-      <Box
-        component="form"
-        sx={{
-          '& > :not(style)': { m: 1 },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-          <input type="file" accept="image/*,.png,.jpg,.jpeg,.gif" onChange={(e: React.ChangeEvent<HTMLInputElement>) => uploadImage(e)} />
-
-        <FormControl>
-          <InputLabel htmlFor="form-product-name">商品名</InputLabel>
-          <Input id="form-product-name" type="text" onChange={(e) => setName(e.target.value)}/>
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="form-product-introduction">商品説明</InputLabel>
-          <Input id="form-product-introfduction" type="text" onChange={(e) => setIntroduction(e.target.value)}/>
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="form-product-availablefrom">利用開始</InputLabel>
-          <Input id="form-product-availablefrom" type="date" onChange={(e) => setAvailableFrom(e.target.value)}/>
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="form-product-available-to">掲載終了予定日</InputLabel>
-          <Input id="form-product-available-to" type="date" onChange={(e) => setAvailableTo(e.target.value)}/>
-        </FormControl>
-        <FormControl >
-          <TextField
-            id="form-product-category-id"
-            select
-            label="カテゴリー"
-            value={categoryId}
-            onChange={(e) => setCategoryId(Number(e.target.value))}
-            helperText="Please select category"
-          >
-            {categories.map((category) => (
-              <MenuItem key={category.value} value={category.value}>
-                {category.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </FormControl>
-        <Button variant="outlined" type="submit" onClick={handleFormData}>商品を登録する</Button>
-      </Box>
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          <Typography component="h1" variant="h4" align="center">
+            商品登録
+          </Typography>
+          <Typography variant="h6" gutterBottom sx={{textAlign: 'center'}}>
+            商品画像
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <ImageForm setCroppedFile={setCroppedFile}/>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                name = "name"
+                label="名前"
+                fullWidth
+                autoComplete="given-name"
+                variant="standard"
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                name="introduction"
+                label="説明"
+                multiline
+                minRows={3}
+                maxRows={4}
+                fullWidth
+                variant="standard"
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                  select
+                  name='categoryId'
+                  label="商品カテゴリー"
+                  fullWidth
+                  defaultValue={1}
+                  onChange={handleOnChange}
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category.label} value={category.value}>
+                      {category.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                type='date'
+                name='availableFrom'
+                label="利用可能開始日"
+                defaultValue={formatted}
+                fullWidth
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                type='date'
+                name='availableTo'
+                label="掲載完了日"
+                fullWidth
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={handleFormData}
+                  sx={{ mt: 3, ml: 1 }}
+                  >
+                  登録する
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
+          </Paper>
+      </Container>
     </>
   );
-};
-
-export default CreateProduct;
+}
