@@ -55,14 +55,14 @@ const ImageForm: FC<Props>= ({setCroppedFile}) => {
         onChange={handleChangeFile}
         style={{margin: '8px'}}
       />
-        <ImageCropper
-          open={open}
-          setOpen={setOpen}
-          aspect={{ width: 400, height: 300 }}
-          src={src}
-          previewCanvasRef={previewCanvasRef}
-          setCroppedFile={setCroppedFile}
-        />
+      <ImageCropper
+        open={open}
+        setOpen={setOpen}
+        aspect={{ width: 400, height: 300 }}
+        src={src}
+        previewCanvasRef={previewCanvasRef}
+        setCroppedFile={setCroppedFile}
+      />
     </div>
   )
 }
