@@ -55,11 +55,6 @@ const ImageForm: FC<Props>= ({setCroppedFile}) => {
         onChange={handleChangeFile}
         style={{margin: '8px'}}
       />
-      {/* <Modal
-        open={open}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      > */}
         <ImageCropper
           open={open}
           setOpen={setOpen}
@@ -68,7 +63,6 @@ const ImageForm: FC<Props>= ({setCroppedFile}) => {
           previewCanvasRef={previewCanvasRef}
           setCroppedFile={setCroppedFile}
         />
-      {/* </Modal> */}
     </div>
   )
 }
