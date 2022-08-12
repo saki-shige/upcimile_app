@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom";
 
 import { Typography, CardContent, Container, Box} from "@mui/material";
 
@@ -9,12 +10,15 @@ import { CardList } from "../layouts/CardList";
 
 const SingleCompany = () => {
   const [ company, setCompany ] = useState<Company>();
+  const {id} = useParams<{id: string}>();
 
-  const handleGetCompany = async() => {
-    let id = window.location.pathname.split('/companies')[1];
-    if (id !== '') {
-      id = id.split('/')[1];
-    }
+  console.log(id)
+
+  const handleGetCompany = async(id:string) => {
+    // let id = window.location.pathname.split('/companies')[1];
+    // if (id !== '') {
+    //   id = id.split('/')[1];
+    // }
 
     try {
       const res = await getSingleCompany(id)
@@ -36,13 +40,13 @@ const SingleCompany = () => {
 
   useEffect(()=>{
     console.log('会社情報取得開始')
-    handleGetCompany()
+    id && handleGetCompany(id)
   },[]);
 
   return(
     <>
     {company ? (
-      <IntroductionCard avatarImage={company.image? company.image.url : 'no image'}>
+      <IntroductionCard avatarImage={company.image? company.image.url : 'image'}>
         <Container
           sx={{
             width: 400,

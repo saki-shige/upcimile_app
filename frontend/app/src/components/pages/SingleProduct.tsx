@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom";
 
 import { Typography, CardContent, Container, Box, Grid, Avatar } from "@mui/material";
 
@@ -12,13 +13,9 @@ const SingleProduct = () => {
   const [ product, setProduct ] = useState<Product>();
   const [ relatedProducts, setRelatedProducts ] = useState<Product[]>();
   const [ company, setCompany ] = useState<Company>();
+  const {id} = useParams<{id: string}>();
 
-  const handleGetProduct = async() => {
-    let id = window.location.pathname.split('/products')[1];
-    if (id !== '') {
-      id = id.split('/')[1];
-    }
-
+  const handleGetProduct = async(id :string) => {
     try {
       const res = await getSingleProduct(id)
       console.log(res)
@@ -41,7 +38,7 @@ const SingleProduct = () => {
 
   useEffect(()=>{
     console.log('商品情報取得開始')
-    handleGetProduct()
+    id && handleGetProduct(id)
   },[]);
 
   return(

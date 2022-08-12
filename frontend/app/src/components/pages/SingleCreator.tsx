@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom";
 
 import { Typography, CardContent, Container, Box, Grid, Card, CardActionArea, CardMedia} from "@mui/material";
 
@@ -10,13 +11,9 @@ import { IntroductionCard } from "../layouts/IntroductionCard";
 const SingleCreator = () => {
   const [ creator, setCreator ] = useState<Creator>();
   const [ videos, setVideos ] = useState<Video[]>();
+  const {id} = useParams<{id: string}>();
 
-  const handleGetSingleCreator = async() => {
-    let id = window.location.pathname.split('/creators')[1];
-    if (id !== '') {
-      id = id.split('/')[1];
-    }
-
+  const handleGetSingleCreator = async(id: string) => {
     try {
       const res = await getSingleCreator(id)
       console.log(res)
@@ -38,7 +35,7 @@ const SingleCreator = () => {
 
   useEffect(()=>{
     console.log('会社情報取得開始')
-    handleGetSingleCreator()
+    id && handleGetSingleCreator(id)
   },[]);
 
   return(

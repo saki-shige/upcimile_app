@@ -38,14 +38,14 @@ function App() {
           <Route path='/signin' element={<SignIn />} />;
           <Route path='/signup' element={<SignUp />} />;
           <Route path='/products' element={<Products />} />;
-          <Route path='/products/*' element={<SingleProduct />} />;
+          <Route path='/products/:id' element={<SingleProduct />} />;
           <Route path='/products/new' element={<CreateProduct />} />;
           <Route path='/companies' element={<Companies />} />;
-          <Route path='/companies/*' element={<SingleCompany />} />;
+          <Route path='/companies/:id' element={<SingleCompany />} />;
           <Route path='/companies/edit/:id' element={<EditCompany />} />;
           <Route path='/creators/login' element={<CreatorLogin />} />;
           <Route path='/creators' element={<Creators />} />;
-          <Route path='/creators/*' element={<SingleCreator />} />;
+          <Route path='/creators/:id' element={<SingleCreator />} />;
         </Routes>
         <Footer
         title="UPCIMILE"

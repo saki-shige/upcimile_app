@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Button } from "@mui/material";
 
@@ -23,16 +23,10 @@ const EditCompany: React.FC = () => {
   const [ company, setCompany ] = useState<FormData>({
     name: '',
   });
-  const [ id, setId ] = useState<string>('');
   const navigation = useNavigate();;
+  const {id} = useParams<{id: string}>();
 
-  const handleGetCompany = async() => {
-    let id = window.location.pathname.split('/companies/edit')[1];
-    if (id !== '') {
-      id = id.split('/')[1];
-      setId(id)
-    }
-
+  const handleGetCompany = async(id:string) => {
     try {
       const res = await getSingleCompany(id)
       console.log(res)
@@ -50,7 +44,7 @@ const EditCompany: React.FC = () => {
 
   useEffect(()=>{
     console.log('会社情報取得開始')
-    handleGetCompany()
+    id && handleGetCompany(id)
   },[]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,20 +69,23 @@ const EditCompany: React.FC = () => {
       formData.append("company[dateOfEstablishment]", String(company.dateOfEstablishment) || "");
       formData.append("company[corporateSite]", String(company.corporateSite) || "");
 
-    try {
-      console.log(formData);
-      const res = await updateCompany(id, formData);
-      console.log(res);
+    if(id){
+      try {
+        console.log(formData);
 
-      if (res.status === 200) {
-        console.log(res.data.message);
-        navigation("/companies");
-      } else {
-        console.log("会社情報の更新に失敗しました");
+        const res = await updateCompany(id, formData);
+        console.log(res);
+
+        if (res.status === 200) {
+          console.log(res.data.message);
+          navigation("/companies");
+        } else {
+          console.log("会社情報の更新に失敗しました");
+        };
+      } catch (err) {
+        console.log(err);
       };
-    } catch (err) {
-      console.log(err);
-    };
+    }
   };
 
 
