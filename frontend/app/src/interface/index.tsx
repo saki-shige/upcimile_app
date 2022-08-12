@@ -59,6 +59,16 @@ export interface Product {
   }
 }
 
+export interface FormProduct {
+  name?: string
+  introduction?: string
+  availableFrom?: string
+  availableTo?: string
+  canBeProvided?: boolean
+  companyId?: number
+  categoryId?: number
+}
+
 export interface UpdateProductData {
   id: number | undefined | null
   name?: string
