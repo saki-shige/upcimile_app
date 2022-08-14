@@ -20,10 +20,4 @@ class Api::V1::CreatorsController < ApplicationController
       render status: 404, json: {messsage: '表示できるクリエイターは見つかりませんでした。'}
     end
   end
-
-  private
-
-  def creator_params
-    params.require(:creator).permit(:channel_id)
-  end
 end
