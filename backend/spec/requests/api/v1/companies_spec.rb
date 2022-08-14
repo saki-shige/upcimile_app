@@ -25,21 +25,18 @@ RSpec.describe "Companies", :type => :request do
 
     before do
       get "/api/v1/companies/#{company.id}"
-      @json = JSON.parse(response.body)
     end
 
     it 'レスポンスが返ってくる' do
       expect(response.status).to eq(200)
     end
 
-    it '企業情報を取得する' do
-      expect(@json['name']).to eq(company.name)
-      expect(@json['introduction']).to eq(company.introduction)
-    end
-
-    it '提供している商品を取得する' do
-      expect(@json['products'].length).to eq(related_products.length)
-      expect(@json['products'][0]['name']).to eq(related_products[0].name)
+    it '企業情報と関連商品のみを取得する' do
+      json = JSON.parse(response.body)
+      expect(json['name']).to eq(company.name)
+      expect(json['introduction']).to eq(company.introduction)
+      expect(json['products'].length).to eq(related_products.length)
+      expect(json['products'][0]['name']).to eq(related_products[0].name)
     end
   end
 
