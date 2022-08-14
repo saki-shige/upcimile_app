@@ -26,7 +26,6 @@ RSpec.describe "Products", :type => :request do
   describe 'GET /api/v1/products/:id' do
     before do
       get "/api/v1/products/#{product.id}"
-      @json = JSON.parse(response.body)
     end
 
     it 'レスポンスが返ってくる' do
@@ -34,17 +33,12 @@ RSpec.describe "Products", :type => :request do
     end
 
     it '特定の商品情報を取得する' do
-      expect(@json['product']['name']).to eq(product.name)
-      expect(@json['product']['introduction']).to eq(product.introduction)
-    end
-
-    it '同じカテゴリーに属する商品を取得する' do
-      expect(@json['related_products'].length).to eq(related_products.length)
-      expect(@json['related_products'][0]['name']).to eq(related_products[0].name)
-    end
-
-    it '提供企業の情報を取得する' do
-      expect(@json['company']['name']).to eq(company.name)
+      json = JSON.parse(response.body)
+      expect(json['product']['name']).to eq(product.name)
+      expect(json['product']['introduction']).to eq(product.introduction)
+      expect(json['related_products'].length).to eq(related_products.length)
+      expect(json['related_products'][0]['name']).to eq(related_products[0].name)
+      expect(json['company']['name']).to eq(company.name)
     end
   end
 
