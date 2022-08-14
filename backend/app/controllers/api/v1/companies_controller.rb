@@ -1,4 +1,6 @@
 class Api::V1::CompaniesController < ApplicationController
+  has_many :offers, through: :products
+
   def index
     companies = Company.all
     render json:companies
