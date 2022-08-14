@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       resources :products
       resources :companies, only: [:index, :show, :update]
       resources :creators, only: [:index, :show]
+      resources :offers, only: [:index,:create]
+      put '/offers/:id', to: 'offers#accept'
     end
   end
 end
