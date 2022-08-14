@@ -49,10 +49,19 @@ RSpec.describe "Companies", :type => :request do
   end
 
   describe 'POST /api/v1/auth/sign_in' do
-    it 'ログインする' do
-      valid_params = { email: company.email, password: company.password }
-      post '/api/v1/auth/sign_in', params: { session: valid_params }
-      expect(response.status).to eq(200)
+    context '正しいパスワードを入力する' do
+      it 'ログインすることができる' do
+        valid_params = { email: company.email, password: company.password }
+        post '/api/v1/auth/sign_in', params: { session: valid_params }
+        expect(response.status).to eq(200)
+      end
+    end
+    context '誤ったパスワードを入力する' do
+      it 'ログインすることができない' do
+        valid_params = { email: company.email, password: 'wrong password' }
+        post '/api/v1/auth/sign_in', params: { session: valid_params }
+        expect(response.status).to eq(401)
+      end
     end
   end
 
