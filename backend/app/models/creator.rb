@@ -1,4 +1,5 @@
 class Creator < ApplicationRecord
+  has_many :offers
   require 'google/apis/youtube_v3'
 
   def self.list_up_all_channel_info
