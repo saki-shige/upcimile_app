@@ -7,5 +7,6 @@ class Company < ActiveRecord::Base
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
   has_many :products, dependent: :destroy
+  has_many :offers, through: :products
   mount_uploader :image, ImageUploader
 end
