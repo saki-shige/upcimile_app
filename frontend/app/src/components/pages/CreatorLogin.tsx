@@ -22,7 +22,7 @@ const CreatorLogin = () => {
       const credential = GoogleAuthProvider.credentialFromResult(res);
       const accessToken = credential ? credential.accessToken : '';
       const currentUser = auth.currentUser;
-      if (auth && currentUser) {
+      if (auth && currentUser && accessToken) {
         const idToken = await currentUser.getIdToken(true);
         const config = { idToken, accessToken };
         await handleLogin(config);
