@@ -9,11 +9,8 @@ export const AuthContext = createContext({} as {
   setLoading: Dispatch<SetStateAction<boolean>>;
   isSignedIn: boolean;
   setIsSignedIn: Dispatch<SetStateAction<boolean>>;
-  currentCompany: any;
-  setCurrentCompany: Dispatch<SetStateAction<any>>;
-  // [pending]currentcompanyの型を定義したい
-  // currentCompany: Company | undefined;
-  // setCurrentCompany: Dispatch<SetStateAction<Company | undefined>>;
+  currentCompany: Company | undefined;
+  setCurrentCompany: Dispatch<SetStateAction<Company>> | Dispatch<SetStateAction<undefined>>;
   currentCreator: Creator | undefined;
   setCurrentCreator: React.Dispatch<React.SetStateAction<Creator>> | React.Dispatch<React.SetStateAction<undefined>>;
   idToken: string | undefined;
