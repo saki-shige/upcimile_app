@@ -51,6 +51,12 @@ class Creator < ApplicationRecord
     end
   end
 
+  def find_my_channel_info(access_token)
+    youtube = Google::Apis::YoutubeV3::YouTubeService.new
+    youtube.authorization = access_token
+    response = youtube.list_channels([:snippet], mine: true)
+  end
+
   def youtube_client
     youtube = Google::Apis::YoutubeV3::YouTubeService.new
     youtube.key = ENV['API_KEY']

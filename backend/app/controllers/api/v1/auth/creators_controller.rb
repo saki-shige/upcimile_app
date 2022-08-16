@@ -2,8 +2,8 @@ require_dependency 'api/v1/application_controller'
 module Api
   module V1
     module Auth
-      class CreatorsController < V1::ApplicationController
-        skip_before_action :authenticate_user
+      class CreatorsController < ApplicationController
+        require 'google/apis/youtube_v3'
 
         def create
           FirebaseIdToken::Certificates.request
@@ -11,7 +11,8 @@ module Api
           creator = Creator.find_or_initialize_by(uid: payload['sub'])
           creator.name = payload['name']
           creator.email = payload['email']
-          creator.channel_id = creator_params[:channel_id]
+          my_channel_info = creator.find_my_channel_info(params[:access_token])
+          creator.channel_id = my_channel_info.items[0].id
           if creator.new_record?
             message = 'ユーザー登録を完了しました'
           else
@@ -28,6 +29,7 @@ module Api
 
         def token
           creator_params[:id_token] || token_from_request_headers
+          # params[:id_token] || token_from_request_headers
         end
 
         def payload
