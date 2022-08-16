@@ -9,7 +9,6 @@ import { signInWithPopup } from "firebase/auth";
 import { signOut } from 'firebase/auth'
 
 import { login } from '../../lib/api/creator';
-import { getChannelId } from '../../lib/api/creator';
 
 const CreatorLogin = () => {
   const navigation = useNavigate();
@@ -17,41 +16,23 @@ const CreatorLogin = () => {
   provider.addScope('https://www.googleapis.com/auth/youtube.readonly');
 
   const clickLogin = async () => {
-    const channelId = await signInGoogle();
-    const currentUser = auth.currentUser;
-    if (auth && currentUser) {
-      const idToken = await currentUser.getIdToken(true);
-      const config = { idToken, channelId};
-      await handleLogin(config);
-    }
-  };
-
-  const signInGoogle = async () => {
     try{
-      const res = await signInWithPopup(auth, provider)
+      const res = await signInWithPopup(auth, provider);
+      console.log('signed in with google');
       const credential = GoogleAuthProvider.credentialFromResult(res);
       const accessToken = credential ? credential.accessToken : '';
-      const foo = await handleGetChannelId(accessToken || '')
-      navigation('/');
-      return foo
-    } catch(err){console.log('err')};
-  };
-
-
-  const handleGetChannelId = async (accsesToken: string) => {
-    try {
-      const res = await getChannelId(accsesToken);
-      if (res.status === 200) {
-        return res.data.items[0].id
-      } else {
-        console.log("ログイン情報の保存に失敗しました");
-      };
-    } catch (err) {
-      console.log(err);
-    };
+      const currentUser = auth.currentUser;
+      if (auth && currentUser) {
+        const idToken = await currentUser.getIdToken(true);
+        const config = { idToken, accessToken };
+        await handleLogin(config);
+        navigation('/')
+      }else{clickLogout};
+    }catch(err){console.log('err')};
   };
 
   const handleLogin = async (data: any) => {
+    console.log('handleLogin')
     try {
       const res = await login(data);
 
