@@ -40,9 +40,11 @@ const CreatorLogin = () => {
         console.log(res.data);
       } else {
         console.log("ログイン情報の保存に失敗しました");
+        clickLogout;
       };
     } catch (err) {
       console.log(err);
+      clickLogout;
     };
   };
 
