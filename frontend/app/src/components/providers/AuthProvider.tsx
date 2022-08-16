@@ -1,6 +1,8 @@
 import React from "react";
 import { createContext, useState, Dispatch, SetStateAction } from "react";
-// import { Company } from "../../interface";
+import { Company } from "../../interface";
+import { Creator } from "../../interface";
+
 
 export const AuthContext = createContext({} as {
   loading: boolean;
@@ -12,6 +14,10 @@ export const AuthContext = createContext({} as {
   // [pending]currentcompanyの型を定義したい
   // currentCompany: Company | undefined;
   // setCurrentCompany: Dispatch<SetStateAction<Company | undefined>>;
+  currentCreator: Creator | undefined;
+  setCurrentCreator: React.Dispatch<React.SetStateAction<Creator>> | React.Dispatch<React.SetStateAction<undefined>>;
+  idToken: string | undefined;
+  setIdToken: React.Dispatch<React.SetStateAction<string>> | React.Dispatch<React.SetStateAction<undefined>>;
 });
 
 export const AuthProvider = (props: any) =>{
@@ -20,13 +26,19 @@ export const AuthProvider = (props: any) =>{
   const [loading, setLoading] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [currentCompany, setCurrentCompany] = useState(undefined);
+  const [currentCreator, setCurrentCreator] = useState(undefined);
+  const [idToken, setIdToken] = useState();
   const value = {
     loading,
     setLoading,
     isSignedIn,
     setIsSignedIn,
     currentCompany,
-    setCurrentCompany
+    setCurrentCompany,
+    currentCreator,
+    setCurrentCreator,
+    idToken,
+    setIdToken,
   }
 
   return (
