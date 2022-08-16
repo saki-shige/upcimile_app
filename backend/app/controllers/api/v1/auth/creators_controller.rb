@@ -1,4 +1,3 @@
-require_dependency 'api/v1/application_controller'
 module Api
   module V1
     module Auth
