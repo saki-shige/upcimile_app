@@ -28,16 +28,11 @@ module Api
         private
 
         def token
-          creator_params[:id_token] || token_from_request_headers
-          # params[:id_token] || token_from_request_headers
+          params[:id_token] || token_from_request_headers
         end
 
         def payload
           @payload ||= FirebaseIdToken::Signature.verify token
-        end
-
-        def creator_params
-          params.require(:creator).permit(:channel_id).merge(id_token: params.require(:id_token))
         end
       end
     end
