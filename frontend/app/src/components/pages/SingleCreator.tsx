@@ -28,9 +28,6 @@ const SingleCreator = () => {
     } catch (err) {
       console.log(err)
     }
-
-    // setLoading(false)
-
   }
 
   useEffect(()=>{

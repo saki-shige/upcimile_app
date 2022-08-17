@@ -35,7 +35,6 @@ export default function EditProduct() {
     } catch (err) {
       console.log(err)
     }
-    // setLoading(false);
   }
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
