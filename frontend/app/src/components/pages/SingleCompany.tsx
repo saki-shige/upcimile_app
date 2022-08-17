@@ -33,9 +33,6 @@ const SingleCompany = () => {
     } catch (err) {
       console.log(err)
     }
-
-    // setLoading(false)
-
   }
 
   useEffect(()=>{
