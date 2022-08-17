@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { auth } from '../../lib/api/firebase';
 import { useNavigate } from "react-router-dom";
 
@@ -8,11 +8,13 @@ import { onAuthStateChanged } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { signOut } from 'firebase/auth'
 
+import { CreatorAuthContext } from '../providers/CreatorAuthProvider';
 import { login } from '../../lib/api/creator';
 
-const CreatorLogin = () => {
+const CreatorSignIn = () => {
   const navigation = useNavigate();
   const provider = new GoogleAuthProvider();
+  const { isCreatorSignedIn, setIsCreatorSignedIn, setCurrentCreator, setCurrentAccessToken } = useContext(CreatorAuthContext)
   provider.addScope('https://www.googleapis.com/auth/youtube.readonly');
 
   const clickLogin = async () => {
@@ -20,32 +22,28 @@ const CreatorLogin = () => {
       const res = await signInWithPopup(auth, provider);
       console.log('signed in with google');
       const credential = GoogleAuthProvider.credentialFromResult(res);
-      const accessToken = credential ? credential.accessToken : '';
+      const accessToken = credential && credential.accessToken;
       const currentUser = auth.currentUser;
       if (auth && currentUser && accessToken) {
         const idToken = await currentUser.getIdToken(true);
         const config = { idToken, accessToken };
-        await handleLogin(config);
+        await (handleLogin(config))
+        setCurrentAccessToken(accessToken);
         navigation('/')
-      }else{clickLogout};
-    }catch(err){console.log('err')};
+      }else{throw new Error};
+    }catch(err){
+      console.log('err');
+      isCreatorSignedIn && setIsCreatorSignedIn(false);
+      auth.currentUser && await signOut(auth)
+    };
   };
 
-  const handleLogin = async (data: any) => {
+  const handleLogin = async (data: {idToken: string, accessToken: string}) => {
     console.log('handleLogin')
-    try {
-      const res = await login(data);
-
-      if (res.status === 200) {
-        console.log(res.data);
-      } else {
-        console.log("ログイン情報の保存に失敗しました");
-        clickLogout;
-      };
-    } catch (err) {
-      console.log(err);
-      clickLogout;
-    };
+    const res = await login(data);
+    console.log(res.data);
+    setCurrentCreator(res.data.creatorInfo);
+    setIsCreatorSignedIn(true);
   };
 
   const checkLogint = function(){
@@ -73,7 +71,7 @@ const CreatorLogin = () => {
   }
 
   return (
-    <div>
+    <>
       <h1>ログイン Google</h1>
       <div>
         <button onClick={clickLogin}>Login</button>
@@ -81,8 +79,8 @@ const CreatorLogin = () => {
       <div>
        <button onClick={() => clickLogout()}>Logout</button>
       </div>
-    </div>
+    </>
   );
 };
 
-export default CreatorLogin
+export default CreatorSignIn
