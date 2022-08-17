@@ -2,15 +2,6 @@ class Creator < ApplicationRecord
   has_many :offers
   require 'google/apis/youtube_v3'
 
-  def self.list_up_all_channel_info
-    creators = self.all
-    creators_info = []
-    creators.each do |creator|
-      creators_info.push(creator.find_channel_info) if creator.find_channel_info
-    end
-    creators_info.empty? ? nil :creators_info
-  end
-
   def find_channel_info
     response = youtube_client.list_channels([:snippet, :statistics], id:self.channel_id)
     # channel_idが間違っている（ex.ユーザーがyoutube上のチャンネルを消去した、変更した)場合はnilを返す。
