@@ -7,23 +7,21 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 
-import { signOut } from '../../lib/api/auth';
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider';
+import { CreatorAuthContext } from '../providers/CreatorAuthProvider';
+import { NavBarUser } from './NavBarUser';
 
 const pages = [['Products','/products'], ['Creators','/creators'], ['Companies','/companies']];
-const settings = ['Profile', 'Account', 'MyProducts', 'Logout'];
 
 const ResponsiveAppBar = () => {
-  const { setIsCompanySignedIn } = useContext(CompanyAuthContext)
+  const { isCompanySignedIn, currentCompany } = useContext(CompanyAuthContext)
+  const { isCreatorSignedIn, currentCreator } =useContext(CreatorAuthContext);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,30 +38,6 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  const navigation = useNavigate()
-
-  const handleSignOut = async () => {
-    try {
-      const res = await signOut()
-
-      if (res.data.success === true) {
-        Cookies.remove("_access_token")
-        Cookies.remove("_client")
-        Cookies.remove("_uid")
-
-        setIsCompanySignedIn(false)
-        navigation("/signin")
-
-        console.log("Succeeded in sign out")
-      } else {
-        console.log("Failed in sign out")
-      }
-    } catch (err) {
-      console.log(err)
-    }
-    setAnchorElUser(null);
-  }
 
   return (
     <AppBar position="static" sx={{bgcolor:'primary.dark', color:'white'}}>
@@ -155,39 +129,45 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  {/* [pending]リンク先は要編 */}
-                  <Link to={'/'}>{setting}</Link>
-                </MenuItem>
-              ))}
-                <MenuItem onClick={handleSignOut}>
-                  logout
-                </MenuItem>
-            </Menu>
-          </Box>
+          {(isCompanySignedIn && currentCompany) ? (
+            <NavBarUser name={currentCompany.name} image={currentCompany.image && currentCompany.image.url} type='companies'/>
+          ) : ( (isCreatorSignedIn && currentCreator) ? (
+            <NavBarUser name={currentCreator.name} image={currentCreator.image && currentCreator.image} type='creators'/>
+          ) : (
+            <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <Box>
+                <Tooltip title="Open settings">
+                  <Button onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    Login
+                  </Button>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Link to={'/companies/signin'}>Login as a company</Link>
+                    </MenuItem>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Link to={'/creators/signin'}>Login as a creator<br />
+                      (using google account)</Link>
+                    </MenuItem>
+                </Menu>
+              </Box>
+            </Box>
+          ))}
         </Toolbar>
       </Container>
     </AppBar>
