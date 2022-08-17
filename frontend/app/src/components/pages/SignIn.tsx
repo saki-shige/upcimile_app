@@ -8,13 +8,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Cookies from "js-cookie"
 import { SignInData } from "../../interface/index"
 import { signIn } from "../../lib/api/auth"
-import { AuthContext } from "../providers/AuthProvider";
+import { CompanyAuthContext } from "../providers/CompanyAuthProvider";
 
 
 const SignIn: React.FC = ()  => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  const { setIsSignedIn, setCurrentCompany } = useContext(AuthContext)
+  const { setIsCompanySignedIn, setCurrentCompany } = useContext(CompanyAuthContext)
   const navigation = useNavigate()
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -34,7 +34,7 @@ const SignIn: React.FC = ()  => {
         Cookies.set("_client", res.headers["client"])
         Cookies.set("_uid", res.headers["uid"])
 
-        setIsSignedIn(true)
+        setIsCompanySignedIn(true)
         setCurrentCompany(res.data.data)
 
         navigation("/")

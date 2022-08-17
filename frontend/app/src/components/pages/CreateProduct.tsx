@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Button, Box, MenuItem, Grid, Typography,TextField, Container, Paper } from "@mui/material";
 
 import ImageForm from '../layouts/ImageForm';
-import { AuthContext } from '../providers/AuthProvider';
+import { CompanyAuthContext } from '../providers/CompanyAuthProvider';
 import { createProduct } from '../../lib/api/product';
 import { FormProduct } from '../../interface';
 
 export default function CreateProduct() {
-  // const { currentCompany } = useContext(AuthContext);
+  // const { currentCompany } = useContext(CompanyAuthContext);
   const [croppedFile, setCroppedFile] = useState<File | null>(null);
   const today = new Date();
   const navigation = useNavigate();;

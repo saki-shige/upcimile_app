@@ -17,13 +17,13 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 
 import { signOut } from '../../lib/api/auth';
-import { AuthContext } from '../providers/AuthProvider';
+import { CompanyAuthContext } from '../providers/CompanyAuthProvider';
 
 const pages = [['Products','/products'], ['Creators','/creators'], ['Companies','/companies']];
 const settings = ['Profile', 'Account', 'MyProducts', 'Logout'];
 
 const ResponsiveAppBar = () => {
-  const { setIsSignedIn } = useContext(AuthContext)
+  const { setIsCompanySignedIn } = useContext(CompanyAuthContext)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,7 +52,7 @@ const ResponsiveAppBar = () => {
         Cookies.remove("_client")
         Cookies.remove("_uid")
 
-        setIsSignedIn(false)
+        setIsCompanySignedIn(false)
         navigation("/signin")
 
         console.log("Succeeded in sign out")

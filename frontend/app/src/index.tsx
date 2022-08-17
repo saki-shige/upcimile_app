@@ -3,16 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './components/providers/AuthProvider';
+import { CreatorAuthProvider } from './components/providers/CreatorAuthProvider';
+import { CompanyAuthProvider } from './components/providers/CompanyAuthProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <CreatorAuthProvider>
+      <CompanyAuthProvider>
+        <App />
+      </CompanyAuthProvider>
+    </CreatorAuthProvider>
   </React.StrictMode>
 );
 

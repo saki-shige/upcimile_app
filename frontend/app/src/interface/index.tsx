@@ -12,15 +12,11 @@ export interface SignInData {
 
 export interface Company {
   id: number
-  uid: string
-  provider: string
   email: string
   name: string
-  nickname?: string
   image?: {
     url: string
   }
-  allowPasswordChange: boolean
   introduction?: string
   address?: string
   numberOfEmployees?: number

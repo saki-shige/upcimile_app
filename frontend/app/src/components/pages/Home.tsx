@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 
-import { AuthContext } from "../providers/AuthProvider";
+import { CompanyAuthContext } from "../providers/CompanyAuthProvider";
 
 import { handleGetProducts } from "../functionals/products";
 import { handleGetCreators } from "../functionals/creators";
@@ -12,7 +12,7 @@ import Image from "../../assets/images/24238523_m.jpg";
 import { Box, Paper, Grid, Typography, Container, Card, CardMedia, CardContent, CardActionArea, Avatar } from "@mui/material";
 
 const Home: React.FC = () => {
-  const { isSignedIn, currentCompany } = useContext(AuthContext);
+  const { isCompanySignedIn, currentCompany } = useContext(CompanyAuthContext);
   const [ products, setProducts ] = useState<Product[]>([]);
   const [ creators, setCreators ] = useState<Creator[]>([]);
   const [ companies, setCompanies ] = useState<Company[]>([]);
@@ -196,7 +196,7 @@ const Home: React.FC = () => {
 
       <p>Home</p>
     {/* // (仮）サインインしているユーザー（カンパニー名）を表示 */}
-      <h2>{isSignedIn ? <p>{currentCompany.name}としてサインインしています</p> : <p>サインインしていません</p>}</h2>
+      <h2>{isCompanySignedIn ? <p>{currentCompany && currentCompany.name}としてサインインしています</p> : <p>サインインしていません</p>}</h2>
       <Link to={'/signin'}>sign in</Link>
       <Link to={'/signup'}>sign up</Link>
       <Link to={'/products/new'}>商品登録</Link>
