@@ -132,7 +132,7 @@ const CompanySignUp: React.FC = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to="/signin">
+                <Link to='/companies/signin'>
                   {"アカウントをお持ちですか？"}
                 </Link>
               </Grid>

@@ -36,8 +36,8 @@ function App() {
         <ResponsiveAppBar />
         <Routes>
           <Route path='/' element={<Home />} />;
-          <Route path='/signin' element={<CompanySignIn />} />;
-          <Route path='/signup' element={<CompanySignUp />} />;
+          <Route path='/companies/signin' element={<CompanySignIn />} />;
+          <Route path='/companies/signup' element={<CompanySignUp />} />;
           <Route path='/products' element={<Products />} />;
           <Route path='/products/:id' element={<SingleProduct />} />;
           <Route path='/products/new' element={<CreateProduct />} />;

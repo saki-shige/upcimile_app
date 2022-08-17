@@ -104,7 +104,7 @@ const CompanySignIn: React.FC = ()  => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to={'/signup'}>
+                <Link to={'/companies/signup'}>
                   {"アカウント作成はこちら"}
                 </Link>
               </Grid>

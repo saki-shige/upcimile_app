@@ -197,8 +197,8 @@ const Home: React.FC = () => {
       <p>Home</p>
     {/* // (仮）サインインしているユーザー（カンパニー名）を表示 */}
       <h2>{isCompanySignedIn ? <p>{currentCompany && currentCompany.name}としてサインインしています</p> : <p>サインインしていません</p>}</h2>
-      <Link to={'/signin'}>sign in</Link>
-      <Link to={'/signup'}>sign up</Link>
+      <Link to={'/companies/signin'}>sign in</Link>
+      <Link to={'/companies/signup'}>sign up</Link>
       <Link to={'/products/new'}>商品登録</Link>
       <Link to={'/creators/login'}>クリエイターログイン</Link>
     </>
