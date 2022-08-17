@@ -8,8 +8,8 @@ import {appTheme} from './assets/theme/theme';
 import ResponsiveAppBar from './components/layouts/ResponsiveAppBar';
 import Footer from './components/layouts/Footer';
 import Home from './components/pages/Home';
-import SignIn from './components/pages/SignIn';
-import SignUp from './components/pages/SignUp';
+import CompanySignIn from './components/pages/CompanySignIn';
+import CompanySignUp from './components/pages/CompanySignup';
 import Products from './components/pages/Products';
 import SingleProduct from './components/pages/SingleProduct';
 import CreateProduct from './components/pages/CreateProduct';
@@ -36,8 +36,8 @@ function App() {
         <ResponsiveAppBar />
         <Routes>
           <Route path='/' element={<Home />} />;
-          <Route path='/signin' element={<SignIn />} />;
-          <Route path='/signup' element={<SignUp />} />;
+          <Route path='/signin' element={<CompanySignIn />} />;
+          <Route path='/signup' element={<CompanySignUp />} />;
           <Route path='/products' element={<Products />} />;
           <Route path='/products/:id' element={<SingleProduct />} />;
           <Route path='/products/new' element={<CreateProduct />} />;

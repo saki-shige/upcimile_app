@@ -11,7 +11,7 @@ import { signIn } from "../../lib/api/auth"
 import { CompanyAuthContext } from "../providers/CompanyAuthProvider";
 
 
-const SignIn: React.FC = ()  => {
+const CompanySignIn: React.FC = ()  => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const { setIsCompanySignedIn, setCurrentCompany } = useContext(CompanyAuthContext)
@@ -115,4 +115,4 @@ const SignIn: React.FC = ()  => {
   );
 }
 
-export default SignIn;
+export default CompanySignIn;

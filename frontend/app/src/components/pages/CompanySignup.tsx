@@ -10,7 +10,7 @@ import { signUp } from "../../lib/api/auth"
 import { SignUpData } from "../../interface/index"
 import { CompanyAuthContext } from "../providers/CompanyAuthProvider";
 
-const SignUp: React.FC = () => {
+const CompanySignUp: React.FC = () => {
   const [name, setName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
@@ -143,4 +143,4 @@ const SignUp: React.FC = () => {
     );
 }
 
-export default SignUp;
+export default CompanySignUp;
