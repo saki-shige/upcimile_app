@@ -45,7 +45,7 @@ function App() {
           <Route path='/companies' element={<Companies />} />;
           <Route path='/companies/:id' element={<SingleCompany />} />;
           <Route path='/companies/edit/:id' element={<EditCompany />} />;
-          <Route path='/creators/login' element={<CreatorSignIn />} />;
+          <Route path='/creators/signin' element={<CreatorSignIn />} />;
           <Route path='/creators' element={<Creators />} />;
           <Route path='/creators/:id' element={<SingleCreator />} />;
         </Routes>

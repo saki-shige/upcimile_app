@@ -200,7 +200,7 @@ const Home: React.FC = () => {
       <Link to={'/companies/signin'}>sign in</Link>
       <Link to={'/companies/signup'}>sign up</Link>
       <Link to={'/products/new'}>商品登録</Link>
-      <Link to={'/creators/login'}>クリエイターログイン</Link>
+      <Link to={'/creators/signin'}>クリエイターログイン</Link>
     </>
   );
 };
