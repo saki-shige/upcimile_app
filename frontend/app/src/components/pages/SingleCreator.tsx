@@ -38,7 +38,7 @@ const SingleCreator = () => {
   return(
     <>
     {creator ? (
-      <IntroductionCard avatarImage={creator.image.url}>
+      <IntroductionCard avatarImage={creator.image}>
         <Container
           sx={{
             width: 400,
@@ -48,7 +48,7 @@ const SingleCreator = () => {
         >
           <CardContent>
             <Typography variant="h5" component="div" sx={{textAlign:'center', pb:5}}>
-              {creator.channelTitle}
+              {creator.name}
             </Typography>
             <Typography variant="body2" sx={{textAlign:'center', pb:3}}>
               {creator.introduction}
@@ -62,7 +62,7 @@ const SingleCreator = () => {
         <Container sx={{ pb:8 }} maxWidth={false}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant="h6" color="inherit" paragraph>
-              {`${creator.channelTitle}の動画`}
+              {`${creator.name}の動画`}
             </Typography>
           </Box>
           {videos ? (

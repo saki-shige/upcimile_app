@@ -83,12 +83,10 @@ export interface UpdateProductFormData extends FormData {
 
 export interface Creator {
   id: number
-  channelTitle: string
+  name: string
   subscriberCount: string
   introduction: string
-  image:{
-    url: string
-  }
+  image:string
 }
 
 export interface Video {

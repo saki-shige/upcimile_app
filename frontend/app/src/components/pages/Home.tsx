@@ -136,14 +136,14 @@ const Home: React.FC = () => {
                 <Card sx={{ height: 150, display: 'flex', boxShadow: 3 }}>
                   <CardContent sx={{my:'auto'}}>
                     <Avatar
-                      alt={creator.channelTitle}
-                      src={creator.image.url}
+                      alt={creator.name}
+                      src={creator.image}
                       sx={{ width: 110, height: 110, display: { xs: 'none', sm: 'block' } }}
                     />
                   </CardContent>
                   <CardContent sx={{ flex: 1 }}>
                     <Typography component="h2" variant="h5" sx={{ textOverflow: 'ellipsis' }}>
-                      {creator.channelTitle}
+                      {creator.name}
                     </Typography>
                     <Typography variant="subtitle1" color="text.secondary">
                       登録者数：{creator.subscriberCount}人

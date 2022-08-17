@@ -45,12 +45,12 @@ const Creators: React.FC = () => {
             <CardActionArea component={Link} to={`/creators`}>
               <CardMedia
                 component="img"
-                image={creator.image.url}
-                alt={creator.channelTitle}
+                image={creator.image}
+                alt={creator.name}
               />
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {creator.channelTitle}
+                  {creator.name}
                 </Typography>
                 <Typography>
                   {creator.introduction}
