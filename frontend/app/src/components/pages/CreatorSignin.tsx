@@ -65,6 +65,7 @@ const CreatorSignIn = () => {
     try {
       await signOut(auth)
       console.log("ログアウトしました");
+      setIsCreatorSignedIn(false);
     }catch(error){
       console.log(`ログアウト時にエラーが発生しました (${error})`);
     };
