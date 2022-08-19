@@ -9,6 +9,7 @@ import { Product, Company } from "../../interface";
 type Props = {
   items: Product[] | Company[];
   type: 'products' | 'companies';
+  provider?: boolean;
 }
 export const CardList: FC<Props> = (props) => {
   return(
@@ -31,6 +32,11 @@ export const CardList: FC<Props> = (props) => {
                 <Typography>
                   {item.introduction}
                 </Typography>
+                {props.provider && (
+                <Typography>
+                  <Link to={`/products/edit/${item.id}`}>商品を編集する</Link>
+                </Typography>
+                )}
               </CardContent>
             </CardActionArea>
           </Card>
