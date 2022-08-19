@@ -26,7 +26,7 @@ type Props = {
 }
 
 export const NavBarUser: FC<Props> = ({name, image, type}) => {
-  const { setIsCompanySignedIn } = useContext(CompanyAuthContext);
+  const { setIsCompanySignedIn, currentCompany } = useContext(CompanyAuthContext);
   const { setIsCreatorSignedIn } =useContext(CreatorAuthContext);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -105,11 +105,22 @@ export const NavBarUser: FC<Props> = ({name, image, type}) => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-            { (type==='companies') && (
+            <MenuItem onClick={() => {setAnchorElUser(null); navigation(`${type}/mypage`)}}>
+              mypage
+            </MenuItem>
+              {type === 'companies' && (
+                <>
+                  <MenuItem onClick={() => {setAnchorElUser(null); navigation('/products/new')}}>
+                    商品を登録する
+                  </MenuItem>
+                  <MenuItem onClick={() => {setAnchorElUser(null); navigation(`/companies/edit/${currentCompany && currentCompany.id}`)}}>
+                    プロフィール情報を編集する
+                  </MenuItem>
+                </>
+              )}
             <MenuItem onClick={type==='companies' ? clickCompanySignOut : clickCreatorSignOut}>
               logout
             </MenuItem>
-            )}
         </Menu>
       </Box>
     </Box>
