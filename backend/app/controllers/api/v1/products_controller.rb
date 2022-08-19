@@ -1,4 +1,6 @@
 class Api::V1::ProductsController < ApplicationController
+  before_action :authenticate_company, only: [:create, :update, :destroy]
+
   def index
     products = Product.all
     render json: products
