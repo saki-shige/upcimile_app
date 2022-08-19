@@ -17,9 +17,11 @@ import EditProduct from './components/pages/EditProduct';
 import Companies from './components/pages/Companies';
 import SingleCompany from './components/pages/SingleCompany';
 import EditCompany from './components/pages/EditCompany';
+import CompanyMyPage from './components/pages/CompanyMypage';
 import CreatorSignIn from './components/pages/CreatorSignin';
 import Creators from './components/pages/Creators';
 import SingleCreator from './components/pages/SingleCreator';
+import CreatorMyPage from './components/pages/CreatorMyPage';
 
 function App() {
   return (
@@ -48,6 +50,8 @@ function App() {
           <Route path='/creators/signin' element={<CreatorSignIn />} />;
           <Route path='/creators' element={<Creators />} />;
           <Route path='/creators/:id' element={<SingleCreator />} />;
+          <Route path='/creators/mypage' element={<CreatorMyPage />} />;
+          <Route path='/companies/mypage' element={<CompanyMyPage />} />;
         </Routes>
         <Footer
         title="UPCIMILE"
