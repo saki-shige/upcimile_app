@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react"
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react"
+import { useParams, useNavigate } from "react-router-dom";
 
-import { Typography, CardContent, Container, Box, Grid, Avatar } from "@mui/material";
+import { Typography, CardContent, Container, Box, Grid, Avatar, Button } from "@mui/material";
 
+import { auth } from '../../lib/api/firebase';
+import { makeOffer } from "../../lib/api/offer";
+import { CreatorAuthContext } from "../providers/CreatorAuthProvider";
 import { getSingleProduct } from '../../lib/api/product';
 import { Product } from "../../interface";
 import { Company } from "../../interface";
@@ -13,7 +16,9 @@ const SingleProduct = () => {
   const [ product, setProduct ] = useState<Product>();
   const [ relatedProducts, setRelatedProducts ] = useState<Product[]>();
   const [ company, setCompany ] = useState<Company>();
+  const { isCreatorSignedIn } = useContext(CreatorAuthContext);
   const {id} = useParams<{id: string}>();
+  const navigation = useNavigate()
 
   const handleGetProduct = async(id :string) => {
     try {
@@ -37,6 +42,20 @@ const SingleProduct = () => {
     console.log('商品情報取得開始')
     id && handleGetProduct(id)
   },[]);
+
+  const handleMakeOffer = async() => {
+    const currentUser = auth.currentUser;
+    console.log(auth);
+    if (currentUser && id){
+      const idToken = await currentUser.getIdToken(true);
+      console.log(idToken);
+      const config = { idToken, product_id: id };
+      const res = await makeOffer(config);
+      console.log(res)
+    }else{
+      console.log('ログインしてください')
+    }
+  }
 
   return(
     <>
@@ -72,6 +91,13 @@ const SingleProduct = () => {
               </Typography>
               <Typography variant="body2" sx={{textAlign:'center', pb:3}}>
                 {product.introduction}
+              </Typography>
+              <Typography variant="body2" sx={{textAlign:'center', pb:3}}>
+              {isCreatorSignedIn ? (
+                <Button onClick={handleMakeOffer}>この商品の提供を希望する</Button>
+              ) : (
+                <Button onClick={()=>{navigation('/creators/signin')}}>ログインしてこの商品の提供を希望する</Button>
+              )}
               </Typography>
             </CardContent>
           </Grid>
