@@ -26,16 +26,6 @@ module Api
             render json: creator.errors
           end
         end
-
-        private
-
-        def token
-          params[:id_token] || token_from_request_headers
-        end
-
-        def payload
-          @payload ||= FirebaseIdToken::Signature.verify token
-        end
       end
     end
   end
