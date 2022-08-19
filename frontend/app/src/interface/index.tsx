@@ -42,7 +42,7 @@ export interface UpdateCompanyFormData extends FormData {
 }
 
 export interface Product {
-  id?: number
+  id: number
   name: string
   introduction?: string
   availableFrom: string
@@ -53,6 +53,7 @@ export interface Product {
   image: {
     url: string
   }
+  company?: Company
 }
 
 export interface FormProduct {
@@ -94,4 +95,21 @@ export interface Video {
   thumbnail: string
   introduction: string
   url: string
+}
+
+export interface MyOffers {
+  id: string,
+  creatorId: string,
+  product_Id: string,
+  isAccepted: boolean,
+  product: Product
+}
+
+export interface OffersToMe {
+  id: string,
+  creatorId: string,
+  product_Id: string,
+  isAccepted: boolean,
+  product: Product,
+  creator: Creator,
 }
