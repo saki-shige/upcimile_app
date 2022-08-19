@@ -5,7 +5,7 @@ import { Paper, Avatar, Card, Typography } from "@mui/material";
 import Image from "../../assets/images/24238523_m.jpg";
 
 type Props = {
-  avatarImage: string;
+  avatarImage?: string;
   children: React.ReactNode;
 }
 
@@ -40,18 +40,20 @@ export const IntroductionCard : FC<Props> = (props) => {
           }}
         >
         </Paper>
-        <Avatar
-        alt={'no image'}
-        src={avatarImage}
-        sx={{
-          width: 150,
-          height: 150,
-          posotion: 'absolute',
-          top: 100,
-          mx: 'auto',
-          zIndex: 'tooltip',
-        }}
-        />
+        {avatarImage ? (
+          <Avatar
+          alt={'no image'}
+          src={avatarImage}
+          sx={{
+            width: 150,
+            height: 150,
+            posotion: 'absolute',
+            top: 100,
+            mx: 'auto',
+            zIndex: 'tooltip',
+          }}
+          />
+        ) : ''}
         <Card
           sx={{
             backgroundColor: 'white',
