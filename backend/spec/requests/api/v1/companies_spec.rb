@@ -66,11 +66,22 @@ RSpec.describe 'Companies', type: :request do
   end
 
   describe 'PUT /api/v1/companies/:id' do
-    it '企業情報の編集を行う' do
-     put "/api/v1/companies/#{company.id}", params: { company: { name: 'new-name' } }
-     json = JSON.parse(response.body)
-     expect(response.status).to eq(200)
-     expect(json['company']['name']).to eq('new-name')
-   end
+    context 'サインインしている時' do
+      let(:token) { sign_in company }
+
+      it '企業情報の更新を行うことができる' do
+        put "/api/v1/companies/#{company.id}", params: { company: { name: 'new-name' } }, headers: token
+        json = JSON.parse(response.body)
+        expect(response.status).to eq(200)
+        expect(json['company']['name']).to eq('new-name')
+      end
+    end
+
+    context 'サインインしている時' do
+      it '企業情報の更新に失敗する' do
+        put "/api/v1/companies/#{company.id}", params: { company: { name: 'new-name' } }
+        expect(response.status).to eq(401)
+      end
+    end
   end
 end
