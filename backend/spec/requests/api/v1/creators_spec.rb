@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Companies', type: :request do
+RSpec.describe 'Creators', type: :request do
   let(:creator) { create(:creator) }
 
   describe 'GET /api/v1/creators/:id' do
