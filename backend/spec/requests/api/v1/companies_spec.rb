@@ -1,27 +1,27 @@
 require 'rails_helper'
 
-RSpec.describe "Companies", :type => :request do
-  let!(:company){ create(:company, name: 'company') }
-  let!(:companies){ create_list(:company, 4) }
+RSpec.describe 'Companies', type: :request do
+  let!(:company) { create(:company, name: 'company') }
+  let!(:companies) { create_list(:company, 4) }
 
   describe 'GET /api/v1/companies/' do
     before do
       get '/api/v1/companies'
     end
 
-    it 'レスポンスが帰ってくる'do
+    it 'レスポンスが帰ってくる' do
       expect(response.status).to eq(200)
     end
 
     it '全ての企業を取得する' do
       json = JSON.parse(response.body)
-      expect(json.length).to eq(1+companies.length)
+      expect(json.length).to eq(1 + companies.length)
     end
   end
 
   describe 'GET /api/v1/pcompanies/:id' do
-    let!(:related_products){ create_list(:product, 4, company: company) }
-    let!(:other_products){ create_list(:product, 5, name: 'other_product') }
+    let!(:related_products) { create_list(:product, 4, company:) }
+    let!(:other_products) { create_list(:product, 5, name: 'other_product') }
 
     before do
       get "/api/v1/companies/#{company.id}"
@@ -42,8 +42,8 @@ RSpec.describe "Companies", :type => :request do
 
   describe 'POST /api/v1/auth' do
     it '新しい企業を作成する' do
-      valid_params = { name: 'name', email: 'test@email.com', password: 'password', password_confirmation:'password' }
-      expect { post '/api/v1/auth', params: { registration: valid_params }}.to change(Company, :count).by(+1)
+      valid_params = { name: 'name', email: 'test@email.com', password: 'password', password_confirmation: 'password' }
+      expect { post '/api/v1/auth', params: { registration: valid_params } }.to change(Company, :count).by(+1)
       expect(response.status).to eq(200)
     end
   end
@@ -67,10 +67,10 @@ RSpec.describe "Companies", :type => :request do
 
   describe 'PUT /api/v1/companies/:id' do
     it '企業情報の編集を行う' do
-      put "/api/v1/companies/#{company.id}", params: { company: {name: 'new-name'} }
-      json = JSON.parse(response.body)
-      expect(response.status).to eq(200)
-      expect(json['company']['name']).to eq('new-name')
+     put "/api/v1/companies/#{company.id}", params: { company: { name: 'new-name' } }
+     json = JSON.parse(response.body)
+     expect(response.status).to eq(200)
+     expect(json['company']['name']).to eq('new-name')
    end
   end
 end

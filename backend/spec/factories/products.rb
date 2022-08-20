@@ -3,7 +3,7 @@ FactoryBot.define do
     association :company
     association :category
     name { 'test product' }
-    introduction { 'testproduct introduction'}
+    introduction { 'testproduct introduction' }
     available_from { '2020-1-1' }
     # available_to
     can_be_provided { true }

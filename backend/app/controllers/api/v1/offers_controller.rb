@@ -6,13 +6,13 @@ class Api::V1::OffersController < ApplicationController
     if params[:part] === 'creator'
       id = current_api_v1_creator.id
       offers = Offer.where(creator_id: id)
-      render status: 200, json: offers, :include => [product: { include: :company}]
+      render status: 200, json: offers, include: [product: { include: :company }]
     elsif params[:part] === 'company'
       id = current_api_v1_company.id
-      offers = Offer.joins(:product).where(product: {company_id: id})
-      render status: 200, json: offers, include: [:product, :creator]
+      offers = Offer.joins(:product).where(product: { company_id: id })
+      render status: 200, json: offers, include: %i[product creator]
     else
-      render status: 400, json: {message: 'company_idもしくはcreator_idを指定してください'}
+      render status: 400, json: { message: 'company_idもしくはcreator_idを指定してください' }
     end
   end
 
@@ -22,16 +22,16 @@ class Api::V1::OffersController < ApplicationController
     if offer.save
       render status: 201, json: offer
     else
-      render status: 500, json: {message: 'offerを作成できませんでした'}
+      render status: 500, json: { message: 'offerを作成できませんでした' }
     end
   end
 
   def accept
     offer = Offer.find(params[:id])
-    if offer.update(is_accepted: params[:type] === 'accept' ? true : false)
+    if offer.update(is_accepted: params[:type] === 'accept')
       render status: 200, json: offer
     else
-      render status: 500, json: {message: 'offerを承諾できませんでした'}
+      render status: 500, json: { message: 'offerを承諾できませんでした' }
     end
   end
 

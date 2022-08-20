@@ -3,11 +3,11 @@ class Api::V1::Auth::SessionsController < DeviseTokenAuth::SessionsController
     if current_api_v1_user
       render json: { status: 200, current_user: current_api_v1_user }
     else
-      render json: { status: 500, message: "ユーザーが存在しません" }
+      render json: { status: 500, message: 'ユーザーが存在しません' }
     end
   end
 
-private
+  private
 
   def resource_params
     params.require(:session).permit(:email, :password)
