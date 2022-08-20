@@ -13,7 +13,7 @@ class Api::V1::CompaniesController < ApplicationController
 
   def update
     company = Company.find(params[:id])
-    if (current_api_v1_company.id === company.id) && company.update(company_params)
+    if (current_api_v1_company.id == company.id) && company.update(company_params)
       render json: { company:, message: 'プロフィール情報を更新しました' }
     else
       render json: { message: 'プロフィールの更新に失敗しました' }
