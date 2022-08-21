@@ -43,27 +43,65 @@ RSpec.describe 'Products', type: :request do
   end
 
   describe 'POST /api/v1/products' do
-    it '新しいproductを作成する' do
-      valid_params = { name: 'name', introduction: 'introduction', available_from: '2020-1-1', company_id: company.id,
-                       category_id: category.id }
-      expect { post '/api/v1/products', params: { product: valid_params } }.to change(Product, :count).by(+1)
-      expect(response.status).to eq(200)
+    let(:valid_params) do
+      { name: 'name', introduction: 'introduction', available_from: '2020-1-1', company_id: company.id,
+        category_id: category.id }
+    end
+
+    context 'companyがログインしている場合' do
+      let(:token) { sign_in company }
+
+      it '新しいproductを作成する' do
+        expect do
+          post '/api/v1/products', params: { product: valid_params }, headers: token
+        end.to change(Product, :count).by(+1)
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context 'companyがログインしていない場合' do
+      it '新しいproductを作成することはできない' do
+        expect { post '/api/v1/products', params: { product: valid_params } }.not_to change(Product, :count)
+        expect(response.status).to eq(401)
+      end
     end
   end
 
   describe 'PUT /api/v1/products/:id' do
-    it 'productの編集を行う' do
-     put "/api/v1/products/#{product.id}", params: { product: { name: 'new-name' } }
-     json = JSON.parse(response.body)
-     expect(response.status).to eq(200)
-     expect(json['data']['name']).to eq('new-name')
-   end
+    context 'companyがログインしている場合' do
+      let(:token) { sign_in company }
+
+      it 'productの編集を行うことができる' do
+        put "/api/v1/products/#{product.id}", params: { product: { name: 'new-name' } }, headers: token
+        json = JSON.parse(response.body)
+        expect(response.status).to eq(200)
+        expect(json['data']['name']).to eq('new-name')
+      end
+    end
+
+    context 'companyがログインしている場合' do
+      it 'productの編集を行うことができない' do
+        put "/api/v1/products/#{product.id}", params: { product: { name: 'new-name' } }
+        expect(response.status).to eq(401)
+      end
+    end
   end
 
   describe 'DELETE /api/v1/products' do
-    it 'productを削除する' do
-      expect { delete "/api/v1/products/#{product.id}" }.to change(Product, :count).by(-1)
-      expect(response.status).to eq(200)
+    context 'companyがログインしている場合' do
+      let(:token) { sign_in company }
+
+      it 'productを削除する' do
+        expect { delete "/api/v1/products/#{product.id}", headers: token }.to change(Product, :count).by(-1)
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context 'companyがログインしていない場合' do
+      it 'productを削除することができない' do
+        expect { delete "/api/v1/products/#{product.id}" }.not_to change(Product, :count)
+        expect(response.status).to eq(401)
+      end
     end
   end
 end
