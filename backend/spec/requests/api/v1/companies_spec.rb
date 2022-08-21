@@ -49,14 +49,14 @@ RSpec.describe 'Companies', type: :request do
   end
 
   describe 'POST /api/v1/auth/sign_in' do
-    context '正しいパスワードを入力する' do
+    context '正しいパスワードを入力した時' do
       it 'ログインすることができる' do
         valid_params = { email: company.email, password: company.password }
         post '/api/v1/auth/sign_in', params: { session: valid_params }
         expect(response.status).to eq(200)
       end
     end
-    context '誤ったパスワードを入力する' do
+    context '誤ったパスワードを入力した時' do
       it 'ログインすることができない' do
         valid_params = { email: company.email, password: 'wrong password' }
         post '/api/v1/auth/sign_in', params: { session: valid_params }
@@ -77,7 +77,7 @@ RSpec.describe 'Companies', type: :request do
       end
     end
 
-    context 'サインインしている時' do
+    context 'サインインしていない時' do
       it '企業情報の更新に失敗する' do
         put "/api/v1/companies/#{company.id}", params: { company: { name: 'new-name' } }
         expect(response.status).to eq(401)
