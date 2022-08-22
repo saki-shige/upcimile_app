@@ -15,11 +15,11 @@ export const CardList: FC<Props> = (props) => {
   return(
     <Grid container spacing={1} sx={{ px:8 }}>
       {props.items.map((item,index) => (
-        <Grid item key={index} xs={12} sm={6} md={3}>
+        <Grid item data-testid={`${props.type}`} key={`${props.type}_${index}`} xs={12} sm={6} md={3}>
           <Card
             sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 0, borderRadius: 0 }}
           >
-            <CardActionArea component={Link} to={`/${props.type}/${item.id}`}>
+            <CardActionArea component={Link} to={`/${props.type}/${item.id}`} data-testid={`${props.type}_${index}`}>
               <CardMedia
                 component="img"
                 image={item.image? item.image.url : ''}
