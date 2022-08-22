@@ -1,29 +1,29 @@
-import React, { createContext } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, Box } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline'
+import { ThemeProvider, Box } from '@mui/material'
 
-import {appTheme} from './assets/theme/theme';
-import ResponsiveAppBar from './components/layouts/ResponsiveAppBar';
-import Footer from './components/layouts/Footer';
-import Home from './components/pages/Home';
-import CompanySignIn from './components/pages/CompanySignIn';
-import CompanySignUp from './components/pages/CompanySignup';
-import Products from './components/pages/Products';
-import SingleProduct from './components/pages/SingleProduct';
-import CreateProduct from './components/pages/CreateProduct';
-import EditProduct from './components/pages/EditProduct';
-import Companies from './components/pages/Companies';
-import SingleCompany from './components/pages/SingleCompany';
-import EditCompany from './components/pages/EditCompany';
-import CompanyMyPage from './components/pages/CompanyMypage';
-import CreatorSignIn from './components/pages/CreatorSignin';
-import Creators from './components/pages/Creators';
-import SingleCreator from './components/pages/SingleCreator';
-import CreatorMyPage from './components/pages/CreatorMyPage';
+import { appTheme } from './assets/theme/theme'
+import ResponsiveAppBar from './components/layouts/ResponsiveAppBar'
+import Footer from './components/layouts/Footer'
+import Home from './components/pages/Home'
+import CompanySignIn from './components/pages/CompanySignIn'
+import CompanySignUp from './components/pages/CompanySignup'
+import Products from './components/pages/Products'
+import SingleProduct from './components/pages/SingleProduct'
+import CreateProduct from './components/pages/CreateProduct'
+import EditProduct from './components/pages/EditProduct'
+import Companies from './components/pages/Companies'
+import SingleCompany from './components/pages/SingleCompany'
+import EditCompany from './components/pages/EditCompany'
+import CompanyMyPage from './components/pages/CompanyMypage'
+import CreatorSignIn from './components/pages/CreatorSignin'
+import Creators from './components/pages/Creators'
+import SingleCreator from './components/pages/SingleCreator'
+import CreatorMyPage from './components/pages/CreatorMyPage'
 
-function App() {
+const App: React.FC = () => {
   return (
     <ThemeProvider theme={appTheme}>
     <CssBaseline />
@@ -32,7 +32,7 @@ function App() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '100vh',
+          minHeight: '100vh'
         }}
       >
         <ResponsiveAppBar />
@@ -60,7 +60,7 @@ function App() {
       </Box>
       </BrowserRouter>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App
