@@ -1,27 +1,27 @@
-import React, { FC } from "react"
+import React, { FC } from 'react'
 
-import { Paper, Avatar, Card, Typography } from "@mui/material";
+import { Paper, Avatar, Card, Typography } from '@mui/material'
 
-import Image from "../../assets/images/24238523_m.jpg";
+import Image from '../../assets/images/24238523_m.jpg'
 
-type Props = {
-  avatarImage?: string;
-  children: React.ReactNode;
+interface Props {
+  avatarImage?: string
+  children: React.ReactNode
 }
 
-export const IntroductionCard : FC<Props> = (props) => {
-  const { avatarImage, children } = props;
+export const IntroductionCard: FC<Props> = (props) => {
+  const { avatarImage, children } = props
 
-  return(
+  return (
     <>
       <Typography
-        component="div"
+        component='div'
         style={{
           height: '100%',
           width: '100%',
           position: 'relative',
           margin: '0px',
-          padding: '0px',
+          padding: '0px'
         }}
       >
         <Paper
@@ -36,11 +36,12 @@ export const IntroductionCard : FC<Props> = (props) => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundImage: `url(${Image})`,
-            zIndex: -1,
+            zIndex: -1
           }}
         >
         </Paper>
-        {avatarImage ? (
+        {(avatarImage !== undefined)
+          ? (
           <Avatar
           alt={'no image'}
           src={avatarImage}
@@ -50,10 +51,11 @@ export const IntroductionCard : FC<Props> = (props) => {
             posotion: 'absolute',
             top: 100,
             mx: 'auto',
-            zIndex: 'tooltip',
+            zIndex: 'tooltip'
           }}
           />
-        ) : ''}
+            )
+          : ''}
         <Card
           sx={{
             backgroundColor: 'white',
@@ -62,7 +64,7 @@ export const IntroductionCard : FC<Props> = (props) => {
             mb: 15,
             mx: 'auto',
             zIndex: 'modal',
-            borderRadius: 2,
+            borderRadius: 2
           }}
         >
           {children}
@@ -71,4 +73,3 @@ export const IntroductionCard : FC<Props> = (props) => {
     </>
   )
 }
-

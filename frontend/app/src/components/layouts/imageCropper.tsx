@@ -1,60 +1,58 @@
-import React, { useCallback, useEffect, useRef, useState, FC } from "react";
+import React, { useCallback, useEffect, useRef, useState, FC } from 'react'
 
-import "react-image-crop/dist/ReactCrop.css";
-import ReactCrop, { centerCrop, Crop, makeAspectCrop, PercentCrop, PixelCrop } from "react-image-crop";
+import 'react-image-crop/dist/ReactCrop.css'
+import ReactCrop, { centerCrop, Crop, makeAspectCrop, PercentCrop, PixelCrop } from 'react-image-crop'
 
-import { Box, Button, Modal } from "@mui/material";
-import { canvasPreview } from "./canvasPreview";
+import { Box, Button, Modal } from '@mui/material'
+import { canvasPreview } from './canvasPreview'
 
+interface Props {
+  open: boolean
+  setOpen: (open: boolean) => void
+  aspect: { height: number; width: number }
+  src: string
+  previewCanvasRef: React.RefObject<HTMLCanvasElement>
+  setCroppedFile: (value: File) => void
+}
 
+const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef, setCroppedFile }) => {
+  const imgRef = useRef<HTMLImageElement>(null)
 
-type Props = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  aspect: { height: number; width: number };
-  src: string;
-  previewCanvasRef: React.RefObject<HTMLCanvasElement>;
-  setCroppedFile: (value: File) => void;
-};
-
-const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef, setCroppedFile,}) => {
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  const [crop, setCrop] = useState<Crop>();
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+  const [crop, setCrop] = useState<Crop>()
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
 
   const handleChange = useCallback((_: PixelCrop, percentCrop: PercentCrop) => {
-    setCrop(percentCrop);
-  }, []);
+    setCrop(percentCrop)
+  }, [])
 
   const handleComplete = useCallback((c: PixelCrop) => {
-    setCompletedCrop(c);
-  }, []);
+    setCompletedCrop(c)
+  }, [])
 
   const handleImageLoad = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement>) => {
-      const { width, height } = e.currentTarget;
-      setCrop(centerAspectCrop(width, height, aspect.width / aspect.height));
+      const { width, height } = e.currentTarget
+      setCrop(centerAspectCrop(width, height, aspect.width / aspect.height))
     },
     [aspect]
-  );
+  )
 
   const handleConfirm = useCallback(() => {
-    previewCanvasRef.current && (previewCanvasRef.current.toBlob((blob) => {
-      if (blob) {
+    (previewCanvasRef.current != null) && (previewCanvasRef.current.toBlob((blob) => {
+      if (blob != null) {
         setCroppedFile(
-          new File([blob], "croppedImage.png", {
-            type: "image/png",
+          new File([blob], 'croppedImage.png', {
+            type: 'image/png'
           })
-        );
+        )
       }
     })
     )
-    setOpen(false);
-  }, [previewCanvasRef, setCroppedFile, setOpen]);
+    setOpen(false)
+  }, [previewCanvasRef, setCroppedFile, setOpen])
 
   useEffect(() => {
-    (imgRef.current && previewCanvasRef && previewCanvasRef.current && completedCrop) && (
+    ((imgRef.current != null) && previewCanvasRef && previewCanvasRef.current && completedCrop) && (
       canvasPreview(
         imgRef.current,
         previewCanvasRef.current,
@@ -63,16 +61,16 @@ const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef,
         0
       )
     )
-  }, [completedCrop]);
+  }, [completedCrop])
 
   return (
     <>
       <Modal
         open={open}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
       >
-        <Box sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', padding: 2}}>
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', padding: 2 }}>
           <Box>
             <ReactCrop
               crop={crop}
@@ -82,17 +80,17 @@ const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef,
             >
               <img
                 ref={imgRef}
-                alt="cropped-img"
+                alt='cropped-img'
                 src={src}
                 onLoad={handleImageLoad}
-                style={{ maxHeight: "300px" }}
-                crossOrigin="anonymous"
+                style={{ maxHeight: '300px' }}
+                crossOrigin='anonymous'
               />
             </ReactCrop>
           </Box>
           <Button
-            variant="contained"
-            type="submit"
+            variant='contained'
+            type='submit'
             fullWidth
             onClick={handleConfirm}
             >
@@ -101,19 +99,19 @@ const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef,
         </Box>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-function centerAspectCrop(
+function centerAspectCrop (
   mediaWidth: number,
   mediaHeight: number,
   aspect: number
-) {
+): PixelCrop | PercentCrop {
   return centerCrop(
     makeAspectCrop(
       {
-        unit: "%",
-        width: 90,
+        unit: '%',
+        width: 90
       },
       aspect,
       mediaWidth,
@@ -121,7 +119,7 @@ function centerAspectCrop(
     ),
     mediaWidth,
     mediaHeight
-  );
+  )
 }
 
-export default ImageCropper;
+export default ImageCropper

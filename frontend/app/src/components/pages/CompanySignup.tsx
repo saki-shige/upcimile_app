@@ -1,55 +1,59 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom"
-import Cookies from "js-cookie"
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
-import { TextField, Avatar, Container, Box, Grid, Typography, Button } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { TextField, Avatar, Container, Box, Grid, Typography, Button } from '@mui/material'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 
-import { signUp } from "../../lib/api/auth"
-import { SignUpData } from "../../interface/index"
-import { CompanyAuthContext } from "../providers/CompanyAuthProvider";
+import { signUp } from '../../lib/api/auth'
+import { SignUpData } from '../../interface/index'
+import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
+import { MessageContext } from '../providers/MessageProvider'
 
 const CompanySignUp: React.FC = () => {
-  const [name, setName] = useState<string>("")
-  const [email, setEmail] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
-  const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
+  const [name, setName] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState<string>('')
   const { setIsCompanySignedIn, setCurrentCompany } = useContext(CompanyAuthContext)
-
+  const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const navigation = useNavigate()
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void> = async (e) => {
     e.preventDefault()
 
     const data: SignUpData = {
-      name: name,
-      email: email,
-      password: password,
-      passwordConfirmation: passwordConfirmation
-    };
+      name,
+      email,
+      password,
+      passwordConfirmation
+    }
 
     try {
       const res = await signUp(data)
       console.log(res)
 
       if (res.status === 200) {
-        Cookies.set("_access_token", res.headers["access-token"])
-        Cookies.set("_client", res.headers["client"])
-        Cookies.set("_uid", res.headers["uid"])
+        Cookies.set('_access_token', res.headers['access-token'])
+        Cookies.set('_client', res.headers.client)
+        Cookies.set('_uid', res.headers.uid)
 
         setIsCompanySignedIn(true)
         setCurrentCompany(res.data.data)
 
-        navigation("/")
+        setOpen(true)
+        setMessage('ログインしました')
+        setSeverity('success')
 
-        console.log("Signed in successfully!")
-      } else {
-      //   setAlertMessageOpen(true)
-      }
+        navigation('/companies/mypage')
+
+        console.log('Signed in successfully!')
+      } else throw Error()
     } catch (err) {
       console.log(err)
-      // setAlertMessageOpen(true)
+      setOpen(true)
+      setMessage('ログインに失敗しました')
+      setSeverity('error')
     }
   }
 
@@ -60,7 +64,7 @@ const CompanySignUp: React.FC = () => {
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -124,8 +128,8 @@ const CompanySignUp: React.FC = () => {
               fullWidth
               variant="outlined"
               color="primary"
-              disabled={!name || !email || !password || !passwordConfirmation ? true : false}
-              onClick={handleSubmit}
+              disabled={!!((name.length === 0) || (email.length === 0) || (password.length === 0) || (passwordConfirmation.length === 0))}
+              onClick={(e) => { void handleSubmit(e) }}
               sx={{ mt: 3, mb: 2 }}
             >
               登録
@@ -133,14 +137,14 @@ const CompanySignUp: React.FC = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to='/companies/signin'>
-                  {"アカウントをお持ちですか？"}
+                  {'アカウントをお持ちですか？'}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
       </Container>
-    );
+  )
 }
 
-export default CompanySignUp;
+export default CompanySignUp

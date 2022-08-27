@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { FC } from 'react'
 
-import { handleGetCompanies } from "../functionals/companies";
-import { Company } from "../../interface";
-import { CardList } from "../layouts/CardList";
+import { useHandleGetCompanies } from '../hooks/companies'
+import { CardList } from '../layouts/CardList'
 
-import { Card, Box, Typography } from "@mui/material";
+import { Card, Box, Typography } from '@mui/material'
 
-const Companies: React.FC = () => {
-  const [ companies, setCompanies ] = useState<Company[]>([])
-
-   useEffect(()=>{
-    const f = async() => {
-      const companies = await handleGetCompanies();
-      setCompanies(companies);
-    }
-    f();
-  },[]);
+const Companies: FC = () => {
+  const companies = useHandleGetCompanies()
 
   return (
     <>
-    <Box sx={{my: 5, px:10, mx: 'auto'}}>
-      <Typography sx={{textAlign:'center'}}>
+    <Box sx={{ my: 5, px: 10, mx: 'auto' }}>
+      <Typography sx={{ textAlign: 'center' }}>
         企業一覧
       </Typography>
     </Box>
@@ -33,14 +24,15 @@ const Companies: React.FC = () => {
         mx: 'auto',
         mb: 10,
         zIndex: 'modal',
-        borderRadius: 2,
+        borderRadius: 2
       }}
     >
-      <CardList items={companies} type='companies'/>
+      {companies !== null && companies &&
+        <CardList items={companies} type='companies'/>
+      }
     </Card>
     </>
-  );
-
+  )
 }
 
-export default Companies;
+export default Companies

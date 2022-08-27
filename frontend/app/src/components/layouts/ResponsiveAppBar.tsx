@@ -1,46 +1,45 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import React, { FC, useContext } from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/material/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
+import Container from '@mui/material/Container'
+import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
+import MenuItem from '@mui/material/MenuItem'
+import { Link } from 'react-router-dom'
 
-import { CompanyAuthContext } from '../providers/CompanyAuthProvider';
-import { CreatorAuthContext } from '../providers/CreatorAuthProvider';
-import { NavBarUser } from './NavBarUser';
+import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
+import { CreatorAuthContext } from '../providers/CreatorAuthProvider'
+import { NavBarUser } from './NavBarUser'
 
-const pages = [['Products','/products'], ['Creators','/creators'], ['Companies','/companies']];
+const pages = [['Products', '/products'], ['Creators', '/creators'], ['Companies', '/companies']]
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar: FC = () => {
   const { isCompanySignedIn, currentCompany } = useContext(CompanyAuthContext)
-  const { isCreatorSignedIn, currentCreator } =useContext(CreatorAuthContext);
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const { isCreatorSignedIn, currentCreator } = useContext(CreatorAuthContext)
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
+  const handleOpenNavMenu: (e: React.MouseEvent<HTMLElement>) => void = (e) => {
+    setAnchorElNav(e.currentTarget)
+  }
+  const handleOpenUserMenu: (e: React.MouseEvent<HTMLElement>) => void = (e) => {
+    setAnchorElUser(e.currentTarget)
+  }
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  const handleCloseNavMenu: () => void = () => {
+    setAnchorElNav(null)
+  }
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const handleCloseUserMenu: () => void = () => {
+    setAnchorElUser(null)
+  }
 
   return (
-    <AppBar position="static" sx={{bgcolor:'primary.dark', color:'white'}}>
+    <AppBar position="static" sx={{ bgcolor: 'primary.dark', color: 'white' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -55,7 +54,7 @@ const ResponsiveAppBar = () => {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             UPCIMILE
@@ -77,17 +76,17 @@ const ResponsiveAppBar = () => {
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: 'block', md: 'none' }
               }}
             >
               {pages.map((page) => (
@@ -111,7 +110,7 @@ const ResponsiveAppBar = () => {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             UPCIMILEs
@@ -129,12 +128,16 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
-          {(isCompanySignedIn && currentCompany) ? (
-            <NavBarUser name={currentCompany.name} image={currentCompany.image && currentCompany.image.url} type='companies'/>
-          ) : ( (isCreatorSignedIn && currentCreator) ? (
-            <NavBarUser name={currentCreator.name} image={currentCreator.image && currentCreator.image} type='creators'/>
-          ) : (
-            <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          {(isCompanySignedIn && (currentCompany != null))
+            ? (
+            <NavBarUser name={currentCompany.name} image={(currentCompany.image != null) ? currentCompany.image.url : ''} type='companies'/>
+              )
+            : ((isCreatorSignedIn && (currentCreator != null))
+                ? (
+            <NavBarUser name={currentCreator.name} image={(currentCreator.image != null) ? currentCreator.image : ''} type='creators'/>
+                  )
+                : (
+            <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <Box>
                 <Tooltip title="Open settings">
                   <Button onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -147,12 +150,12 @@ const ResponsiveAppBar = () => {
                   anchorEl={anchorElUser}
                   anchorOrigin={{
                     vertical: 'top',
-                    horizontal: 'right',
+                    horizontal: 'right'
                   }}
                   keepMounted
                   transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'right',
+                    horizontal: 'right'
                   }}
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
@@ -167,10 +170,10 @@ const ResponsiveAppBar = () => {
                 </Menu>
               </Box>
             </Box>
-          ))}
+                  ))}
         </Toolbar>
       </Container>
     </AppBar>
-  );
-};
-export default ResponsiveAppBar;
+  )
+}
+export default ResponsiveAppBar

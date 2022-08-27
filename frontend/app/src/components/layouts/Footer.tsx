@@ -1,29 +1,26 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import React, { FC } from 'react'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
 
-function Copyright() {
+function Copyright (): JSX.Element {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © Upcimile.co  '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
 interface FooterProps {
-  description: string;
-  title: string;
+  description: string
+  title: string
 }
 
-export default function Footer(props: FooterProps) {
-  const { description, title } = props;
-
+export const Footer: FC<FooterProps> = ({ description, title }) => {
   return (
-    <Box component="footer" sx={{ py: 3, px: 2, mt: 'auto', bgcolor: 'background.paper'}}>
+    <Box component="footer" sx={{ py: 3, px: 2, mt: 'auto', bgcolor: 'background.paper' }}>
       <Container maxWidth="lg">
         <Typography variant="h6" align="center" gutterBottom>
           {title}
@@ -39,5 +36,5 @@ export default function Footer(props: FooterProps) {
         <Copyright />
       </Container>
     </Box>
-  );
+  )
 }
