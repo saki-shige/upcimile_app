@@ -26,7 +26,7 @@ export const useHandleGetCompanies: () => Company[] | undefined = () => {
   return (companies)
 }
 
-export const useHandleGetSingleCompany: (id: string) => Company | undefined = (id) => {
+export const useHandleGetSingleCompany: (id: string, update: boolean) => Company | undefined = (id, update) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [company, setCompany] = useState<Company>()
 
@@ -44,7 +44,7 @@ export const useHandleGetSingleCompany: (id: string) => Company | undefined = (i
         setMessage('ユーザー情報を取得できませんでした。')
         setSeverity('error')
       })
-  }, [])
+  }, [update])
 
   return (company)
 }

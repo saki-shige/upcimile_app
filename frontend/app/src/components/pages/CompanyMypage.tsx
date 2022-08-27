@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useState } from 'react'
 
 import { Typography, CardContent, Container, Box } from '@mui/material'
 
@@ -10,7 +10,8 @@ import { BasicTable } from '../layouts/OfferTable'
 
 const CompanyMyPage: FC = () => {
   const { currentCompany } = useContext(CompanyAuthContext)
-  const company = (currentCompany != null) ? useHandleGetSingleCompany(String(currentCompany.id)) : undefined
+  const [update, setUpdate] = useState(false)
+  const company = (currentCompany != null) ? useHandleGetSingleCompany(String(currentCompany.id), update) : undefined
 
   return (
     <>
@@ -56,7 +57,7 @@ const CompanyMyPage: FC = () => {
           </Box>
           {(company.products != null)
             ? (
-            <CardList items={company.products} type='products' provider={true}></CardList>
+            <CardList items={company.products} type='products' provider={true} setUpdate={setUpdate} update={update}></CardList>
               )
             : '商品が登録されていません'}
         </Container>

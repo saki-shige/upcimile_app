@@ -12,8 +12,10 @@ interface Props {
   items: Product[] | Company[]
   type: 'products' | 'companies'
   provider?: boolean
+  update?: boolean
+  setUpdate?: React.Dispatch<React.SetStateAction<boolean>>
 }
-export const CardList: FC<Props> = ({ items, type, provider }) => {
+export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const { currentCompany } = useContext(CompanyAuthContext)
 
@@ -33,6 +35,7 @@ export const CardList: FC<Props> = ({ items, type, provider }) => {
         setOpen(true)
         setMessage('商品を削除しました。')
         setSeverity('success')
+        update != null && setUpdate != null && setUpdate(!update)
       } else {
         throw new Error()
       };
