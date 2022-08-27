@@ -61,10 +61,21 @@ export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }
                 alt={item.name}
               />
               <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant='h5' component='h2'>
+                <Typography
+                  gutterBottom
+                  variant='h5'
+                  component='h2'
+                  sx={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                >
                   {item.name}
                 </Typography>
-                <Typography>
+                <Typography sx={{
+                  height: 100,
+                  display: '-webkit-box',
+                  overflow: 'hidden',
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: 'vertical'
+                }}>
                   {item.introduction}
                 </Typography>
               </CardContent>
