@@ -5,6 +5,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { CreatorAuthProvider } from './components/providers/CreatorAuthProvider'
 import { CompanyAuthProvider } from './components/providers/CompanyAuthProvider'
+import { MessageProvider } from './components/providers/MessageProvider'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <CreatorAuthProvider>
       <CompanyAuthProvider>
+        <MessageProvider>
          <App />
+        </MessageProvider>
       </CompanyAuthProvider>
     </CreatorAuthProvider>
   </React.StrictMode>
