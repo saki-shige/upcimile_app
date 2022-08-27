@@ -2,7 +2,7 @@ class Api::V1::CompaniesController < ApplicationController
   before_action :authenticate_company, only: :update
 
   def index
-    companies = Company.all
+    companies = Company.all.limit(params[:limit])
     render json: companies
   end
 
