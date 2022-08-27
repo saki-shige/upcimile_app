@@ -3,12 +3,12 @@ import { useContext, useEffect, useState } from 'react'
 import { Company } from '../../interface'
 import { MessageContext } from '../providers/MessageProvider'
 
-export const useHandleGetCompanies: () => Company[] | undefined = () => {
+export const useHandleGetCompanies: (limit?: number) => Company[] | undefined = (limit) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [companies, setCompanies] = useState<Company[]>()
 
   useEffect(() => {
-    getCompanies()
+    getCompanies(limit)
       .then((res) => {
         if (res.status === 200) {
           console.log('ユーザー一覧を取得しました')

@@ -9,9 +9,12 @@ import Image from '../../assets/images/24238523_m.jpg'
 import { Box, Paper, Grid, Typography, Container, Card, CardMedia, CardContent, CardActionArea, Avatar } from '@mui/material'
 
 const Home: React.FC = () => {
-  const companies = useHandleGetCompanies()
-  const creators = useHandleGetCreators()
-  const products = useHandleGetProducts()
+  const number0fCompaniesForDisplay = 2
+  const number0fCoreatorsForDisplay = 2
+  const number0fProductsForDisplay = 4
+  const companies = useHandleGetCompanies(number0fCompaniesForDisplay)
+  const creators = useHandleGetCreators(number0fCoreatorsForDisplay)
+  const products = useHandleGetProducts(number0fProductsForDisplay)
 
   return (
     <>

@@ -3,12 +3,12 @@ import { useContext, useEffect, useState } from 'react'
 import { Creator, Video } from '../../interface'
 import { MessageContext } from '../providers/MessageProvider'
 
-export const useHandleGetCreators: () => Creator[] | undefined = () => {
+export const useHandleGetCreators: (limit?: number) => Creator[] | undefined = (limit) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [creators, setCreators] = useState<Creator[]>()
 
   useEffect(() => {
-    getCreators()
+    getCreators(limit)
       .then((res) => {
         if (res.status === 200) {
           console.log('ユーザー一覧を取得しました')

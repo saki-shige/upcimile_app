@@ -1,9 +1,9 @@
 import client from "./client"
 import Cookies from "js-cookie"
 
-export const getCompanies = () => {
-  return client.get("companies")
-};
+export const getCompanies = (limit?: number) => {
+  return client.get((limit !== undefined) ? `companies?limit=${limit}` : 'companies')
+}
 
 export const getSingleCompany = (id: string) => {
   return client.get(`companies/${id}`, { headers: {
