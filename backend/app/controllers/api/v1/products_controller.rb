@@ -2,7 +2,7 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authenticate_company, only: %i[create update destroy]
 
   def index
-    products = Product.all
+    products = Product.all.limit(params[:limit])
     render json: products
   end
 
