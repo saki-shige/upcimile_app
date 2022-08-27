@@ -41,7 +41,7 @@ const SingleProduct: FC = () => {
     <>
     {(product != null)
       ? (
-        <IntroductionCard avatarImage={''}>
+        <IntroductionCard>
           <Container
             sx={{
               py: 10,
