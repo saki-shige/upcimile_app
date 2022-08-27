@@ -6,7 +6,8 @@ import { ThemeProvider, Box } from '@mui/material'
 
 import { appTheme } from './assets/theme/theme'
 import ResponsiveAppBar from './components/layouts/ResponsiveAppBar'
-import Footer from './components/layouts/Footer'
+import { MessageSnackbar } from './components/layouts/MessageSnackbar'
+import { Footer } from './components/layouts/Footer'
 import Home from './components/pages/Home'
 import CompanySignIn from './components/pages/CompanySignIn'
 import CompanySignUp from './components/pages/CompanySignup'
@@ -36,6 +37,7 @@ const App: React.FC = () => {
         }}
       >
         <ResponsiveAppBar />
+        <MessageSnackbar />
         <Routes>
           <Route path='/' element={<Home />} />;
           <Route path='/companies/signin' element={<CompanySignIn />} />;
