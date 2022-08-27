@@ -3,11 +3,12 @@ import React, { FC, useContext } from 'react'
 import { auth } from '../../lib/api/firebase'
 import { useNavigate } from 'react-router-dom'
 
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
 import { CreatorAuthContext } from '../providers/CreatorAuthProvider'
 import { login } from '../../lib/api/creator'
 import { MessageContext } from '../providers/MessageProvider'
+import { Box, Button, Typography } from '@mui/material'
 
 const CreatorSignIn: FC = () => {
   const navigation = useNavigate()
@@ -51,47 +52,17 @@ const CreatorSignIn: FC = () => {
     setIsCreatorSignedIn(true)
   }
 
-  const checkLogint: () => void = () => {
-    onAuthStateChanged(auth, (user) => {
-      if (user != null) {
-        const uid = user.uid
-        const email = user.email
-        console.log(uid)
-        console.log(email)
-      } else {
-        console.log('signed out')
-      }
-    })
-  }
-
-  checkLogint()
-
-  const clickLogout: () => Promise<void> = async () => {
-    try {
-      await signOut(auth)
-      setIsCreatorSignedIn(false)
-      setOpen(true)
-      setMessage('ログアウトしました')
-      setSeverity('success')
-      navigation('/')
-    } catch (error) {
-      console.log(error)
-      setIsCreatorSignedIn(false)
-      setOpen(true)
-      setMessage('ログアウトに失敗しました')
-      setSeverity('error')
-    };
-  }
-
   return (
     <>
-      <h1>ログイン Google</h1>
-      <div>
-        <button onClick={() => { void clickLogin() }}>Login</button>
-      </div>
-      <div>
-       <button onClick={() => { void clickLogout() }}>Logout</button>
-      </div>
+    <Box py={10} px={3} sx={{ textAlign: 'center' }}>
+      <Typography variant='h6' pb={5}>
+        クリエイターとしてサインインするためには、Googleアカウントでサインインをします。<br />
+        下記のボタンより、使用したいyoutubeチャンネルと紐づけられたgoogleアカウントでサインインしてください。
+      </Typography>
+      <Button variant="contained" onClick={() => { void clickLogin() }} size="large">
+        サインイン
+      </Button>
+    </Box>
     </>
   )
 }
