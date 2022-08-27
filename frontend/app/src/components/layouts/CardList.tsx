@@ -13,7 +13,7 @@ interface Props {
   type: 'products' | 'companies'
   provider?: boolean
 }
-export const CardList: FC<Props> = (props) => {
+export const CardList: FC<Props> = ({ items, type, provider }) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const { currentCompany } = useContext(CompanyAuthContext)
 
@@ -46,12 +46,12 @@ export const CardList: FC<Props> = (props) => {
 
   return (
     <Grid container spacing={1} sx={{ px: 8 }}>
-      {props.items.map((item, index) => (
-        <Grid item data-testid={`${props.type}`} key={`${props.type}_${index}`} xs={12} sm={6} md={3}>
+      {items.map((item, index) => (
+        <Grid item data-testid={`${type}`} key={`${type}_${index}`} xs={12} sm={6} md={3}>
           <Card
             sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 0, borderRadius: 0 }}
           >
-            <CardActionArea component={Link} to={`/${props.type}/${item.id}`} data-testid={`${props.type}_${index}`}>
+            <CardActionArea component={Link} to={`/${type}/${item.id}`} data-testid={`${type}_${index}`}>
               <CardMedia
                 component='img'
                 image={(item.image != null) ? item.image.url : ''}
@@ -66,7 +66,7 @@ export const CardList: FC<Props> = (props) => {
                 </Typography>
               </CardContent>
             </CardActionArea>
-                {(props.provider === true) && (props.type === 'products') && (
+                {(provider === true) && (type === 'products') && (
                   <>
                     <Typography>
                       <Link to={`/products/edit/${item.id}`}>商品を編集する</Link>
