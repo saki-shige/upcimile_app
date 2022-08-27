@@ -2,7 +2,7 @@ class Api::V1::CreatorsController < ApplicationController
   require 'google/apis/youtube_v3'
 
   def index
-    creators = Creator.all
+    creators = Creator.all.limit(params[:limit])
     if creators
       render status: 200, json: creators
     else
