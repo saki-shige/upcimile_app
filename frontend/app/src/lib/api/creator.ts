@@ -1,4 +1,4 @@
-import client from "./client"
+import client from './client'
 
 export const login = (data: {idToken: string, accessToken: string}) => {
   return client.post('/auth/creators', data)
