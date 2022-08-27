@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 import { useHandleGetCompanies } from '../hooks/companies'
 import { useHandleGetProducts } from '../hooks/products'
 import { useHandleGetCreators } from '../hooks/creators'
@@ -10,7 +9,6 @@ import Image from '../../assets/images/24238523_m.jpg'
 import { Box, Paper, Grid, Typography, Container, Card, CardMedia, CardContent, CardActionArea, Avatar } from '@mui/material'
 
 const Home: React.FC = () => {
-  const { isCompanySignedIn, currentCompany } = useContext(CompanyAuthContext)
   const companies = useHandleGetCompanies()
   const creators = useHandleGetCreators()
   const products = useHandleGetProducts()
@@ -179,14 +177,6 @@ const Home: React.FC = () => {
           ))}
         </Grid>
       </Container>
-
-      <p>Home</p>
-    {/* // (仮）サインインしているユーザー（カンパニー名）を表示 */}
-      <h2>{isCompanySignedIn ? <p>{(currentCompany != null) && currentCompany.name}としてサインインしています</p> : <p>サインインしていません</p>}</h2>
-      <Link to={'/companies/signin'}>sign in</Link>
-      <Link to={'/companies/signup'}>sign up</Link>
-      <Link to={'/products/new'}>商品登録</Link>
-      <Link to={'/creators/signin'}>クリエイターログイン</Link>
     </>
   )
 }
