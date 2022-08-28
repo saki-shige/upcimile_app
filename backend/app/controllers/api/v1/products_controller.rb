@@ -17,9 +17,9 @@ class Api::V1::ProductsController < ApplicationController
     product = Product.new(product_params)
     product.company_id = current_api_v1_company.id
     if product.save
-      render json: { message: "#{product.name}を保存しました", data: product }
+      render status: 200, json: { message: "#{product.name}を保存しました", data: product }
     else
-      render json: { message: '保存できませんでした' }
+      render status: 400, json: { message: product.errors.full_messages }
     end
   end
 
@@ -28,7 +28,7 @@ class Api::V1::ProductsController < ApplicationController
     if product.update(product_params)
       render json: { data: product, message: "#{product.name}を更新しました" }
     else
-      render json: { status: 400, message: "#{product.name}の更新に失敗しました" }
+      render status: 400, json: { message: product.errors.full_messages }
     end
   end
 
