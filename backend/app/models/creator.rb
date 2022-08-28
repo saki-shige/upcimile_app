@@ -1,5 +1,8 @@
 class Creator < ApplicationRecord
   has_many :offers
+  validates :name, presence: true, length: { maximum: 30 }
+  validates :introduction, length: { maximum: 300 }
+  validates :channel_id, presence: true
   require 'google/apis/youtube_v3'
 
   def find_channel_info
