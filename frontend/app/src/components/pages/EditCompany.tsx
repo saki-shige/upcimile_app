@@ -6,6 +6,7 @@ import { Button, Grid, TextField, Container, Paper, Typography, Box } from '@mui
 import ImageForm from '../layouts/ImageForm'
 import { getSingleCompany, updateCompany } from '../../lib/api/company'
 import { MessageContext } from '../providers/MessageProvider'
+import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 
 interface FormData {
   name?: string
@@ -25,6 +26,7 @@ const EditCompany: React.FC = () => {
   const navigation = useNavigate()
   const [changeImage, setChangeImage] = useState<boolean>(false)
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
+  const { setCurrentCompany } = useContext(CompanyAuthContext)
 
   const handleGetCompany: (id: string) => Promise<void> = async (id) => {
     try {
@@ -81,6 +83,7 @@ const EditCompany: React.FC = () => {
 
         if (res.status === 200) {
           console.log(res.data.message)
+          setCurrentCompany(res.data.company)
           navigation('/companies')
         } else {
           throw new Error()
