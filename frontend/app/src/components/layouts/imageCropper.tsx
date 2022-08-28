@@ -17,7 +17,7 @@ interface Props {
 
 const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef, setCroppedFile }) => {
   const imgRef = useRef<HTMLImageElement>(null)
-
+  const today = new Date().getTime()
   const [crop, setCrop] = useState<Crop>()
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
 
@@ -41,7 +41,7 @@ const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef,
     (previewCanvasRef.current != null) && (previewCanvasRef.current.toBlob((blob) => {
       if (blob != null) {
         setCroppedFile(
-          new File([blob], 'croppedImage.png', {
+          new File([blob], `croppedImage${today}.png`, {
             type: 'image/png'
           })
         )
