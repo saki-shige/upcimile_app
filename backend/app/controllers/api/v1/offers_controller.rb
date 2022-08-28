@@ -29,6 +29,9 @@ class Api::V1::OffersController < ApplicationController
 
   def accept
     offer = Offer.find(params[:id])
+    return render status: 401, json: { message: 'ログインしてください' } unless offer_to_me?(offer)
+    return render status: 400, json: { message: 'typeに誤りがあります' } unless type_correct?
+
     if offer.update(is_accepted: params[:type] == 'accept')
       render status: 200, json: offer
     else
@@ -40,5 +43,13 @@ class Api::V1::OffersController < ApplicationController
 
   def offer_params
     params.require(:offer).permit(:product_id)
+  end
+
+  def offer_to_me?(offer)
+    offer.product.company_id == current_api_v1_company.id
+  end
+
+  def type_correct?
+    params[:type] == 'accept' || params[:type] == 'decline'
   end
 end
