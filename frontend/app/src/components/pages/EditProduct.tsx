@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useEffect } from 'react'
+import React, { FC, useState, useContext, useRef, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Box, MenuItem, Grid, Typography, TextField, Container, Paper } from '@mui/material'
@@ -17,11 +17,31 @@ const EditProduct: FC = () => {
   const [newProduct, setNewProduct] = useState<Product>()
   const [changeImage, setChangeImage] = useState<boolean>(false)
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
+  const availableToRef = useRef<HTMLInputElement>(null)
+  const [availableToError, setAvailableToError] = useState(false)
 
   const categories = [
     { value: 1, label: '食べ物' },
     { value: 2, label: '場所' }
   ]
+
+  const formValidation: () => boolean = () => {
+    let valid = true
+
+    const availableToValue = (availableToRef != null) && availableToRef.current
+    if (availableToValue != null && availableToValue !== false) {
+      if ((newProduct != null) && (newProduct.availableTo != null) && (newProduct.availableFrom != null) && (newProduct.availableTo < newProduct.availableFrom)) {
+        availableToValue.setCustomValidity('開始日よりも後の日付にしてください')
+      } else {
+        availableToValue.setCustomValidity('')
+      }
+      const ok = availableToValue.validity.valid
+      setAvailableToError(!ok)
+      valid = ok
+    }
+
+    return valid
+  }
 
   const handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
     const { name, value } = e.target
@@ -184,6 +204,9 @@ const EditProduct: FC = () => {
                 InputLabelProps={{
                   shrink: true
                 }}
+                inputRef={availableToRef}
+                error={availableToError}
+                helperText={availableToError && availableToRef.current != null && availableToRef.current.validationMessage}
                 onChange={handleOnChange}
               />
             </Grid>
@@ -192,7 +215,8 @@ const EditProduct: FC = () => {
                 <Button
                   variant='contained'
                   type='submit'
-                  onClick={(e) => { void handleFormData(e) }}
+                  disabled={ !((newProduct.name.length > 0) && (newProduct.introduction.length > 0) && (newProduct.categoryId > 0) && (newProduct.availableFrom.length > 0)) }
+                  onClick={(e) => { if (formValidation()) { void handleFormData(e) } }}
                   sx={{ mt: 3, ml: 1 }}
                 >
                   更新する
