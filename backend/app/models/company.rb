@@ -11,7 +11,8 @@ class Company < ActiveRecord::Base
   mount_uploader :image, ImageUploader
   validates :name, presence: true, length: { maximum: 30 }
   validates :introduction, length: { maximum: 300 }
-  validates :address, length: { maximum: 30 }, format: /\A#{URI::regexp(%w(http https))}\z/
+  validates :address, length: { maximum: 300 }
+  validates :corporate_site, length: { maximum: 30 }, format: /\A#{URI::regexp(%w(http https))}\z/, :allow_blank => true
   validates :number_of_employees, length: { maximum: 10 }
   validates :capital, length: { maximum: 30 }
 end
