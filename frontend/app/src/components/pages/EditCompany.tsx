@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Grid, TextField, Container, Paper, Typography, Box } from '@mui/material'
@@ -27,6 +27,9 @@ const EditCompany: React.FC = () => {
   const [changeImage, setChangeImage] = useState<boolean>(false)
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const { setCurrentCompany } = useContext(CompanyAuthContext)
+  const corporateSiteRef = useRef<HTMLInputElement>(null)
+  const [corporateSiteError, setCorporateSiteError] = useState(false)
+  const CorporateSiteValidPattern = '^(https?|ftp)(://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)$'
 
   const handleGetCompany: (id: string) => Promise<void> = async (id) => {
     try {
@@ -43,6 +46,20 @@ const EditCompany: React.FC = () => {
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const formValidation: () => boolean = () => {
+    let valid = true
+
+    const addressValue = (corporateSiteRef != null) && corporateSiteRef.current
+    if (addressValue != null && addressValue !== false) {
+      const ok = addressValue.validity.valid
+      setCorporateSiteError(!ok)
+      valid = ok
+      console.log('hoo')
+    }
+    console.log(valid)
+    return valid
   }
 
   useEffect(() => {
@@ -151,12 +168,12 @@ const EditCompany: React.FC = () => {
                 defaultValue={company.name}
                 autoComplete='given-name'
                 variant='standard'
+                inputProps={ { required: true, maxLength: 30 } }
                 onChange={handleOnChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 name='introduction'
                 label='説明'
                 multiline
@@ -165,12 +182,12 @@ const EditCompany: React.FC = () => {
                 fullWidth
                 defaultValue={company.introduction}
                 variant='standard'
+                inputProps={ { maxLength: 300 } }
                 onChange={handleOnChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 name='address'
                 label='住所'
                 multiline
@@ -179,12 +196,12 @@ const EditCompany: React.FC = () => {
                 fullWidth
                 defaultValue={company.address}
                 variant='standard'
+                inputProps={ { maxLength: 300 } }
                 onChange={handleOnChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 type='number'
                 name='numberOfEmployees'
                 label='従業員数'
@@ -196,7 +213,6 @@ const EditCompany: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 type='number'
                 name='capital'
                 label='資本金'
@@ -208,7 +224,6 @@ const EditCompany: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 type='date'
                 name='dateOfEstablishment'
                 label='設立年月日'
@@ -223,15 +238,15 @@ const EditCompany: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 name='corporateSite'
                 label='会社HP'
-                multiline
-                minRows={3}
-                maxRows={4}
                 fullWidth
-                defaultValue={company.corporateSite}
+                value={company.corporateSite}
                 variant='standard'
+                inputRef={corporateSiteRef}
+                error={corporateSiteError}
+                helperText={corporateSiteError && corporateSiteRef.current != null && corporateSiteRef.current.validationMessage}
+                inputProps={ { required: true, pattern: CorporateSiteValidPattern } }
                 onChange={handleOnChange}
               />
             </Grid>
@@ -240,7 +255,8 @@ const EditCompany: React.FC = () => {
                 <Button
                   variant='contained'
                   type='submit'
-                  onClick={(e) => { void handleFormData(e) }}
+                  disabled={!(company.name != null && company.name.length > 0)}
+                  onClick={(e) => { if (formValidation()) { void handleFormData(e) } }}
                   sx={{ mt: 3, ml: 1 }}
                 >
                   更新する

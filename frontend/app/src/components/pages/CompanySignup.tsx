@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { FC, useState, useContext, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
@@ -10,18 +10,48 @@ import { SignUpData } from '../../interface/index'
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 import { MessageContext } from '../providers/MessageProvider'
 
-const CompanySignUp: React.FC = () => {
+const CompanySignUp: FC = () => {
   const [name, setName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
+  const emailRef = useRef<HTMLInputElement>(null)
+  const [emailError, setEmailError] = useState(false)
   const [password, setPassword] = useState<string>('')
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('')
+  const confirmationRef = useRef<HTMLInputElement>(null)
+  const [confirmationError, setConfirmationError] = useState(false)
   const { setIsCompanySignedIn, setCurrentCompany } = useContext(CompanyAuthContext)
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const navigation = useNavigate()
+  const EmailVaildPattern =
+  '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$'
 
-  const handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void> = async (e) => {
-    e.preventDefault()
+  const formValidation: () => boolean = () => {
+    let valid = true
 
+    const e = (emailRef != null) && emailRef.current
+    if (e != null && e !== false) {
+      const ok = e.validity.valid
+      setEmailError(!ok)
+      valid = ok
+    }
+
+    const c = (confirmationRef != null) && confirmationRef.current
+    if (c != null && c !== false) {
+      if (passwordConfirmation.length > 0 &&
+          passwordConfirmation !== password) {
+        c.setCustomValidity('パスワードが一致しません')
+      } else {
+        c.setCustomValidity('')
+      }
+      const ok = c.validity.valid
+      setConfirmationError(!ok)
+      valid = ok
+    }
+    console.log(valid)
+    return valid
+  }
+
+  const handleSubmit: () => Promise<void> = async () => {
     const data: SignUpData = {
       name,
       email,
@@ -84,6 +114,7 @@ const CompanySignUp: React.FC = () => {
                   id="name"
                   label="名前"
                   autoFocus
+                  inputProps={ { maxLength: 30 } }
                   onChange={event => setName(event.target.value)}
                 />
               </Grid>
@@ -95,6 +126,11 @@ const CompanySignUp: React.FC = () => {
                   label="メールアドレス"
                   name="email"
                   autoComplete="email"
+                  inputRef={emailRef}
+                  value={email}
+                  error={emailError}
+                  helperText={emailError && emailRef.current != null && emailRef.current.validationMessage}
+                  inputProps={ { pattern: EmailVaildPattern } }
                   onChange={event => setEmail(event.target.value)}
                 />
               </Grid>
@@ -114,22 +150,25 @@ const CompanySignUp: React.FC = () => {
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="password-confirmation"
                   label="パスワード（確認用）"
                   type="password"
-                  id="password"
+                  id="password-confirmation"
                   autoComplete="new-password"
+                  inputRef={confirmationRef}
+                  value={passwordConfirmation}
+                  error={confirmationError}
+                  helperText={confirmationError && confirmationRef.current != null && confirmationRef.current.validationMessage}
                   onChange={event => setPasswordConfirmation(event.target.value)}
                 />
               </Grid>
             </Grid>
             <Button
-              type="submit"
               fullWidth
               variant="outlined"
               color="primary"
-              disabled={!!((name.length === 0) || (email.length === 0) || (password.length === 0) || (passwordConfirmation.length === 0))}
-              onClick={(e) => { void handleSubmit(e) }}
+              disabled={!(name.length > 0 && password.length > 0 && passwordConfirmation.length > 0)}
+              onClick={() => { if (formValidation()) { console.log('success'); void handleSubmit() } } }
               sx={{ mt: 3, mb: 2 }}
             >
               登録

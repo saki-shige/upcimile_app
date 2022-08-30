@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button, Box, MenuItem, Grid, Typography, TextField, Container, Paper } from '@mui/material'
@@ -23,11 +23,32 @@ const CreateProduct: FC = () => {
   const [availableFrom, setAvailableFrom] = useState<string>(formatted)
   const [availableTo, setAvailableTo] = useState<string>('')
   const [categoryId, setCategoryId] = useState<string>('1')
+  const availableToRef = useRef<HTMLInputElement>(null)
+  const [availableToError, setAvailableToError] = useState(false)
 
   const categories = [
     { value: '1', label: '食べ物' },
     { value: '2', label: '場所' }
   ]
+
+  const formValidation: () => boolean = () => {
+    let valid = true
+
+    const availableToValue = (availableToRef != null) && availableToRef.current
+    if (availableToValue != null && availableToValue !== false) {
+      if (availableTo < availableFrom) {
+        availableToValue.setCustomValidity('開始日よりも後の日付にしてください')
+      } else {
+        availableToValue.setCustomValidity('')
+      }
+      const ok = availableToValue.validity.valid
+      setAvailableToError(!ok)
+      valid = ok
+    }
+
+    console.log(valid)
+    return valid
+  }
 
   const handleFormData: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void> = async (e) => {
     e.preventDefault()
@@ -86,7 +107,6 @@ const CreateProduct: FC = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 name="introduction"
                 label="説明"
                 multiline
@@ -139,6 +159,9 @@ const CreateProduct: FC = () => {
                 InputLabelProps={{
                   shrink: true
                 }}
+                inputRef={availableToRef}
+                error={availableToError}
+                helperText={availableToError && availableToRef.current != null && availableToRef.current.validationMessage}
                 onChange={(e) => setAvailableTo(e.target.value)}
               />
             </Grid>
@@ -147,8 +170,8 @@ const CreateProduct: FC = () => {
                 <Button
                   variant="contained"
                   type="submit"
-                  disabled={ !(name.length > 0 && introduction.length > 0) }
-                  onClick={(e) => { void handleFormData(e) }}
+                  disabled={ !(name.length > 0 && introduction.length > 0 && categoryId.length > 0 && (availableFrom.length > 0)) }
+                  onClick={(e) => { if (formValidation()) { void handleFormData(e) } }}
                   sx={{ mt: 3, ml: 1 }}
                   >
                   登録する
