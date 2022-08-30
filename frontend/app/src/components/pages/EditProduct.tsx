@@ -1,20 +1,21 @@
-import React, { FC, useState, useEffect, useContext } from 'react'
+import React, { FC, useState, useContext, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Box, MenuItem, Grid, Typography, TextField, Container, Paper } from '@mui/material'
 
-import { getSingleProduct, updateProduct } from '../../lib/api/product'
+import { updateProduct } from '../../lib/api/product'
 import ImageForm from '../layouts/ImageForm'
-import { FormProduct } from '../../interface'
+import { Product } from '../../interface'
 import { MessageContext } from '../providers/MessageProvider'
+import { useHandleGetSingleProduct } from '../hooks/products'
 
 const EditProduct: FC = () => {
   const [croppedFile, setCroppedFile] = useState<File | null>(null)
   const navigation = useNavigate()
   const { id } = useParams<{id: string}>()
-  const [preImage, setPreImage] = useState<string>()
+  const { product } = useHandleGetSingleProduct(id)
+  const [newProduct, setNewProduct] = useState<Product>()
   const [changeImage, setChangeImage] = useState<boolean>(false)
-  const [product, setProduct] = useState<FormProduct>()
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
 
   const categories = [
@@ -22,25 +23,11 @@ const EditProduct: FC = () => {
     { value: 2, label: '場所' }
   ]
 
-  const handleGetProduct: (id: string) => Promise<void> = async (id) => {
-    try {
-      const res = await getSingleProduct(id)
-      console.log(res)
-      if (res.status === 200) {
-        console.log('商品詳細を取得しました')
-        setProduct(res.data.product)
-        setPreImage(res.data.product.image.url)
-      } else {
-        console.log('No products')
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
     const { name, value } = e.target
-    setProduct({ ...product, [name]: value })
+    if (newProduct !== undefined) {
+      setNewProduct({ ...newProduct, [name]: value })
+    }
   }
   console.log(changeImage)
   console.log(croppedFile)
@@ -49,14 +36,14 @@ const EditProduct: FC = () => {
     e.preventDefault()
 
     const formData = new FormData()
-    if (product != null) {
-      formData.append('product[name]', (product.name != null) ? product.name : '')
+    if (newProduct != null) {
+      formData.append('product[name]', (newProduct.name != null) ? newProduct.name : '')
       changeImage && (formData.append('product[image]', (croppedFile != null) ? croppedFile : ''))
-      formData.append('product[introduction]', (product.introduction != null) ? product.introduction : '')
-      formData.append('product[availableFrom]', (product.availableFrom != null) ? String(product.availableFrom) : '')
-      formData.append('product[availableTo]', (product.availableTo != null) ? String(product.availableTo) : '')
-      formData.append('product[companyId]', (product.companyId != null) ? String(product.companyId) : '')
-      formData.append('product[categoryId]', (product.categoryId != null) ? String(product.categoryId) : '')
+      formData.append('product[introduction]', (newProduct.introduction != null) ? newProduct.introduction : '')
+      formData.append('product[availableFrom]', (newProduct.availableFrom != null) ? String(newProduct.availableFrom) : '')
+      formData.append('product[availableTo]', (newProduct.availableTo != null) ? String(newProduct.availableTo) : '')
+      formData.append('product[companyId]', (newProduct.companyId != null) ? String(newProduct.companyId) : '')
+      formData.append('product[categoryId]', (newProduct.categoryId != null) ? String(newProduct.categoryId) : '')
     }
 
     if (id != null) {
@@ -81,12 +68,12 @@ const EditProduct: FC = () => {
   }
 
   useEffect(() => {
-    (id != null) && handleGetProduct(id)
-  }, [])
+    setNewProduct(product)
+  }, [product])
 
   return (
     <>
-    {(product != null) && (
+    {(newProduct != null) && (
       <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
         <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Typography component='h1' variant='h4' align='center'>
@@ -119,7 +106,7 @@ const EditProduct: FC = () => {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
-                  backgroundImage: `url(${(preImage !== undefined) ? preImage : ''})`
+                  backgroundImage: `url(${(product !== undefined && product.image.url !== undefined) ? product.image.url : ''})`
                 }}
               >
             </Paper>
@@ -135,7 +122,7 @@ const EditProduct: FC = () => {
                 name = 'name'
                 label='名前'
                 fullWidth
-                defaultValue={product.name}
+                defaultValue={newProduct.name}
                 autoComplete='given-name'
                 variant='standard'
                 onChange={handleOnChange}
@@ -150,7 +137,7 @@ const EditProduct: FC = () => {
                 minRows={3}
                 maxRows={4}
                 fullWidth
-                defaultValue={product.introduction}
+                defaultValue={newProduct.introduction}
                 variant='standard'
                 onChange={handleOnChange}
               />
@@ -161,7 +148,7 @@ const EditProduct: FC = () => {
                   name='categoryId'
                   label='商品カテゴリー'
                   fullWidth
-                  defaultValue={product.categoryId}
+                  defaultValue={newProduct.categoryId}
                   onChange={handleOnChange}
                 >
                   {categories.map((category) => (
@@ -178,7 +165,7 @@ const EditProduct: FC = () => {
                 name='availableFrom'
                 label='利用可能開始日'
                 fullWidth
-                defaultValue={product.availableFrom}
+                defaultValue={newProduct.availableFrom}
                 variant='standard'
                 InputLabelProps={{
                   shrink: true
@@ -192,7 +179,7 @@ const EditProduct: FC = () => {
                 name='availableTo'
                 label='掲載完了日'
                 fullWidth
-                defaultValue={product.availableTo}
+                defaultValue={newProduct.availableTo}
                 variant='standard'
                 InputLabelProps={{
                   shrink: true
