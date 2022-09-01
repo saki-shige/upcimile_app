@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Button } from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom'
+import { Button, Container, Typography } from '@mui/material'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -18,6 +18,7 @@ interface Props {
 
 export const BasicTable: FC<Props> = ({ type }) => {
   const [offers, setOffers] = useState<MyOffers[] | OffersToMe[]>()
+  const navigation = useNavigate()
 
   const handleRespondToOffer: (id: string, type: 'accept' | 'decline') => Promise<void> = async (id, type) => {
     console.log(type)
@@ -58,47 +59,73 @@ export const BasicTable: FC<Props> = ({ type }) => {
   }, [])
 
   return (
+    <>
+      {(offers != null)
+        ? (
     <TableContainer component={Paper}>
-      <Table sx={{ mx: 'auto', maxWidth: 1000 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>product</TableCell>
-            <TableCell align="right">{type === 'myOffers' ? 'company' : 'creator'}</TableCell>
-            <TableCell align="right">response</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(offers != null) && offers.map((offer) => (
-            <TableRow
-              key={offer.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                <Link to={`products/${offer.product.id}`}>{offer.product.name}</Link>
-              </TableCell>
-              {(type === 'myOffers')
-                ? (
-                <TableCell align="right">{(offer.product.company != null) && offer.product.company.name}</TableCell>
-                  )
-                : (
-                <TableCell align="right">{'creator' in offer && offer.creator.name}</TableCell>
-                  )}
-              {(type === 'myOffers')
-                ? (
-                <TableCell align="right">{offer.isAccepted ? 'accepted' : 'not accepted'}</TableCell>
-                  )
-                : (
-                <TableCell align="right">
-                  {offer.isAccepted
-                    ? <Button onClick={() => { void handleRespondToOffer(offer.id, 'decline') }}>decline</Button>
-                    : <Button onClick={() => { void handleRespondToOffer(offer.id, 'accept') }}>accept</Button>
-                  }
-                </TableCell>
-                  )}
+        <Table sx={{ mx: 'auto', maxWidth: 1000 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>product</TableCell>
+              <TableCell align="right">{type === 'myOffers' ? 'company' : 'creator'}</TableCell>
+              <TableCell align="right">response</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {offers.map((offer) => (
+              <TableRow
+                key={offer.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <Link to={`products/${offer.product.id}`}>{offer.product.name}</Link>
+                </TableCell>
+                {(type === 'myOffers')
+                  ? (
+                  <TableCell align="right">{(offer.product.company != null) && offer.product.company.name}</TableCell>
+                    )
+                  : (
+                  <TableCell align="right">{'creator' in offer && offer.creator.name}</TableCell>
+                    )}
+                {(type === 'myOffers')
+                  ? (
+                  <TableCell align="right">{offer.isAccepted ? 'accepted' : 'not accepted'}</TableCell>
+                    )
+                  : (
+                  <TableCell align="right">
+                    {offer.isAccepted
+                      ? <Button onClick={() => { void handleRespondToOffer(offer.id, 'decline') }}>decline</Button>
+                      : <Button onClick={() => { void handleRespondToOffer(offer.id, 'accept') }}>accept</Button>
+                    }
+                  </TableCell>
+                    )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        </TableContainer>
+          )
+        : (
+          <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {(type === 'offersToMe')
+              ? (
+                <>
+              <Typography variant='subtitle1'>
+                あなたへのオファーはありません。商品を登録してお待ちください。
+              </Typography>
+              <Button onClick={() => { navigation('/products/new') }}>商品を登録する</Button>
+              </>
+                )
+              : (
+              <>
+              <Typography variant='subtitle1'>
+                あなたのオファーはありません。気になる商品を見つけてオファーを送りましょう。
+              </Typography>
+              <Button onClick={() => { navigation('/products') }}>商品を探す</Button>
+              </>
+                )}
+          </Container>
+          )}
+    </>
   )
 }
