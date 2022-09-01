@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Typography, Container, Box } from '@mui/material'
