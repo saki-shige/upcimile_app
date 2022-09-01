@@ -99,7 +99,7 @@ const CompanySignIn: React.FC = () => {
             <Button
               type="submit"
               fullWidth
-              variant="outlined"
+              variant="contained"
               onClick={(e) => { void handleSubmit(e) }}
               sx={{ mt: 3, mb: 2 }}
               disabled={ !!((email.length === 0) || (password.length === 0))}
