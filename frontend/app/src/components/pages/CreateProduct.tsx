@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Box, MenuItem, Grid, Typography, TextField, Container, Paper } from '@mui/material'
 import DiamondIcon from '@mui/icons-material/Diamond'
 
+import { CategoriesList } from '../../lib/api/categories'
 import ImageForm from '../layouts/ImageForm'
 import { createProduct } from '../../lib/api/product'
 
@@ -26,11 +27,6 @@ const CreateProduct: FC = () => {
   const [categoryId, setCategoryId] = useState<string>('1')
   const availableToRef = useRef<HTMLInputElement>(null)
   const [availableToError, setAvailableToError] = useState(false)
-
-  const categories = [
-    { value: '1', label: '食べ物' },
-    { value: '2', label: '場所' }
-  ]
 
   const formValidation: () => boolean = () => {
     let valid = true
@@ -84,7 +80,7 @@ const CreateProduct: FC = () => {
     <>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography variant="subtitle2" align="center" mb={5}>
+          <Typography variant="subtitle2" align="center" mb={3}>
             <DiamondIcon />
             {' 商品登録 '}
             <DiamondIcon />
@@ -130,7 +126,7 @@ const CreateProduct: FC = () => {
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
                 >
-                  {categories.map((category) => (
+                  {CategoriesList.map((category) => (
                     <MenuItem key={`category_${category.value}`} value={category.value}>
                       {category.label}
                     </MenuItem>

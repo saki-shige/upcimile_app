@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Box, MenuItem, Grid, Typography, TextField, Container, Paper } from '@mui/material'
 
+import { CategoriesList } from '../../lib/api/categories'
 import { updateProduct } from '../../lib/api/product'
 import ImageForm from '../layouts/ImageForm'
 import { Product } from '../../interface'
@@ -19,11 +20,6 @@ const EditProduct: FC = () => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const availableToRef = useRef<HTMLInputElement>(null)
   const [availableToError, setAvailableToError] = useState(false)
-
-  const categories = [
-    { value: 1, label: '食べ物' },
-    { value: 2, label: '場所' }
-  ]
 
   const formValidation: () => boolean = () => {
     let valid = true
@@ -171,7 +167,7 @@ const EditProduct: FC = () => {
                   defaultValue={newProduct.categoryId}
                   onChange={handleOnChange}
                 >
-                  {categories.map((category) => (
+                  {CategoriesList.map((category) => (
                     <MenuItem key={category.label} value={category.value}>
                       {category.label}
                     </MenuItem>
