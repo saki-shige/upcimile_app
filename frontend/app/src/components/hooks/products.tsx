@@ -3,12 +3,12 @@ import { Product, Company } from '../../interface'
 import { getProducts, getSingleProduct } from '../../lib/api/product'
 import { MessageContext } from '../providers/MessageProvider'
 
-export const useHandleGetProducts: (limit?: number) => Product[] | undefined = (limit) => {
+export const useHandleGetProducts: (props: {limit?: number, category?: number}) => Product[] | undefined = ({ limit, category }) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [products, setProducts] = useState<Product[]>()
 
   useEffect(() => {
-    getProducts(limit)
+    getProducts(limit, category)
       .then((res) => {
         if (res.status === 200) {
           console.log('商品一覧を取得しました')
@@ -22,7 +22,7 @@ export const useHandleGetProducts: (limit?: number) => Product[] | undefined = (
         setMessage('商品情報を取得できませんでした。')
         setSeverity('error')
       })
-  }, [])
+  }, [category])
 
   return (products)
 }

@@ -24,7 +24,7 @@ const Home: React.FC = () => {
   const Number0fProductsForDisplay = 4
   const companies = useHandleGetCompanies(Number0fCompaniesForDisplay)
   const creators = useHandleGetCreators(Number0fCoreatorsForDisplay)
-  const products = useHandleGetProducts(Number0fProductsForDisplay)
+  const products = useHandleGetProducts({ limit: Number0fProductsForDisplay })
   const navigation = useNavigate()
 
   return (

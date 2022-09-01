@@ -2,8 +2,11 @@ import client from './client'
 import Cookies from 'js-cookie'
 import { UpdateProductFormData } from '../../interface'
 
-export const getProducts = (limit?: number) => {
-  return client.get((limit !== undefined) ? `products?limit=${limit}` : 'products')
+export const getProducts = (limit?: number, category?: number) => {
+  const categoryQuery = (category != null) ? `category=${category}` : ''
+  const limitQuery = (limit != null) ? `limit=${limit}` : ''
+  console.log(`products?${categoryQuery}${limitQuery}`)
+  return client.get(`products?${categoryQuery}${limitQuery}`)
 }
 
 export const getSingleProduct = (id: string) => {
