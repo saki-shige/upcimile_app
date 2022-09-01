@@ -37,7 +37,7 @@ export const useHandleGetSingleCreator: (id: string) => {creator: Creator | unde
         if (res.status === 200) {
           console.log('ユーザー一覧を取得しました')
           setCreator(res.data.creatorInfo)
-          setVideos(res.data.videos)
+          setVideos(res.data.creatorVideos)
         } else {
           throw new Error()
         }
