@@ -10,11 +10,11 @@ interface Props {
 }
 export const BarCardList: FC<Props> = ({ items }) => {
   return (
-    <Grid container spacing={3} sx={{ px: 2 }}>
+    <Grid container spacing={3} sx={{ px: 8 }}>
       {items.map((item) => (
         <Grid item key={`creator_${item.id}`} xs={12} sm={12} md={6}>
           <CardActionArea component={Link} to={`/creators/${item.id}`}>
-            <Card sx={{ display: 'flex', boxShadow: 3 }}>
+            <Card sx={{ display: 'flex', boxShadow: 1 }}>
               <CardContent sx={{ my: 'auto' }}>
                 <Avatar
                   src={item.image}
@@ -24,7 +24,7 @@ export const BarCardList: FC<Props> = ({ items }) => {
               <CardContent sx={{ flex: 1 }}>
               <Typography
                   gutterBottom
-                  variant='h5'
+                  variant='h6'
                   sx={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                 >
                   {item.name}
