@@ -5,25 +5,16 @@ import { Button, Grid, TextField, Container, Paper, Typography, Box } from '@mui
 import FaceIcon from '@mui/icons-material/Face'
 
 import ImageForm from '../layouts/ImageForm'
-import { getSingleCompany, updateCompany } from '../../lib/api/company'
+import { updateCompany } from '../../lib/api/company'
 import { MessageContext } from '../providers/MessageProvider'
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
-
-interface FormData {
-  name?: string
-  introduction?: string
-  address?: string
-  numberOfEmployees?: number
-  capital?: number
-  dateOfEstablishment?: Date
-  corporateSite?: string
-}
+import { useHandleGetSingleCompany } from '../hooks/companies'
+import { Company } from '../../interface'
 
 const EditCompany: React.FC = () => {
   const { id } = useParams<{id: string}>()
-  const [company, setCompany] = useState<FormData>()
+  const [newCompany, setNewCompany] = useState<Company>()
   const [croppedFile, setCroppedFile] = useState<File | null>(null)
-  const [preImage, setPreImage] = useState<string>()
   const navigation = useNavigate()
   const [changeImage, setChangeImage] = useState<boolean>(false)
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
@@ -31,23 +22,7 @@ const EditCompany: React.FC = () => {
   const corporateSiteRef = useRef<HTMLInputElement>(null)
   const [corporateSiteError, setCorporateSiteError] = useState(false)
   const CorporateSiteValidPattern = '^(https?|ftp)(://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)$'
-
-  const handleGetCompany: (id: string) => Promise<void> = async (id) => {
-    try {
-      const res = await getSingleCompany(id)
-      console.log(res)
-
-      if (res.status === 200) {
-        console.log('商品詳細を取得しました')
-        setCompany(res.data)
-        setPreImage(res.data.image.url)
-      } else {
-        console.log('No products')
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const company = useHandleGetSingleCompany(id != null ? id : '')
 
   const formValidation: () => boolean = () => {
     let valid = true
@@ -64,16 +39,17 @@ const EditCompany: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log('会社情報取得開始')
-    ;(id != null) && handleGetCompany(id)
-  }, [])
+    (company !== undefined) && setNewCompany(company)
+  }, [id])
 
   const handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
     const { name, value } = e.target
-    if (e.target.name === 'image' && (e.target.files != null)) {
-      setCompany({ ...company, [name]: e.target.files[0] })
-    } else {
-      setCompany({ ...company, [name]: value })
+    if (newCompany !== undefined) {
+      if (e.target.name === 'image' && (e.target.files != null)) {
+        setNewCompany({ ...newCompany, [name]: e.target.files[0] })
+      } else {
+        setNewCompany({ ...newCompany, [name]: value })
+      }
     }
   }
 
@@ -81,15 +57,15 @@ const EditCompany: React.FC = () => {
     e.preventDefault()
 
     const formData = new FormData()
-    if (company != null) {
-      formData.append('company[name]', (company.name != null) ? company.name : '')
+    if (newCompany != null) {
+      formData.append('company[name]', (newCompany.name != null) ? newCompany.name : '')
       changeImage && (formData.append('company[image]', (croppedFile != null) ? croppedFile : ''))
-      formData.append('company[introduction]', (company.introduction != null) ? company.introduction : '')
-      formData.append('company[address]', (company.address != null) ? company.address : '')
-      formData.append('company[numberOfEmployees]', String(company.numberOfEmployees))
-      formData.append('company[capital]', String(company.capital))
-      formData.append('company[dateOfEstablishment]', (company.dateOfEstablishment != null) ? String(company.dateOfEstablishment) : '')
-      formData.append('company[corporateSite]', (company.corporateSite != null) ? String(company.corporateSite) : '')
+      formData.append('company[introduction]', (newCompany.introduction != null) ? newCompany.introduction : '')
+      formData.append('company[address]', (newCompany.address != null) ? newCompany.address : '')
+      formData.append('company[numberOfEmployees]', String(newCompany.numberOfEmployees))
+      formData.append('company[capital]', String(newCompany.capital))
+      formData.append('company[dateOfEstablishment]', (newCompany.dateOfEstablishment != null) ? String(newCompany.dateOfEstablishment) : '')
+      formData.append('company[corporateSite]', (newCompany.corporateSite != null) ? String(newCompany.corporateSite) : '')
     }
 
     if (id != null) {
@@ -117,7 +93,7 @@ const EditCompany: React.FC = () => {
 
   return (
     <>
-    {(company != null) && (
+    {(newCompany != null) && (
       <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
         <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Typography variant='subtitle2' align='center' mb={5}>
@@ -152,7 +128,7 @@ const EditCompany: React.FC = () => {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
-                  backgroundImage: `url(${(preImage !== undefined) ? preImage : ''})`
+                  backgroundImage: `url(${(company !== undefined && company.image !== undefined) ? company.image.url : ''})`
                 }}
               >
             </Paper>
@@ -168,7 +144,7 @@ const EditCompany: React.FC = () => {
                 name = 'name'
                 label='名前'
                 fullWidth
-                defaultValue={company.name}
+                defaultValue={newCompany.name}
                 autoComplete='given-name'
                 variant='standard'
                 inputProps={ { required: true, maxLength: 30 } }
@@ -183,7 +159,7 @@ const EditCompany: React.FC = () => {
                 minRows={3}
                 maxRows={4}
                 fullWidth
-                defaultValue={company.introduction}
+                defaultValue={newCompany.introduction}
                 variant='standard'
                 inputProps={ { maxLength: 300 } }
                 onChange={handleOnChange}
@@ -197,7 +173,7 @@ const EditCompany: React.FC = () => {
                 minRows={3}
                 maxRows={4}
                 fullWidth
-                defaultValue={company.address}
+                defaultValue={newCompany.address}
                 variant='standard'
                 inputProps={ { maxLength: 300 } }
                 onChange={handleOnChange}
@@ -209,7 +185,7 @@ const EditCompany: React.FC = () => {
                 name='numberOfEmployees'
                 label='従業員数'
                 fullWidth
-                defaultValue={company.numberOfEmployees}
+                defaultValue={newCompany.numberOfEmployees}
                 variant='standard'
                 onChange={handleOnChange}
               />
@@ -220,7 +196,7 @@ const EditCompany: React.FC = () => {
                 name='capital'
                 label='資本金'
                 fullWidth
-                defaultValue={company.capital}
+                defaultValue={newCompany.capital}
                 variant='standard'
                 onChange={handleOnChange}
               />
@@ -231,7 +207,7 @@ const EditCompany: React.FC = () => {
                 name='dateOfEstablishment'
                 label='設立年月日'
                 fullWidth
-                defaultValue={company.dateOfEstablishment}
+                defaultValue={newCompany.dateOfEstablishment}
                 variant='standard'
                 InputLabelProps={{
                   shrink: true
@@ -244,7 +220,7 @@ const EditCompany: React.FC = () => {
                 name='corporateSite'
                 label='会社HP'
                 fullWidth
-                value={company.corporateSite}
+                value={newCompany.corporateSite}
                 variant='standard'
                 inputRef={corporateSiteRef}
                 error={corporateSiteError}
@@ -258,7 +234,7 @@ const EditCompany: React.FC = () => {
                 <Button
                   variant='contained'
                   type='submit'
-                  disabled={!(company.name != null && company.name.length > 0)}
+                  disabled={!(newCompany.name != null && newCompany.name.length > 0)}
                   onClick={(e) => { if (formValidation()) { void handleFormData(e) } }}
                   sx={{ mt: 3, ml: 1 }}
                 >
