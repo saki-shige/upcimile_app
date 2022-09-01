@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Grid, TextField, Container, Paper, Typography, Box } from '@mui/material'
+import FaceIcon from '@mui/icons-material/Face'
 
 import ImageForm from '../layouts/ImageForm'
 import { getSingleCompany, updateCompany } from '../../lib/api/company'
@@ -119,10 +120,12 @@ const EditCompany: React.FC = () => {
     {(company != null) && (
       <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
         <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component='h1' variant='h4' align='center'>
-            商品情報編集
+          <Typography variant='subtitle2' align='center' mb={5}>
+            <FaceIcon />
+              {' 企業情報編集 '}
+            <FaceIcon />
           </Typography>
-          <Typography variant='h6' gutterBottom sx={{ textAlign: 'center' }}>
+          <Typography variant='body2' sx={{ textAlign: 'center', mb: 2 }}>
             商品画像
           </Typography>
           <Grid container spacing={3}>

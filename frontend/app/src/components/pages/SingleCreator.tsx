@@ -37,8 +37,8 @@ const SingleCreator: FC = () => {
 
         <Container sx={{ pb: 8 }} maxWidth={false}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Typography variant="h6" color="inherit" paragraph>
-              {`${creator.name}の動画`}
+            <Typography variant="subtitle2">
+              {` ${creator.name} の動画`}
             </Typography>
           </Box>
           {(videos != null)
@@ -56,10 +56,27 @@ const SingleCreator: FC = () => {
                       alt={video.title}
                     />
                     <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography gutterBottom variant="h5" component="h2">
+                    <Typography
+                      variant='h6'
+                      sx={{
+                        height: 100,
+                        display: '-webkit-box',
+                        overflow: 'hidden',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical'
+                      }}
+                    >
                         {video.title}
                       </Typography>
-                      <Typography>
+                      <Typography
+                      variant='body2'
+                      sx={{
+                        height: 100,
+                        display: '-webkit-box',
+                        overflow: 'hidden',
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: 'vertical'
+                      }}>
                         {video.introduction}
                       </Typography>
                       <Typography component='a' href={video.url}>

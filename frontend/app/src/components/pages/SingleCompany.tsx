@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Typography, Container, Box } from '@mui/material'
+import DiamondIcon from '@mui/icons-material/Diamond'
 
 import { useHandleGetSingleCompany } from '../hooks/companies'
 import { IntroductionCard } from '../layouts/IntroductionCard'
@@ -10,8 +11,9 @@ import { CompanyIntroduction } from '../layouts/CompanyIntroduction'
 
 const SingleCompany: FC = () => {
   const { id } = useParams<{id: string}>()
-  const [update, setUpdate] = useState<boolean>(false)
-  const company = (id != null) ? useHandleGetSingleCompany(id, update) : undefined
+  const company = (id != null) ? useHandleGetSingleCompany(id) : undefined
+
+  console.log(company)
 
   return (
     <>
@@ -30,15 +32,18 @@ const SingleCompany: FC = () => {
 
         <Container sx={{ pb: 8 }} maxWidth={false}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Typography variant="h6" color="inherit" paragraph>
+            <Typography variant="subtitle2" mb={5}>
+              <DiamondIcon />
               {`${company.name}の商品`}
+              <DiamondIcon />
             </Typography>
           </Box>
-          {(company.products != null)
+          {(company.products != null && (company.products.length > 0))
             ? (
             <CardList items={company.products} type='products'></CardList>
               )
-            : '商品が登録されていません'}
+            : (
+              <Typography variant="body2" textAlign={'center'}>商品が登録されていません</Typography>)}
         </Container>
       </IntroductionCard>
         )

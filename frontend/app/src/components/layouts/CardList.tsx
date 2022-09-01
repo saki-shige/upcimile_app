@@ -1,12 +1,13 @@
 import React, { FC, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { Card, Typography, CardContent, Grid, CardActionArea, CardMedia, Button } from '@mui/material'
+import { Card, Typography, CardContent, Grid, CardActionArea, CardMedia, Button, Container } from '@mui/material'
 
 import { Product, Company } from '../../interface'
 import { MessageContext } from '../providers/MessageProvider'
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 import { deleteProduct } from '../../lib/api/product'
+import { StyledNoImageBox } from '../styled/Styled'
 
 interface Props {
   items: Product[] | Company[]
@@ -18,6 +19,7 @@ interface Props {
 export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const { currentCompany } = useContext(CompanyAuthContext)
+  const navigation = useNavigate()
 
   const handleClickDeleteProduct: (item: Product) => Promise<void> = async (item) => {
     if (currentCompany != null && currentCompany.id !== item.companyId) {
@@ -48,47 +50,56 @@ export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }
   }
 
   return (
-    <Grid container spacing={1} sx={{ px: 8 }}>
+    <Grid container spacing={3} sx={{ px: 8 }}>
       {items.map((item, index) => (
         <Grid item data-testid={`${type}`} key={`${type}_${index}`} xs={12} sm={6} md={3}>
           <Card
-            sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 0, borderRadius: 0 }}
+            sx={{ height: '300', display: 'flex', flexDirection: 'column', boxShadow: 1, borderRadius: 0 }}
           >
             <CardActionArea component={Link} to={`/${type}/${item.id}`} data-testid={`${type}_${index}`}>
-              <CardMedia
+              {(item.image != null && item.image.url != null)
+                ? (
+                <CardMedia
                 component='img'
-                image={(item.image != null) ? item.image.url : ''}
-                alt={item.name}
-              />
-              <CardContent sx={{ flexGrow: 1 }}>
+                image={item.image.url}
+                />
+                  )
+                : (
+                  <StyledNoImageBox>
+                    {item.name}
+                  </StyledNoImageBox>
+                  )}
+                <CardContent sx={{ flexGrow: 1 }}>
                 <Typography
                   gutterBottom
-                  variant='h5'
-                  component='h2'
+                  variant='h6'
                   sx={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                 >
                   {item.name}
                 </Typography>
-                <Typography sx={{
-                  height: 100,
-                  display: '-webkit-box',
-                  overflow: 'hidden',
-                  WebkitLineClamp: 4,
-                  WebkitBoxOrient: 'vertical'
-                }}>
+                <Typography
+                  variant= 'body2'
+                  sx={{
+                    height: 100,
+                    display: '-webkit-box',
+                    overflow: 'hidden',
+                    WebkitLineClamp: 5,
+                    WebkitBoxOrient: 'vertical'
+                  }}
+                >
                   {item.introduction}
                 </Typography>
               </CardContent>
             </CardActionArea>
                 {(provider === true) && (type === 'products') && (
-                  <>
-                    <Typography>
-                      <Link to={`/products/edit/${item.id}`}>商品を編集する</Link>
-                    </Typography>
-                    <Button onClick={ () => { void handleClickDeleteProduct(item as Product) } }>
-                      商品を削除する
+                  <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Button onClick={ () => { navigation(`/products/edit/${item.id}`) } }>
+                      {`${item.name}を編集する`}
                     </Button>
-                  </>
+                    <Button onClick={ () => { void handleClickDeleteProduct(item as Product) } }>
+                    {`${item.name}を削除する`}
+                    </Button>
+                  </Container>
                 )}
           </Card>
         </Grid>

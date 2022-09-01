@@ -1,7 +1,9 @@
 import React, { FC, useContext } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 
-import { Typography, CardContent, Container, Box, Grid, Avatar, Button } from '@mui/material'
+import { Typography, CardContent, Container, Box, Grid, Avatar, Button, Card, CardActionArea, CardMedia } from '@mui/material'
+import DiamondIcon from '@mui/icons-material/Diamond'
+import FaceIcon from '@mui/icons-material/Face'
 
 import { useHandleGetSingleProduct } from '../hooks/products'
 import { auth } from '../../lib/api/firebase'
@@ -11,6 +13,7 @@ import { IntroductionCard } from '../layouts/IntroductionCard'
 import { CardList } from '../layouts/CardList'
 import { CompanyIntroduction } from '../layouts/CompanyIntroduction'
 import { MessageContext } from '../providers/MessageProvider'
+import { StyledNoImageBox } from '../styled/Styled'
 
 const SingleProduct: FC = () => {
   const { id } = useParams<{id: string}>()
@@ -44,25 +47,24 @@ const SingleProduct: FC = () => {
         <IntroductionCard>
           <Container
             sx={{
-              py: 10,
+              py: 8,
               mx: 'auto'
             }}
           >
-            <Grid container spacing={2} justifyContent="center" sx={{ mx: 0, px: 4 }}>
-              <Grid item md={4} sm={8} xs={12}
-                sx={{
-                  position: 'relative',
-                  backgroundColor: 'grey.800',
-                  color: '#fff',
-                  width: 400,
-                  height: 300,
-                  mb: 4,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  backgroundImage: `url(${product.image.url})`
-                }}
-              >
+            <Grid container spacing={0} justifyContent="center" sx={{ px: 4 }}>
+              <Grid item md={4} sm={8} xs={12}>
+              {(product.image != null && product.image.url != null)
+                ? (
+                <CardMedia
+                component='img'
+                image={product.image.url}
+                />
+                  )
+                : (
+                  <StyledNoImageBox>
+                    {product.name}
+                  </StyledNoImageBox>
+                  )}
               </Grid>
               <Grid item xs={12} sm={8} md={4}>
                 <CardContent>
@@ -86,16 +88,20 @@ const SingleProduct: FC = () => {
             </Grid>
               {(company != null)
                 ? (
-                  <Container
-                    sx={{
-                      width: 400,
-                      py: 10,
-                      mx: 'auto'
-                    }}
+                  <Card
+                  sx={{
+                    width: 400,
+                    mt: 8,
+                    mx: 'auto',
+                    boxShadow: 0
+                  }}
                   >
+                    <CardActionArea component={Link} to={`/companies/${company.id}`}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                      <Typography variant="h6" color="inherit" paragraph>
-                        提供企業
+                      <Typography variant="subtitle2" mb={5}>
+                        <FaceIcon />
+                        {' 提 供 企 業 '}
+                        <FaceIcon />
                       </Typography>
                     </Box>
                     <Avatar
@@ -108,14 +114,17 @@ const SingleProduct: FC = () => {
                     }}
                     />
                     <CompanyIntroduction company= {company} />
-                  </Container>
+                  </CardActionArea>
+                  </Card>
                   )
                 : ''}
             </Container>
             <Container sx={{ pb: 8 }} maxWidth={false}>
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Typography variant="h6" color="inherit" paragraph>
-                  {'関連商品'}
+                <Typography variant="subtitle2" mb={5}>
+                  <DiamondIcon />
+                  {' 関 連 商 品 '}
+                  <DiamondIcon />
                 </Typography>
               </Box>
               {(relatedProducts != null)
