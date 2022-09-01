@@ -22,9 +22,11 @@ export const CompanyIntroduction: FC<Props> = ({ company }) => {
         従業員数: {(company.numberOfEmployees != null) ? company.numberOfEmployees : 'Unregistered'}<br />
         資本金: {(company.capital != null) ? company.capital : 'Unregistered'}<br />
       </Typography>
-      <Typography component='a' href={company.corporateSite} variant="body2" sx={{ textAlign: 'center', pb: 3 }}>
-        詳しくは企業HPへ
-      </Typography>
+      {(company.corporateSite != null &&
+        <Typography component='a' href={company.corporateSite} variant="body2" sx={{ textAlign: 'center', pb: 3 }}>
+          詳しくは企業HPへ
+        </Typography>
+      )}
     </CardContent>
   )
 }
