@@ -26,7 +26,7 @@ export const useHandleGetCompanies: (limit?: number) => Company[] | undefined = 
   return (companies)
 }
 
-export const useHandleGetSingleCompany: (id: string, update: boolean) => Company | undefined = (id, update) => {
+export const useHandleGetSingleCompany: (id: string, update?: boolean) => Company | undefined = (id, update) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [company, setCompany] = useState<Company>()
 
