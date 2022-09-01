@@ -10,7 +10,7 @@ import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 import { CreatorAuthContext } from '../providers/CreatorAuthProvider'
@@ -38,12 +38,14 @@ const ResponsiveAppBar: FC = () => {
     setAnchorElUser(null)
   }
 
+  const navigation = useNavigate()
+
   return (
-    <AppBar position="static" sx={{ bgcolor: 'primary.dark', color: 'white' }}>
+    <AppBar position="static" sx={{ bgcolor: 'inherit', color: 'primary.dark' }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ height: 80 }}>
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
             component={Link}
             to="/"
@@ -90,9 +92,8 @@ const ResponsiveAppBar: FC = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page[0]} onClick={handleCloseNavMenu}>
-                  {/* [pending]リンク先は要編集 */}
-                  <Link to={page[1]}>{page[0]}</Link>
+                <MenuItem key={page[0]} onClick={() => { navigation(page[1]); handleCloseNavMenu() }}>
+                  {page[0]}
                 </MenuItem>
               ))}
             </Menu>
@@ -120,10 +121,9 @@ const ResponsiveAppBar: FC = () => {
               <Button
                 key={page[0]}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'inderit', display: 'block' }}
               >
-                {/* [pending]リンク先は要編集 */}
-                <Link to={page[1]}>{page[0]}</Link>
+                <Typography component={Link} to={page[1]} mx={1} sx={{ color: 'inherit', textDecoration: 'none' }}>{page[0]}</Typography>
               </Button>
             ))}
           </Box>
@@ -140,7 +140,7 @@ const ResponsiveAppBar: FC = () => {
             <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <Box>
                 <Tooltip title="Open settings">
-                  <Button onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Button onClick={handleOpenUserMenu} sx={{ color: 'inherit', p: 0 }}>
                     Login
                   </Button>
                 </Tooltip>
@@ -160,12 +160,11 @@ const ResponsiveAppBar: FC = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                    <MenuItem onClick={handleCloseUserMenu}>
-                      <Link to={'/companies/signin'}>Login as a company</Link>
+                    <MenuItem onClick={() => { handleCloseUserMenu(); navigation('/companies/signin') }}>
+                      企業ログイン
                     </MenuItem>
-                    <MenuItem onClick={handleCloseUserMenu}>
-                      <Link to={'/creators/signin'}>Login as a creator<br />
-                      (using google account)</Link>
+                    <MenuItem onClick={() => { handleCloseUserMenu(); navigation('/creators/signin') }}>
+                      クリエイターログイン
                     </MenuItem>
                 </Menu>
               </Box>
