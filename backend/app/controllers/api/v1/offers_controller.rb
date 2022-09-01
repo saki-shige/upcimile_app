@@ -8,13 +8,13 @@ class Api::V1::OffersController < ApplicationController
       return render status: 401, json: { message: 'ログインしてください' } unless current_api_v1_creator
 
       id = current_api_v1_creator.id
-      offers = Offer.where(creator_id: id)
+      offers = Offer.where(creator_id: id).recent
       render status: 200, json: offers, include: [product: { include: :company }]
     when 'company'
       return render status: 401, json: { message: 'ログインしてください' } unless current_api_v1_company
 
       id = current_api_v1_company.id
-      offers = Offer.joins(:product).where(product: { company_id: id })
+      offers = Offer.joins(:product).where(product: { company_id: id }).recent
       render status: 200, json: offers, include: %i[product creator]
     else
       render status: 400, json: { message: 'company_idもしくはcreator_idを指定してください' }
