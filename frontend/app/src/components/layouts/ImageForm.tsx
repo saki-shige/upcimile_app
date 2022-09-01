@@ -12,11 +12,12 @@ const ImageForm: FC<Props> = ({ setCroppedFile }) => {
   const handleChangeFile = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file =
-        (e.target.files !== null) ? e.target.files[0] : null
+      (e.target.files !== null) ? e.target.files[0] : null
       if (file != null) {
         const reader = new FileReader()
         reader.addEventListener('load', () =>
-          reader.result && (setSrc(reader.result.toString() || ''))
+          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-base-to-string
+          (reader.result != null) && (setSrc(reader.result.toString() || ''))
         )
         reader.readAsDataURL(file)
         setOpen(true)
