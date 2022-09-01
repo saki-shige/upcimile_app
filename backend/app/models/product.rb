@@ -12,6 +12,7 @@ class Product < ApplicationRecord
   validates :category_id, presence: true
   validate :validate_available_from_not_before_today
   validate :validate_available_to_not_before_available_to
+  scope :available, -> { where("available_from <= ?", Date.today).where("available_to is null or available_to >= ?", Date.today)}
 
   private
 
