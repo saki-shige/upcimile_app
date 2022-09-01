@@ -6,6 +6,7 @@ class Company < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
+  include CommonScope
   has_many :products, dependent: :destroy
   has_many :offers, through: :products
   mount_uploader :image, ImageUploader

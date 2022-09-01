@@ -1,4 +1,5 @@
 class Creator < ApplicationRecord
+  include CommonScope
   has_many :offers
   validates :name, presence: true, length: { maximum: 30 }
   validates :introduction, length: { maximum: 300 }

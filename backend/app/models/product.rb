@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  include CommonScope
   belongs_to :company
   belongs_to :category
   has_many :product_tags
