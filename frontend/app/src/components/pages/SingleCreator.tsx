@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { Typography, CardContent, Container, Box, Grid, Card, CardActionArea, CardMedia } from '@mui/material'
+import { Typography, CardContent, Container, Box, Grid, Card, CardMedia } from '@mui/material'
 
 import { useHandleGetSingleCreator } from '../hooks/creators'
 import { IntroductionCard } from '../layouts/IntroductionCard'
