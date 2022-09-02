@@ -2,11 +2,11 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authenticate_company, only: %i[create update destroy]
 
   def index
-    if params[:category]
-      products = Product.available.recent.where(category_id: params[:category]).limit(params[:limit])
-    else
-      products = Product.available.recent.limit(params[:limit])
-    end
+    products = if params[:category]
+                 Product.available.recent.where(category_id: params[:category]).limit(params[:limit])
+               else
+                 Product.available.recent.limit(params[:limit])
+               end
     render json: products
   end
 
