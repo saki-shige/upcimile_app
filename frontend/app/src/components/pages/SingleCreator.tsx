@@ -49,41 +49,39 @@ const SingleCreator: FC = () => {
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 1 }}
                 >
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      image={video.thumbnail}
-                      alt={video.title}
-                    />
-                    <CardContent sx={{ flexGrow: 1 }}>
+                  <CardMedia
+                    component="img"
+                    image={video.thumbnail}
+                    alt={video.title}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography
+                    variant='h6'
+                    sx={{
+                      height: 100,
+                      display: '-webkit-box',
+                      overflow: 'hidden',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical'
+                    }}
+                  >
+                      {video.title}
+                    </Typography>
                     <Typography
-                      variant='h6'
-                      sx={{
-                        height: 100,
-                        display: '-webkit-box',
-                        overflow: 'hidden',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical'
-                      }}
-                    >
-                        {video.title}
-                      </Typography>
-                      <Typography
-                      variant='body2'
-                      sx={{
-                        height: 100,
-                        display: '-webkit-box',
-                        overflow: 'hidden',
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: 'vertical'
-                      }}>
-                        {video.introduction}
-                      </Typography>
-                      <Typography component='a' href={video.url}>
-                        Youtubeでこの動画を見る
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
+                    variant='body2'
+                    sx={{
+                      height: 100,
+                      display: '-webkit-box',
+                      overflow: 'hidden',
+                      WebkitLineClamp: 4,
+                      WebkitBoxOrient: 'vertical'
+                    }}>
+                      {video.introduction}
+                    </Typography>
+                    <Typography component='a' href={video.url}>
+                      Youtubeでこの動画を見る
+                    </Typography>
+                  </CardContent>
                 </Card>
               </Grid>
             ))}
