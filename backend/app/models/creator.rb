@@ -6,51 +6,50 @@ class Creator < ApplicationRecord
   validates :channel_id, presence: true
   require 'google/apis/youtube_v3'
 
-  def find_channel_info
-    response = youtube_client.list_channels(%i[snippet statistics], id: channel_id)
-    # channel_idが間違っている（ex.ユーザーがyoutube上のチャンネルを消去した、変更した)場合はnilを返す。
-    # ※list_channelsは存在しないchannel_idを指定した場合,status200と空のitemsを返すため
-    if response.items
-      id = self.id
-      image = response.items[0].snippet.thumbnails.medium.url
-      channel_title = response.items[0].snippet.title
-      subscriber_count = response.items[0].statistics.subscriber_count
-      introduction = response.items[0].snippet.description
-      creator_info = { id:, image: { url: image }, channel_title:, subscriber_count:,
-                       introduction: }
-    else
-      creator_info = nil
-    end
+  def channel_info
+    channel_info = find_channel_info(channel_id)
+    { id:, image: channel_info.snippet.thumbnails.medium.url, name: channel_info.snippet.title,
+      subscriber_count: channel_info.statistics.subscriber_count, introduction: channel_info.snippet.description }
   end
 
-  def find_channel_video_info
-    # （仮）サンプルデータを作るまで
-    # channel_id = self.channel_id
-    channel_id = 'UC8oF7jmQsKbMVrCv5LrP32w'
-    videos_response = youtube_client.list_searches(:snippet, channel_id:, type: 'video', max_results: 4)
-    # channel_idが間違っている（ex.ユーザーがyoutube上のチャンネルを消去した、変更した)場合はnilを返す。
-    # 　※list_searchesは存在しないchannel_idを指定した場合,status200と空の配列を返す
-    # 　※動画を登録していないケースとchannel_idが誤っているケースを分ける
-    if videos_response
-      creator_videos = []
-      videos_response.items.each do |video|
-        introduction = video.snippet.description
-        thumbnail = video.snippet.thumbnails.high.url
-        title = video.snippet.title
-        url = "https://www.youtube.com/watch?v=XkUkZUtLrBI#{video.id.video_id}"
-        creator_video = { title:, thumbnail:, introduction:, url: }
-        creator_videos.push(creator_video)
-      end
-      creator_videos
-    else
-      creator_videos = nil
+  def channel_videos
+    channel_videos = find_channel_videos(channel_id)
+    creator_videos = []
+    channel_video_info.items.each do |video|
+      introduction = video.snippet.description
+      thumbnail = video.snippet.thumbnails.high.url
+      title = video.snippet.title
+      url = "https://www.youtube.com/watch?v=XkUkZUtLrBI#{video.id.video_id}"
+      creator_video = { title:, thumbnail:, introduction:, url: }
+      creator_videos.push(creator_video)
     end
+    creator_videos
   end
+
+  def my_channel_info(access_token)
+    my_channel_info = find_my_channel_info(access_token)
+    creator = self
+    creator.channel_id = my_channel_info.id
+    creator.name = my_channel_info.snippet.title
+    creator.introduction = my_channel_info.snippet.description
+    creator.image = my_channel_info.snippet.thumbnails.high.url
+    creator
+  end
+
+  private
 
   def find_my_channel_info(access_token)
     youtube = Google::Apis::YoutubeV3::YouTubeService.new
     youtube.authorization = access_token
-    response = youtube.list_channels([:snippet], mine: true)
+    youtube.list_channels([:snippet], mine: true).items[0]
+  end
+
+  def find_channel_info(channel_id)
+    youtube_client.list_channels(%i[snippet statistics], id: channel_id).items[0]
+  end
+
+  def find_channel_videos(channel_id)
+    youtube_client.list_searches(:snippet, channel_id:, type: 'video', max_results: 4)
   end
 
   def youtube_client

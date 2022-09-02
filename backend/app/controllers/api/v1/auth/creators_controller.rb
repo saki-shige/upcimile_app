@@ -7,18 +7,7 @@ class Api::V1::Auth::CreatorsController < ApplicationController
 
     creator = Creator.find_or_initialize_by(uid: payload['sub'])
     creator.email = payload['email']
-    my_channel_info = creator.find_my_channel_info(params[:access_token])
-    raise ArgumentError, 'No Youtube Account' unless my_channel_info.items
-
-    creator.channel_id = my_channel_info.items[0].id
-    creator.name = my_channel_info.items[0].snippet.title
-    creator.introduction = my_channel_info.items[0].snippet.description
-    creator.image = my_channel_info.items[0].snippet.thumbnails.high.url
-    message = if creator.new_record?
-                'ユーザー登録を完了しました'
-              else
-                'ログインしました'
-              end
+    creator = creator.my_channel_info(params[:access_token])
     if creator.save
       render json: { creator_info: creator, message: }
     else

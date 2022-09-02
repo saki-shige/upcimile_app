@@ -12,8 +12,8 @@ class Api::V1::CreatorsController < ApplicationController
 
   def show
     creator = Creator.find(params[:id])
-    creator_info = creator.find_channel_info
-    creator_videos = creator.find_channel_video_info
+    creator_info = creator.channel_info
+    creator_videos = creator.channel_videos
     if creator_info && creator_videos
       render status: 200, json: { creator_info:, creator_videos: }
     else
