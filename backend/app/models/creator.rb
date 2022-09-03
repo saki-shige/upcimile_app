@@ -15,7 +15,7 @@ class Creator < ApplicationRecord
   def channel_videos
     channel_videos = find_channel_videos(channel_id)
     creator_videos = []
-    channel_video_info.items.each do |video|
+    channel_videos.items.each do |video|
       introduction = video.snippet.description
       thumbnail = video.snippet.thumbnails.high.url
       title = video.snippet.title
