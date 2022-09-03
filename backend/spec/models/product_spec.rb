@@ -67,4 +67,16 @@ RSpec.describe 'Product', type: :model do
       end
     end
   end
+
+  describe 'scope(available)' do
+    let(:day_before_today) { Date.yesterday }
+    let!(:products) { create_list(:product, 3) }
+    let!(:products_not_available) do
+      create_list(:product, 2, :skip_validate, available_from: day_before_today, available_to: day_before_today)
+    end
+
+    it '利用可能な商品を抽出する' do
+      expect(Product.available.length).to eq(products.length)
+    end
+  end
 end
