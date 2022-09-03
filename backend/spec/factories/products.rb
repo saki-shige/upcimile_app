@@ -4,7 +4,7 @@ FactoryBot.define do
     association :category
     name { 'test product' }
     introduction { 'testproduct introduction' }
-    available_from { '2020-1-1' }
+    available_from { Date.today }
     # available_to
     can_be_provided { true }
     # image
