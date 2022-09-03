@@ -8,18 +8,43 @@ RSpec.describe 'Products', type: :request do
   let!(:other_products) { create_list(:product, 5, name: 'other_product') }
 
   describe 'GET /api/v1/products/' do
-    before do
-      get '/api/v1/products'
+    context 'limit,categoryが指定されていない時' do
+      before do
+        get '/api/v1/products'
+      end
+
+      it '全ての商品を取得する' do
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        # product(1つ)＋related_product+other_product
+        expect(json.length).to eq(1 + related_products.length + other_products.length)
+      end
     end
 
-    it 'レスポンスが帰ってくる' do
-      expect(response.status).to eq(200)
+    context 'limitが指定されている場合' do
+      let(:limit) { 2 }
+      before do
+        get "/api/v1/products?limit=#{limit}"
+      end
+
+      it '指定された数の商品を取得する' do
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        # product(1つ)＋related_product+other_product
+        expect(json.length).to eq(limit)
+      end
     end
 
-    it '全ての商品を取得する' do
-      json = JSON.parse(response.body)
-      # product(1つ)＋related_product+other_product
-      expect(json.length).to eq(1 + related_products.length + other_products.length)
+    context 'categoryが指定されている場合' do
+      before do
+        get "/api/v1/products?category=#{category.id}"
+      end
+
+      it '指定されたカテゴリーの商品を取得する' do
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json.length).to eq(1 + related_products.length)
+      end
     end
   end
 
@@ -37,14 +62,14 @@ RSpec.describe 'Products', type: :request do
       expect(json['product']['name']).to eq(product.name)
       expect(json['product']['introduction']).to eq(product.introduction)
       expect(json['related_products'].length).to eq(related_products.length)
-      expect(json['related_products'][0]['name']).to eq(related_products[0].name)
+      expect(json['related_products'][0]['id']).to eq(related_products[related_products.length - 1].id)
       expect(json['company']['name']).to eq(company.name)
     end
   end
 
   describe 'POST /api/v1/products' do
     let(:valid_params) do
-      { name: 'name', introduction: 'introduction', available_from: '2020-1-1', company_id: company.id,
+      { name: 'name', introduction: 'introduction', available_from: Date.today, company_id: company.id,
         category_id: category.id }
     end
 
