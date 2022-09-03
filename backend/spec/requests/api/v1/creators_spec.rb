@@ -4,10 +4,10 @@ RSpec.describe 'Creators', type: :request do
   describe 'GET /api/v1/creators/:id' do
     let(:creator) { create(:creator) }
     before do
-      youtube_client_mock = instance_double('Youtube client')
-      allow(Creator).to receive(:find).and_return(youtube_client_mock)
-      allow(youtube_client_mock).to receive(:find_channel_info).and_return(creator_info)
-      allow(youtube_client_mock).to receive(:find_channel_video_info).and_return(creator_videos)
+      creator_mock = instance_double(Creator)
+      allow(Creator).to receive(:find).and_return(creator_mock)
+      allow(creator_mock).to receive(:channel_info).and_return(creator_info)
+      allow(creator_mock).to receive(:channel_videos).and_return(creator_videos)
     end
 
     context 'モデルからデータが取得できた時' do
