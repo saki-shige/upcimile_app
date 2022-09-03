@@ -20,7 +20,7 @@ export const BasicTable: FC<Props> = ({ type }) => {
   const [offers, setOffers] = useState<MyOffers[] | OffersToMe[]>()
   const navigation = useNavigate()
 
-  const handleRespondToOffer: (id: string, type: 'accept' | 'decline') => Promise<void> = async (id, type) => {
+  const handleRespondToOffer: (id: number, type: 'accept' | 'decline') => Promise<void> = async (id, type) => {
     console.log(type)
     const res = await respondToOffer(id, type)
     console.log(res.data)

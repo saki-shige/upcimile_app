@@ -6,7 +6,7 @@ export const makeOffer = (data: {idToken: string, product_id:string})  => {
   return client.post('/offers', data)
 }
 
-export const respondToOffer = (id:string, type:'accept' | 'decline') => {
+export const respondToOffer = (id:number, type:'accept' | 'decline') => {
   return client.put(`/offers/${id}?type=${type}`, {}, {headers: {
     "access-token": Cookies.get("_access_token") || '',
     "client": Cookies.get("_client") || '',
