@@ -5,17 +5,17 @@ RSpec.describe 'Api::V1::Offers', type: :request do
     context 'クエリパラメーターがpart=companyの場合' do
       let(:company) { create(:company) }
       let(:product) { create(:product, company:) }
-      let(:product_not_related) { create(:product) }
       let!(:offers) { create_list(:offer, 3, product:) }
       let!(:offers_not_related) { create_list(:offer, 2) }
       let(:token) { sign_in company }
 
-      it 'companyに関連するすべてのoffer,offerに関連するproductを返す' do
+      it 'companyに関連するすべてのofferを新しい順に,offerに関連するproductとともにを返す' do
         get '/api/v1/offers?part=company', headers: token
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
         expect(json.length).to eq(offers.length)
-        expect(json[0]['product']['id']).to eq(product.id)
+        expect(json[0]['id']).to eq(offers[offers.length - 1].id)
+        expect(json[0]['product']['name']).to eq(product.name)
       end
     end
 
@@ -28,12 +28,13 @@ RSpec.describe 'Api::V1::Offers', type: :request do
         stub_current_api_v1_creator(creator)
       end
 
-      it 'ccreatorに関連するすべてのoffer,offerに関連するproductを返す' do
+      it 'creatorに関連するすべてのofferを新しい順に,offerに関連するproductとともにを返す' do
         get '/api/v1/offers?part=creator', headers: headers
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
         expect(json.length).to eq(offers.length)
-        expect(json[0]['product']['id']).to eq(offers[0].product.id)
+        expect(json[0]['id']).to eq(offers[offers.length - 1].id)
+        expect(json[0]['product']['name']).to include(offers[(offers.length - 1)].product.name)
       end
     end
 
