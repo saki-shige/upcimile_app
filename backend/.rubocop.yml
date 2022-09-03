@@ -13,6 +13,10 @@ AllCops:
     - 'Rakefile'
   NewCops: enable
 
+Metrics/AbcSize:
+  Max: 20
+Metrics/MethodLength:
+  Max: 13
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
