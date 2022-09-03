@@ -13,7 +13,9 @@ class Product < ApplicationRecord
   validates :category_id, presence: true
   validate :validate_available_from_not_before_today
   validate :validate_available_to_not_before_available_to
-  scope :available, -> { where("available_from <= ?", Date.today).where("available_to is null or available_to >= ?", Date.today)}
+  scope :available, lambda {
+  where('available_from <= ?', Date.today).where('available_to is null or available_to >= ?', Date.today)
+}
 
   private
 
@@ -22,6 +24,8 @@ class Product < ApplicationRecord
   end
 
   def validate_available_to_not_before_available_to
-    errors.add(:available_to, 'はavailable_to以降の日付を設定してください') if available_from && available_to && available_from > self.available_to
+    return unless available_from && available_to && available_from > available_to
+
+    errors.add(:available_to, 'はavailable_to以降の日付を設定してください')
   end
 end
