@@ -23,7 +23,7 @@ export const createProduct = (data: UpdateProductFormData) => {
   })
 }
 
-export const updateProduct = (id: string, params: any) => {
+export const updateProduct = (id: string, params: UpdateProductFormData) => {
   return client.patch(`products/${id}`, params, {
     headers: {
       'content-type': 'multipart/form-data',
