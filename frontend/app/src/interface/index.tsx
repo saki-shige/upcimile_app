@@ -38,18 +38,18 @@ export interface UpdateCompanyData {
 }
 
 export interface UpdateCompanyFormData extends FormData {
-  append(name: keyof UpdateProductData, value: String | Blob, fileName?: string): any
+  append: (name: keyof UpdateProductData, value: String | Blob, fileName?: string) => any
 }
 
 export interface Product {
   id: number
   name: string
-  introduction?: string
+  introduction: string
   availableFrom: string
   availableTo?: string
   canBeProvided: boolean
   companyId: number
-  categoryId?: number
+  categoryId: number
   image: {
     url: string
   }
@@ -57,13 +57,13 @@ export interface Product {
 }
 
 export interface FormProduct {
-  name?: string
-  introduction?: string
-  availableFrom?: string
+  name: string
+  introduction: string
+  availableFrom: string
   availableTo?: string
   canBeProvided?: boolean
-  companyId?: number
-  categoryId?: number
+  companyId: number
+  categoryId: number
 }
 
 export interface UpdateProductData {
@@ -79,7 +79,7 @@ export interface UpdateProductData {
 }
 
 export interface UpdateProductFormData extends FormData {
-  append(name: keyof UpdateProductData, value: String | Blob, fileName?: string): any
+  append: (name: keyof UpdateProductData, value: string | Blob, fileName?: string) => any
 }
 
 export interface Creator {
@@ -87,7 +87,7 @@ export interface Creator {
   name: string
   subscriberCount: string
   introduction: string
-  image:string
+  image: string
 }
 
 export interface Video {
@@ -98,18 +98,18 @@ export interface Video {
 }
 
 export interface MyOffers {
-  id: string,
-  creatorId: string,
-  product_Id: string,
-  isAccepted: boolean,
+  id: number
+  creatorId: number
+  product_Id: number
+  isAccepted: boolean
   product: Product
 }
 
 export interface OffersToMe {
-  id: string,
-  creatorId: string,
-  product_Id: string,
-  isAccepted: boolean,
-  product: Product,
-  creator: Creator,
+  id: number
+  creatorId: number
+  product_Id: number
+  isAccepted: boolean
+  product: Product
+  creator: Creator
 }
