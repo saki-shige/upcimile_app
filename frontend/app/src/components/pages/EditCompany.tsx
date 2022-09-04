@@ -39,8 +39,8 @@ const EditCompany: React.FC = () => {
   }
 
   useEffect(() => {
-    (company !== undefined) && setNewCompany(company)
-  }, [id])
+    setNewCompany(company)
+  }, [company])
 
   const handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
     const { name, value } = e.target
