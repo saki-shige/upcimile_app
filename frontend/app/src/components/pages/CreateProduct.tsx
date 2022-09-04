@@ -33,7 +33,7 @@ const CreateProduct: FC = () => {
 
     const availableToValue = (availableToRef != null) && availableToRef.current
     if (availableToValue != null && availableToValue !== false) {
-      if (availableTo < availableFrom) {
+      if ((availableTo !== '') && (availableTo < availableFrom)) {
         availableToValue.setCustomValidity('開始日よりも後の日付にしてください')
       } else {
         availableToValue.setCustomValidity('')
@@ -106,6 +106,7 @@ const CreateProduct: FC = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                required
                 name="introduction"
                 label="説明"
                 multiline
