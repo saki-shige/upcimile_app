@@ -7,13 +7,13 @@ import { getAuth } from 'firebase/auth'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBq6YLU_hmG-zO8S50lvjH8bSGMMRWPxGQ",
-  authDomain: "cellular-cortex-355815.firebaseapp.com",
-  projectId: "cellular-cortex-355815",
-  storageBucket: "cellular-cortex-355815.appspot.com",
-  messagingSenderId: "348246776369",
-  appId: "1:348246776369:web:49e1e595fbf326b0b81310"
-};
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STRAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
+}
 
 // Initialize Firebase
 initializeApp(firebaseConfig)
