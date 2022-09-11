@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_17_121850) do
+ActiveRecord::Schema.define(version: 2022_09_09_130108) do
 
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 2022_08_17_121850) do
   end
 
   create_table "offers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.boolean "is_accepted", default: true, null: false
+    t.boolean "is_accepted"
     t.bigint "product_id"
     t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
