@@ -12,6 +12,15 @@ import { MessageContext } from '../providers/MessageProvider'
 import { useHandleGetSingleProduct } from '../hooks/products'
 
 const EditProduct: FC = () => {
+  const today = new Date()
+  const formatted = today
+    .toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    })
+    .split('/')
+    .join('-')
   const [croppedFile, setCroppedFile] = useState<File | null>(null)
   const navigation = useNavigate()
   const { id } = useParams<{id: string}>()
@@ -21,6 +30,8 @@ const EditProduct: FC = () => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const availableToRef = useRef<HTMLInputElement>(null)
   const [availableToError, setAvailableToError] = useState(false)
+  const availableFromRef = useRef<HTMLInputElement>(null)
+  const [availableFromError, setAvailableFromError] = useState(false)
 
   const formValidation: () => boolean = () => {
     let valid = true
@@ -34,6 +45,18 @@ const EditProduct: FC = () => {
       }
       const ok = availableToValue.validity.valid
       setAvailableToError(!ok)
+      valid = ok
+    }
+
+    const availableFromValue = availableFromRef?.current
+    if ((availableFromValue != null) && (newProduct != null)) {
+      if (newProduct.availableFrom < formatted) {
+        availableFromValue?.setCustomValidity('本日以降の日付にしてください')
+      } else {
+        availableFromValue?.setCustomValidity('')
+      }
+      const ok = availableFromValue?.validity.valid
+      setAvailableFromError(!ok)
       valid = ok
     }
 
@@ -182,13 +205,16 @@ const EditProduct: FC = () => {
                 required
                 type='date'
                 name='availableFrom'
-                label='利用可能開始日'
+                label='掲載開始日'
                 fullWidth
                 defaultValue={newProduct.availableFrom}
                 variant='standard'
                 InputLabelProps={{
                   shrink: true
                 }}
+                inputRef={availableFromRef}
+                error={availableFromError}
+                helperText={availableFromError && availableFromRef?.current?.validationMessage}
                 onChange={handleOnChange}
               />
             </Grid>
