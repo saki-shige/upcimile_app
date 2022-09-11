@@ -11,6 +11,7 @@ import { CardList } from '../layouts/CardList'
 import { BasicTable } from '../layouts/OfferTable'
 import { CompanyIntroduction } from '../layouts/CompanyIntroduction'
 import { useNavigate } from 'react-router-dom'
+import { StyledTitleBox } from '../styled/Styled'
 
 const CompanyMyPage: FC = () => {
   const { currentCompany } = useContext(CompanyAuthContext)
@@ -51,13 +52,18 @@ const CompanyMyPage: FC = () => {
           </Container>
 
         <Container sx={{ pb: 8 }} maxWidth={false}>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Typography variant="subtitle2">
+        <StyledTitleBox>
+            <Typography component='div' variant="subtitle2">
               <DiamondIcon />
               {`${company.name}の商品`}
               <DiamondIcon />
             </Typography>
-          </Box>
+            <Button
+              onClick={() => { navigation('/products/new') }}
+            >
+              新しい商品を登録する
+            </Button>
+          </StyledTitleBox>
           {(company.products != null)
             ? (
             <CardList
