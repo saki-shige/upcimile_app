@@ -27,7 +27,7 @@ export interface Company {
 }
 
 export interface UpdateCompanyData {
-  name: string
+  name?: string
   image?: string
   introduction?: string
   address?: string
@@ -38,7 +38,7 @@ export interface UpdateCompanyData {
 }
 
 export interface UpdateCompanyFormData extends FormData {
-  append: (name: keyof UpdateProductData, value: String | Blob, fileName?: string) => any
+  append: (name: keyof UpdateProductData, value: string | Blob, fileName?: string) => any
 }
 
 export interface Product {
