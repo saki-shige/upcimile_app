@@ -19,6 +19,23 @@ interface Props {
 export const BasicTable: FC<Props> = ({ type }) => {
   const [offers, setOffers] = useState<MyOffers[] | OffersToMe[]>()
   const navigation = useNavigate()
+  const commentForStatus: (status: boolean | undefined) => string | undefined = (status) => {
+    let comment
+
+    switch (status) {
+      case null:
+        comment = '未確認です'
+        break
+      case true:
+        comment = '承認されました'
+        break
+      case false:
+        comment = '否認されました'
+        break
+    }
+
+    return comment
+  }
 
   const handleRespondToOffer: (id: number, type: 'accept' | 'decline') => Promise<void> = async (id, type) => {
     console.log(type)
@@ -66,9 +83,12 @@ export const BasicTable: FC<Props> = ({ type }) => {
         <Table sx={{ mx: 'auto', maxWidth: 1000 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>product</TableCell>
-              <TableCell align="right">{type === 'myOffers' ? 'company' : 'creator'}</TableCell>
-              <TableCell align="right">response</TableCell>
+              <TableCell align="center">商品</TableCell>
+              <TableCell align="right">{type === 'myOffers' ? '提供企業' : 'クリエイター'}</TableCell>
+              <TableCell align="right">承認状況</TableCell>
+              { type === 'offersToMe' &&
+                <TableCell align="center">response</TableCell>
+              }
             </TableRow>
           </TableHead>
           <TableBody>
@@ -82,22 +102,20 @@ export const BasicTable: FC<Props> = ({ type }) => {
                 </TableCell>
                 {(type === 'myOffers')
                   ? (
-                  <TableCell align="right">{(offer.product.company != null) && offer.product.company.name}</TableCell>
+                    <>
+                      <TableCell align="right">{offer.product.company?.name}</TableCell>
+                      <TableCell align="right">{commentForStatus(offer.isAccepted)}</TableCell>
+                    </>
                     )
                   : (
-                  <TableCell align="right">{'creator' in offer && offer.creator.name}</TableCell>
-                    )}
-                {(type === 'myOffers')
-                  ? (
-                  <TableCell align="right">{offer.isAccepted ? 'accepted' : 'not accepted'}</TableCell>
-                    )
-                  : (
-                  <TableCell align="right">
-                    {offer.isAccepted
-                      ? <Button onClick={() => { void handleRespondToOffer(offer.id, 'decline') }}>decline</Button>
-                      : <Button onClick={() => { void handleRespondToOffer(offer.id, 'accept') }}>accept</Button>
-                    }
-                  </TableCell>
+                    <>
+                      <TableCell align="right">{'creator' in offer && offer.creator.name}</TableCell>
+                      <TableCell align="right">{commentForStatus(offer.isAccepted)}</TableCell>
+                      <TableCell align="center">
+                          <Button disabled={offer.isAccepted === false} onClick={() => { void handleRespondToOffer(offer.id, 'decline') }}>否認する</Button>
+                          <Button disabled={offer.isAccepted} onClick={() => { void handleRespondToOffer(offer.id, 'accept') }}>承認する</Button>
+                      </TableCell>
+                    </>
                     )}
               </TableRow>
             ))}
