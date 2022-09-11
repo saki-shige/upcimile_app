@@ -36,9 +36,9 @@ const EditProduct: FC = () => {
   const formValidation: () => boolean = () => {
     let valid = true
 
-    const availableToValue = (availableToRef != null) && availableToRef.current
-    if (availableToValue != null && availableToValue !== false) {
-      if ((newProduct != null) && (newProduct.availableTo != null) && (newProduct.availableFrom != null) && (newProduct.availableTo < newProduct.availableFrom)) {
+    const availableToValue = availableToRef?.current
+    if (availableToValue != null) {
+      if (newProduct?.availableTo != null && (newProduct.availableFrom != null) && (newProduct.availableTo < newProduct.availableFrom)) {
         availableToValue.setCustomValidity('開始日よりも後の日付にしてください')
       } else {
         availableToValue.setCustomValidity('')
@@ -148,7 +148,7 @@ const EditProduct: FC = () => {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
-                  backgroundImage: `url(${(product !== undefined && product.image.url !== undefined) ? product.image.url : ''})`
+                  backgroundImage: `url(${(product?.image.url !== undefined) ? product.image.url : ''})`
                 }}
               >
             </Paper>
