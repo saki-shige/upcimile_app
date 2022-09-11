@@ -35,8 +35,8 @@ const CreateProduct: FC = () => {
   const formValidation: () => boolean = () => {
     let valid = true
 
-    const availableToValue = (availableToRef != null) && availableToRef.current
-    if (availableToValue != null && availableToValue !== false) {
+    const availableToValue = availableToRef?.current
+    if (availableToValue != null) {
       if ((availableTo !== '') && (availableTo < availableFrom)) {
         availableToValue.setCustomValidity('開始日よりも後の日付にしてください')
       } else {
@@ -192,7 +192,7 @@ const CreateProduct: FC = () => {
                 <Button
                   variant="contained"
                   type="submit"
-                  disabled={ !(name.length > 0 && introduction.length > 0 && categoryId.length > 0 && (availableFrom.length > 0)) }
+                  disabled={ !((name.length > 0) && (introduction.length > 0) && (categoryId != null) && (availableFrom.length > 0)) }
                   onClick={(e) => { if (formValidation()) { void handleFormData(e) } }}
                   sx={{ mt: 3, ml: 1 }}
                   >
