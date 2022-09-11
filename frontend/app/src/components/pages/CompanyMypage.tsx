@@ -15,14 +15,14 @@ import { useNavigate } from 'react-router-dom'
 const CompanyMyPage: FC = () => {
   const { currentCompany } = useContext(CompanyAuthContext)
   const [update, setUpdate] = useState(false)
-  const company = (currentCompany != null) ? useHandleGetSingleCompany(String(currentCompany.id), update) : undefined
+  const company = useHandleGetSingleCompany(String(currentCompany?.id), update)
   const navigation = useNavigate()
 
   return (
     <>
     {(company != null)
       ? (
-      <IntroductionCard avatarImage={(company.image != null) ? company.image.url : 'image'}>
+      <IntroductionCard avatarImage={company.image?.url}>
         <Container
           sx={{
             width: 400,
@@ -48,7 +48,7 @@ const CompanyMyPage: FC = () => {
             </Typography>
             </Box>
             <BasicTable type='offersToMe' />
-          </Container>÷
+          </Container>
 
         <Container sx={{ pb: 8 }} maxWidth={false}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -60,7 +60,13 @@ const CompanyMyPage: FC = () => {
           </Box>
           {(company.products != null)
             ? (
-            <CardList items={company.products} type='products' provider={true} setUpdate={setUpdate} update={update}></CardList>
+            <CardList
+              items={company.products}
+              type='products'
+              provider={true}
+              setUpdate={setUpdate}
+              update={update}
+            />
               )
             : (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
