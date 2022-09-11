@@ -8,7 +8,7 @@ import { IntroductionCard } from '../layouts/IntroductionCard'
 
 const SingleCreator: FC = () => {
   const { id } = useParams<{id: string}>()
-  const { creator, videos } = (id != null) ? useHandleGetSingleCreator(id) : { creator: undefined, videos: undefined }
+  const { creator, videos } = useHandleGetSingleCreator(id)
 
   return (
     <>
