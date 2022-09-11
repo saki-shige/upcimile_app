@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react'
+import React, { FC, useContext, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button, Box, MenuItem, Grid, Typography, TextField, Container, Paper } from '@mui/material'
@@ -7,6 +7,7 @@ import DiamondIcon from '@mui/icons-material/Diamond'
 import { CategoriesList } from '../../lib/api/categories'
 import ImageForm from '../layouts/ImageForm'
 import { createProduct } from '../../lib/api/product'
+import { MessageContext } from '../providers/MessageProvider'
 
 const CreateProduct: FC = () => {
   const today = new Date()
@@ -29,6 +30,7 @@ const CreateProduct: FC = () => {
   const [availableToError, setAvailableToError] = useState(false)
   const availableFromRef = useRef<HTMLInputElement>(null)
   const [availableFromError, setAvailableFromError] = useState(false)
+  const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
 
   const formValidation: () => boolean = () => {
     let valid = true
@@ -78,14 +80,19 @@ const CreateProduct: FC = () => {
       console.log(res)
 
       if (res.status === 200) {
-        console.log(res.data.message)
-        navigation('/products')
+        setOpen(true)
+        setMessage('商品を登録しました')
+        setSeverity('success')
+        navigation('/companies/mypage')
       } else {
-        console.log('商品の保存に失敗しました')
-      };
+        throw new Error()
+      }
     } catch (err) {
       console.log(err)
-    };
+      setOpen(true)
+      setMessage('商品の登録に失敗しました')
+      setSeverity('error')
+    }
   }
 
   return (
