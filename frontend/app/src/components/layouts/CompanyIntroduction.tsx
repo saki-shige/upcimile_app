@@ -23,7 +23,13 @@ export const CompanyIntroduction: FC<Props> = ({ company }) => {
         資本金: {(company.capital != null) ? company.capital : 'Unregistered'}<br />
       </Typography>
       {(company.corporateSite != null &&
-        <Typography component='a' href={company.corporateSite} variant="body2" sx={{ textAlign: 'center', pb: 3 }}>
+        <Typography
+          target="_blank"
+          component='a'
+          href={company.corporateSite}
+          variant="body2"
+          sx={{ textAlign: 'center', pb: 3 }}
+        >
           詳しくは企業HPへ
         </Typography>
       )}
