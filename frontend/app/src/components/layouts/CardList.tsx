@@ -57,7 +57,7 @@ export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }
             sx={{ height: '300', display: 'flex', flexDirection: 'column', boxShadow: 1, borderRadius: 0 }}
           >
             <CardActionArea component={Link} to={`/${type}/${item.id}`} data-testid={`${type}_${index}`}>
-              {(item.image != null && item.image.url != null)
+              {(item.image?.url != null)
                 ? (
                 <CardMedia
                 component='img'
