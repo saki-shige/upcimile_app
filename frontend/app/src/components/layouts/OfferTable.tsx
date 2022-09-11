@@ -41,7 +41,7 @@ export const BasicTable: FC<Props> = ({ type }) => {
     console.log(type)
     const res = await respondToOffer(id, type)
     console.log(res.data)
-    handleGetOffers()
+    await handleGetOffers()
   }
 
   const handleGetMyOffers: () => Promise<void> = async () => {
@@ -66,13 +66,12 @@ export const BasicTable: FC<Props> = ({ type }) => {
     console.log(res.data)
   }
 
-  const handleGetOffers: () => void = () => {
-    type === 'offersToMe' && handleGetOffersToMe()
-    type === 'myOffers' && handleGetMyOffers()
+  const handleGetOffers: () => Promise<void> = async () => {
+    type === 'offersToMe' ? await handleGetOffersToMe() : await handleGetMyOffers()
   }
 
   useEffect(() => {
-    handleGetOffers()
+    void handleGetOffers()
   }, [])
 
   return (
