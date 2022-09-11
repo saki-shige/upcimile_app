@@ -26,26 +26,28 @@ export const useHandleGetCreators: (limit?: number) => Creator[] | undefined = (
   return (creators)
 }
 
-export const useHandleGetSingleCreator: (id: string) => {creator: Creator | undefined, videos: Video[] | undefined} = (id) => {
+export const useHandleGetSingleCreator: (id: string | undefined) => {creator: Creator | undefined, videos: Video[] | undefined} = (id) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [creator, setCreator] = useState<Creator>()
   const [videos, setVideos] = useState<Video[]>()
 
   useEffect(() => {
-    getSingleCreator(id)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('ユーザー一覧を取得しました')
-          setCreator(res.data.creatorInfo)
-          setVideos(res.data.creatorVideos)
-        } else {
-          throw new Error()
-        }
-      }).catch(() => {
-        setOpen(true)
-        setMessage('ユーザー情報を取得できませんでした。')
-        setSeverity('error')
-      })
+    if (id != null) {
+      getSingleCreator(id)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log('ユーザー一覧を取得しました')
+            setCreator(res.data.creatorInfo)
+            setVideos(res.data.creatorVideos)
+          } else {
+            throw new Error()
+          }
+        }).catch(() => {
+          setOpen(true)
+          setMessage('ユーザー情報を取得できませんでした。')
+          setSeverity('error')
+        })
+    }
   }, [])
 
   return { creator, videos }
