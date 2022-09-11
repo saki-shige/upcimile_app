@@ -9,7 +9,7 @@ class Api::V1::Auth::CreatorsController < ApplicationController
     creator.email = payload['email']
     creator = creator.my_channel_info(params[:access_token])
     if creator.save
-      render json: { creator_info: creator, message: }
+      render json: { creator_info: creator }
     else
       render json: creator.errors
     end
