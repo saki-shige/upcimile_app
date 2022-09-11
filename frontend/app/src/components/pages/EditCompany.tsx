@@ -27,12 +27,12 @@ const EditCompany: React.FC = () => {
   const formValidation: () => boolean = () => {
     let valid = true
 
-    const addressValue = (corporateSiteRef != null) && corporateSiteRef.current
-    if (addressValue != null && addressValue !== false) {
+    const addressValue = (corporateSiteRef != null) ? corporateSiteRef.current : null
+    console.log(addressValue)
+    if (addressValue != null) {
       const ok = addressValue.validity.valid
       setCorporateSiteError(!ok)
       valid = ok
-      console.log('hoo')
     }
     console.log(valid)
     return valid
@@ -62,10 +62,10 @@ const EditCompany: React.FC = () => {
       changeImage && (formData.append('company[image]', (croppedFile != null) ? croppedFile : ''))
       formData.append('company[introduction]', (newCompany.introduction != null) ? newCompany.introduction : '')
       formData.append('company[address]', (newCompany.address != null) ? newCompany.address : '')
-      formData.append('company[numberOfEmployees]', String(newCompany.numberOfEmployees))
-      formData.append('company[capital]', String(newCompany.capital))
-      formData.append('company[dateOfEstablishment]', (newCompany.dateOfEstablishment != null) ? String(newCompany.dateOfEstablishment) : '')
-      formData.append('company[corporateSite]', (newCompany.corporateSite != null) ? String(newCompany.corporateSite) : '')
+      formData.append('company[numberOfEmployees]', (newCompany.numberOfEmployees != null) ? String(newCompany.numberOfEmployees) : '')
+      formData.append('company[capital]', (newCompany.capital != null) ? String(newCompany.capital) : '')
+      formData.append('company[dateOfEstablishment]', (newCompany.dateOfEstablishment != null) ? newCompany.dateOfEstablishment : '')
+      formData.append('company[corporateSite]', (newCompany.corporateSite != null) ? newCompany.corporateSite : '')
     }
 
     if (id != null) {
@@ -76,18 +76,17 @@ const EditCompany: React.FC = () => {
         console.log(res)
 
         if (res.status === 200) {
-          console.log(res.data.message)
           setCurrentCompany(res.data.company)
           navigation('/companies')
         } else {
           throw new Error()
-        };
+        }
       } catch (err) {
         console.log(err)
         setOpen(true)
         setMessage('商品の編集に失敗しました。')
         setSeverity('error')
-      };
+      }
     }
   }
 
@@ -102,7 +101,7 @@ const EditCompany: React.FC = () => {
             <FaceIcon />
           </Typography>
           <Typography variant='body2' sx={{ textAlign: 'center', mb: 2 }}>
-            商品画像
+            アイコン画像
           </Typography>
           <Grid container spacing={3}>
             {changeImage
@@ -128,7 +127,7 @@ const EditCompany: React.FC = () => {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
-                  backgroundImage: `url(${(company !== undefined && company.image !== undefined) ? company.image.url : ''})`
+                  backgroundImage: `url(${(company?.image !== undefined) ? company.image.url : ''})`
                 }}
               >
             </Paper>
@@ -225,7 +224,7 @@ const EditCompany: React.FC = () => {
                 inputRef={corporateSiteRef}
                 error={corporateSiteError}
                 helperText={corporateSiteError && corporateSiteRef.current != null && corporateSiteRef.current.validationMessage}
-                inputProps={ { required: true, pattern: CorporateSiteValidPattern } }
+                inputProps={ { pattern: CorporateSiteValidPattern } }
                 onChange={handleOnChange}
               />
             </Grid>
