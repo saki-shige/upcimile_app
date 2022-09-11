@@ -93,8 +93,10 @@ const EditProduct: FC = () => {
         console.log(res)
 
         if (res.status === 200) {
-          console.log(res.data.message)
-          navigation('/products')
+          setOpen(true)
+          setMessage('商品を登録しました')
+          setSeverity('success')
+          navigation('/companies/mypage')
         } else {
           throw new Error()
         }
