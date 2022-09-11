@@ -11,7 +11,7 @@ import { CompanyIntroduction } from '../layouts/CompanyIntroduction'
 
 const SingleCompany: FC = () => {
   const { id } = useParams<{id: string}>()
-  const company = (id != null) ? useHandleGetSingleCompany(id) : undefined
+  const company = useHandleGetSingleCompany(id)
 
   console.log(company)
 
