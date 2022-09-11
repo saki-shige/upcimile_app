@@ -33,7 +33,7 @@ const CreatorSignIn: FC = () => {
         setMessage('ログインしました')
         setSeverity('success')
         navigation('/creators/mypage')
-      } else { throw new Error() };
+      } else { throw new Error() }
     } catch (err) {
       console.log('err')
       isCreatorSignedIn && setIsCreatorSignedIn(false);
@@ -41,7 +41,7 @@ const CreatorSignIn: FC = () => {
       setOpen(true)
       setMessage('ログインに失敗しました')
       setSeverity('error')
-    };
+    }
   }
 
   const handleLogin: (data: {idToken: string, accessToken: string}) => Promise<void> = async (data) => {
