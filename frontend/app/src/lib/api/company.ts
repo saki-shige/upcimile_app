@@ -1,23 +1,32 @@
-import client from "./client"
-import Cookies from "js-cookie"
+import client from './client'
+import Cookies from 'js-cookie'
+import { Company, UpdateCompanyFormData } from '../../interface'
+import { AxiosResponse } from 'axios'
 
-export const getCompanies = (limit?: number) => {
-  return client.get((limit !== undefined) ? `companies?limit=${limit}` : 'companies')
+interface updateCompanyResponse {
+  company: Company
 }
 
-export const getSingleCompany = (id: string) => {
-  return client.get(`companies/${id}`, { headers: {
-    "access-token": Cookies.get("_access_token") || '',
-    "client": Cookies.get("_client") || '',
-    "uid": Cookies.get("_uid") || ''
-  }});
-};
+export const getCompanies: (limit?: number) => Promise<AxiosResponse<Company[]>> = async (limit) => {
+  return await client.get((limit !== undefined) ? `companies?limit=${limit}` : 'companies')
+}
 
-export const updateCompany = (id: string, params: any) => {
-  return client.patch(`companies/${id}`, params,{ headers: {
-    "access-token": Cookies.get("_access_token") || '',
-    "client": Cookies.get("_client") || '',
-    "uid": Cookies.get("_uid") || ''
-  }});
-};
+export const getSingleCompany: (id: string) => Promise<AxiosResponse<Company>> = async (id) => {
+  return await client.get(`companies/${id}`, {
+    headers: {
+      'access-token': Cookies.get('_access_token') ?? '',
+      client: Cookies.get('_client') ?? '',
+      uid: Cookies.get('_uid') ?? ''
+    }
+  })
+}
 
+export const updateCompany: (id: string, params: UpdateCompanyFormData) => Promise<AxiosResponse<updateCompanyResponse>> = async (id, params) => {
+  return await client.patch(`companies/${id}`, params, {
+    headers: {
+      'access-token': Cookies.get('_access_token') ?? '',
+      client: Cookies.get('_client') ?? '',
+      uid: Cookies.get('_uid') ?? ''
+    }
+  })
+}

@@ -1,13 +1,23 @@
+import { AxiosResponse } from 'axios'
+import { Creator, Video } from '../../interface'
 import client from './client'
 
-export const login = (data: {idToken: string, accessToken: string}) => {
-  return client.post('/auth/creators', data)
+interface SingleCreatorResponse {
+  creatorInfo: Creator
+  creatorVideos: Video[]
+}
+interface LoginResponse {
+  creatorInfo: Creator
 }
 
-export const getCreators = (limit?: number) => {
-  return client.get((limit !== undefined) ? `/creators?limit=${limit}` : '/creators')
+export const login: (data: {idToken: string, accessToken: string}) => Promise<AxiosResponse<LoginResponse>> = async (data) => {
+  return await client.post('/auth/creators', data)
 }
 
-export const getSingleCreator = (id: string) => {
-  return client.get(`creators/${id}`)
+export const getCreators: (limit?: number) => Promise<AxiosResponse<Creator[]>> = async (limit) => {
+  return await client.get((limit !== undefined) ? `/creators?limit=${limit}` : '/creators')
+}
+
+export const getSingleCreator: (id: string) => Promise<AxiosResponse<SingleCreatorResponse>> = async (id) => {
+  return await client.get(`creators/${id}`)
 }
