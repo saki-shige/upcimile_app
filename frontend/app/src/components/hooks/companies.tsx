@@ -26,24 +26,26 @@ export const useHandleGetCompanies: (limit?: number) => Company[] | undefined = 
   return (companies)
 }
 
-export const useHandleGetSingleCompany: (id: string, update?: boolean) => Company | undefined = (id, update) => {
+export const useHandleGetSingleCompany: (id: string | undefined, update?: boolean) => Company | undefined = (id, update) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [company, setCompany] = useState<Company>()
 
   useEffect(() => {
-    getSingleCompany(id)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('ユーザー情報を取得しました')
-          setCompany(res.data)
-        } else {
-          throw new Error()
-        }
-      }).catch(() => {
-        setOpen(true)
-        setMessage('ユーザー情報を取得できませんでした。')
-        setSeverity('error')
-      })
+    if (id != null) {
+      getSingleCompany(id)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log('ユーザー情報を取得しました')
+            setCompany(res.data)
+          } else {
+            throw new Error()
+          }
+        }).catch(() => {
+          setOpen(true)
+          setMessage('ユーザー情報を取得できませんでした。')
+          setSeverity('error')
+        })
+    }
   }, [update])
 
   return (company)
