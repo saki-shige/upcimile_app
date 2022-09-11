@@ -32,7 +32,7 @@ const CreatorSignIn: FC = () => {
         setOpen(true)
         setMessage('ログインしました')
         setSeverity('success')
-        navigation('/')
+        navigation('/creators/mypage')
       } else { throw new Error() };
     } catch (err) {
       console.log('err')
