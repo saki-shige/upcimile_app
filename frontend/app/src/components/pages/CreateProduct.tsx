@@ -27,6 +27,8 @@ const CreateProduct: FC = () => {
   const [categoryId, setCategoryId] = useState<string>('1')
   const availableToRef = useRef<HTMLInputElement>(null)
   const [availableToError, setAvailableToError] = useState(false)
+  const availableFromRef = useRef<HTMLInputElement>(null)
+  const [availableFromError, setAvailableFromError] = useState(false)
 
   const formValidation: () => boolean = () => {
     let valid = true
@@ -43,14 +45,24 @@ const CreateProduct: FC = () => {
       valid = ok
     }
 
+    const availableFromValue = availableFromRef?.current
+    if (availableFromValue != null) {
+      if (availableFrom < formatted) {
+        availableFromValue?.setCustomValidity('本日以降の日付にしてください')
+      } else {
+        availableFromValue?.setCustomValidity('')
+      }
+      const ok = availableFromValue?.validity.valid
+      setAvailableFromError(!ok)
+      valid = ok
+    }
+
     console.log(valid)
     return valid
   }
 
   const handleFormData: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void> = async (e) => {
     e.preventDefault()
-
-    console.log(croppedFile)
 
     const formData = new FormData()
     formData.append('product[name]', (name != null) ? name : '')
@@ -139,13 +151,16 @@ const CreateProduct: FC = () => {
                 required
                 type='date'
                 name='availableFrom'
-                label="利用可能開始日"
+                label="掲載開始日"
                 defaultValue={formatted}
                 fullWidth
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
                 }}
+                inputRef={availableFromRef}
+                error={availableFromError}
+                helperText={availableFromError && availableFromRef?.current?.validationMessage}
                 onChange={(e) => setAvailableFrom(e.target.value)}
               />
             </Grid>
