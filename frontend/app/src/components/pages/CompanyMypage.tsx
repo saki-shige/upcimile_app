@@ -3,6 +3,7 @@ import React, { FC, useContext, useState } from 'react'
 import { Typography, Container, Box, Button } from '@mui/material'
 import DiamondIcon from '@mui/icons-material/Diamond'
 import CelebrationIcon from '@mui/icons-material/Celebration'
+import FaceIcon from '@mui/icons-material/Face'
 
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 import { useHandleGetSingleCompany } from '../hooks/companies'
@@ -34,6 +35,11 @@ const CompanyMyPage: FC = () => {
             alignItems: 'center'
           }}
         >
+          <Typography variant='subtitle2'>
+            <FaceIcon />
+            MYPAGE
+            <FaceIcon />
+          </Typography>
           <CompanyIntroduction company={company} />
           <Button onClick={() => { navigation(`/companies/edit/${company.id}`) }} >
             登録情報を編集する
