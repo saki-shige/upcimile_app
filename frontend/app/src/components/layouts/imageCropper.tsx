@@ -9,7 +9,7 @@ import { canvasPreview } from './canvasPreview'
 interface Props {
   open: boolean
   setOpen: (open: boolean) => void
-  aspect: { height: number; width: number }
+  aspect: { height: number, width: number }
   src: string
   previewCanvasRef: React.RefObject<HTMLCanvasElement>
   setCroppedFile: (value: File) => void
@@ -38,7 +38,7 @@ const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef,
   )
 
   const handleConfirm = useCallback(() => {
-    (previewCanvasRef.current != null) && (previewCanvasRef.current.toBlob((blob) => {
+    previewCanvasRef.current?.toBlob((blob) => {
       if (blob != null) {
         setCroppedFile(
           new File([blob], `croppedImage${today}.png`, {
@@ -47,7 +47,6 @@ const ImageCropper: FC<Props> = ({ open, setOpen, aspect, src, previewCanvasRef,
         )
       }
     })
-    )
     setOpen(false)
   }, [previewCanvasRef, setCroppedFile, setOpen])
 
