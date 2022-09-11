@@ -13,7 +13,7 @@ class Company < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 30 }
   validates :introduction, length: { maximum: 300 }
   validates :address, length: { maximum: 300 }
-  validates :corporate_site, length: { maximum: 30 }, format: /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/,
+  validates :corporate_site, length: { maximum: 300 }, format: /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/,
                              allow_blank: true
   validates :number_of_employees, allow_nil: true, numericality: { greater_than_or_equal_to: 0, less_than: 100_000_000 }
   validates :capital, allow_nil: true, numericality: { greater_than_or_equal_to: 0, less_than: 10_000_000_000_000 }
