@@ -49,7 +49,7 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
         Cookies.remove('_uid')
 
         setIsCompanySignedIn(false)
-        navigation('/companies/signin')
+        navigation('/')
         console.log('signed out successfully')
       } else {
         console.log('Failed to sign out')
@@ -65,6 +65,7 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
       await firebaseSignOut(auth)
       console.log('ログアウトしました')
       setIsCreatorSignedIn(false)
+      navigation('/')
     } catch (error) {
       console.log(error)
     }
