@@ -53,7 +53,7 @@ const SingleProduct: FC = () => {
           >
             <Grid container spacing={0} justifyContent="center" sx={{ px: 4 }}>
               <Grid item md={4} sm={8} xs={12}>
-              {(product.image != null && product.image.url != null)
+              {(product.image?.url != null)
                 ? (
                 <CardMedia
                 component='img'
