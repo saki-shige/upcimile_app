@@ -3,42 +3,29 @@
         "react": {
           "version": "detect"
         }
-      },
+    },
     "env": {
         "browser": true,
-        "es2021": true,
-        "jest/globals": true
+        "es2021": true
     },
     "extends": [
         "plugin:react/recommended",
         "standard-with-typescript",
-        "plugin:react/jsx-runtime"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "overrides": [
     ],
     "parserOptions": {
-        "ecmaFeatures": {
-          "jsx": true
-        },
         "ecmaVersion": "latest",
         "sourceType": "module",
         "project": "./tsconfig.json"
     },
     "plugins": [
-        "react",
-        "@typescript-eslint",
-        "eslint-plugin-react",
-        "jest"
+        "react"
     ],
     "rules": {
-      "jest/no-disabled-tests": "warn",
-      "jest/no-focused-tests": "error",
-      "jest/no-identical-title": "error",
-      "jest/prefer-to-have-length": "warn",
-      "jest/valid-expect": "error",
-      "@typescript-eslint/consistent-type-assertions": "off",
-      "@typescript-eslint/prefer-optional-chain": "off",
-      "react/jsx-uses-react": "error"
-    },
-    "parser": "@typescript-eslint/parser"
+        "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
+        "@typescript-eslint/consistent-type-assertions": "off"
+    }
 }
