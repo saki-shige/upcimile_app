@@ -43,7 +43,7 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
     try {
       const res = await signOut()
 
-      if (res.data.success === true) {
+      if (res.status === 200) {
         Cookies.remove('_access_token')
         Cookies.remove('_client')
         Cookies.remove('_uid')
