@@ -54,3 +54,7 @@ gem 'dotenv-rails'
 gem 'firebase-auth-rails'
 
 gem 'google-apis-youtube_v3'
+
+gem 'net-imap'
+gem 'net-pop'
+gem 'net-smtp'
