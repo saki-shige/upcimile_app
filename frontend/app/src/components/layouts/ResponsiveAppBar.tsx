@@ -130,11 +130,11 @@ const ResponsiveAppBar: FC = () => {
 
           {(isCompanySignedIn && (currentCompany != null))
             ? (
-            <NavBarUser name={currentCompany.name} image={(currentCompany.image != null) ? currentCompany.image.url : ''} type='companies'/>
+            <NavBarUser name={currentCompany.name} image={currentCompany.image?.url} type='companies'/>
               )
             : ((isCreatorSignedIn && (currentCreator != null))
                 ? (
-            <NavBarUser name={currentCreator.name} image={(currentCreator.image != null) ? currentCreator.image : ''} type='creators'/>
+            <NavBarUser name={currentCreator.name} image={currentCreator.image} type='creators'/>
                   )
                 : (
             <Box sx={{ flexGrow: 0, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
