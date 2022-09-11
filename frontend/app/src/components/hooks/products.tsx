@@ -27,7 +27,7 @@ export const useHandleGetProducts: (props: {limit?: number, category?: number}) 
   return (products)
 }
 
-export const useHandleGetSingleProduct: (id: any) => {
+export const useHandleGetSingleProduct: (id: string | undefined) => {
   product: Product | undefined
   relatedProducts: Product[] | undefined
   company: Company | undefined} = (id) => {
@@ -37,21 +37,23 @@ export const useHandleGetSingleProduct: (id: any) => {
   const [product, setProduct] = useState<Product>()
 
   useEffect(() => {
-    getSingleProduct(id)
-      .then((res) => {
-        if (res.status === 200) {
-          setProduct(res.data.product)
-          setRelatedProducts(res.data.relatedProducts)
-          setCompany(res.data.company)
-        } else {
-          throw new Error()
-        }
-      }).catch((error) => {
-        console.log(error)
-        setOpen(true)
-        setMessage('商品情報を取得できませんでした。')
-        setSeverity('error')
-      })
+    if (id != null) {
+      getSingleProduct(id)
+        .then((res) => {
+          if (res.status === 200) {
+            setProduct(res.data.product)
+            setRelatedProducts(res.data.relatedProducts)
+            setCompany(res.data.company)
+          } else {
+            throw new Error()
+          }
+        }).catch((error) => {
+          console.log(error)
+          setOpen(true)
+          setMessage('商品情報を取得できませんでした。')
+          setSeverity('error')
+        })
+    }
   }, [id])
 
   return { product, relatedProducts, company }
