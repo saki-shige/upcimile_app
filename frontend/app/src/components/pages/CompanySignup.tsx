@@ -28,15 +28,15 @@ const CompanySignUp: FC = () => {
   const formValidation: () => boolean = () => {
     let valid = true
 
-    const e = (emailRef != null) && emailRef.current
-    if (e != null && e !== false) {
+    const e = emailRef?.current
+    if (e != null) {
       const ok = e.validity.valid
       setEmailError(!ok)
       valid = ok
     }
 
-    const c = (confirmationRef != null) && confirmationRef.current
-    if (c != null && c !== false) {
+    const c = confirmationRef?.current
+    if (c != null) {
       if (passwordConfirmation.length > 0 &&
           passwordConfirmation !== password) {
         c.setCustomValidity('パスワードが一致しません')
