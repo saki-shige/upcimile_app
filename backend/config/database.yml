@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
   host: db
+  username: root
+  password: pssword
 
 development:
   <<: *default
@@ -50,6 +50,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV['JAWSDB_URL']&.sub('mysql://', 'mysql2://') %>
   database: myapp_production
   username: myapp
   password: <%= ENV['MYAPP_DATABASE_PASSWORD'] %>
