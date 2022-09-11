@@ -97,13 +97,13 @@ const EditProduct: FC = () => {
           navigation('/products')
         } else {
           throw new Error()
-        };
+        }
       } catch (err) {
         console.log(err)
         setOpen(true)
         setMessage('商品の編集に失敗しました。')
         setSeverity('error')
-      };
+      }
     }
   }
 
