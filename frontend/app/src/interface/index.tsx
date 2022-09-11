@@ -100,7 +100,7 @@ export interface Video {
 export interface MyOffers {
   id: number
   creatorId: number
-  product_Id: number
+  productId: number
   isAccepted: boolean
   product: Product
 }
@@ -108,7 +108,7 @@ export interface MyOffers {
 export interface OffersToMe {
   id: number
   creatorId: number
-  product_Id: number
+  productId: number
   isAccepted: boolean
   product: Product
   creator: Creator
