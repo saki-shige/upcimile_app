@@ -40,13 +40,13 @@ export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }
         update != null && setUpdate != null && setUpdate(!update)
       } else {
         throw new Error()
-      };
+      }
     } catch (err) {
       console.log(err)
       setOpen(true)
       setMessage('商品の削除に失敗しました。')
       setSeverity('error')
-    };
+    }
   }
 
   return (
