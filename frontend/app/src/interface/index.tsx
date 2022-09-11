@@ -101,7 +101,7 @@ export interface MyOffers {
   id: number
   creatorId: number
   productId: number
-  isAccepted: boolean
+  isAccepted?: boolean
   product: Product
 }
 
@@ -109,7 +109,7 @@ export interface OffersToMe {
   id: number
   creatorId: number
   productId: number
-  isAccepted: boolean
+  isAccepted?: boolean
   product: Product
   creator: Creator
 }
