@@ -14,7 +14,7 @@ export const BarCardList: FC<Props> = ({ items }) => {
       {items.map((item) => (
         <Grid item key={`creator_${item.id}`} xs={12} sm={12} md={6}>
           <CardActionArea component={Link} to={`/creators/${item.id}`}>
-            <Card sx={{ display: 'flex', boxShadow: 1 }}>
+            <Card sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column' }, boxShadow: 1 }}>
               <CardContent sx={{ my: 'auto' }}>
                 <Avatar
                   src={item.image}
