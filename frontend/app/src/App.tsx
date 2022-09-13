@@ -23,12 +23,14 @@ import CreatorSignIn from './components/pages/CreatorSignin'
 import Creators from './components/pages/Creators'
 import SingleCreator from './components/pages/SingleCreator'
 import CreatorMyPage from './components/pages/CreatorMyPage'
+import ScrollToTop from './lib/ScrollToTop'
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={appTheme}>
     <CssBaseline />
       <BrowserRouter>
+      <ScrollToTop />
       <Box
         sx={{
           display: 'flex',
