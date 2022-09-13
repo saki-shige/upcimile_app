@@ -19,7 +19,7 @@ class Creator < ApplicationRecord
       introduction = video.snippet.description
       thumbnail = video.snippet.thumbnails.high.url
       title = video.snippet.title
-      url = "https://www.youtube.com/watch?v=XkUkZUtLrBI#{video.id.video_id}"
+      url = "https://www.youtube.com/watch?v=#{video.id.video_id}"
       creator_video = { title:, thumbnail:, introduction:, url: }
       creator_videos.push(creator_video)
     end
