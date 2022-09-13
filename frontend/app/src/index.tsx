@@ -8,16 +8,14 @@ import { CompanyAuthProvider } from './components/providers/CompanyAuthProvider'
 import { MessageProvider } from './components/providers/MessageProvider'
 
 ReactDOM.render(
-  <React.StrictMode>
     <CreatorAuthProvider>
       <CompanyAuthProvider>
         <MessageProvider>
          <App />
         </MessageProvider>
       </CompanyAuthProvider>
-    </CreatorAuthProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    </CreatorAuthProvider>,
+    document.getElementById('root')
 )
 
 // If you want to start measuring performance in your app, pass a function
