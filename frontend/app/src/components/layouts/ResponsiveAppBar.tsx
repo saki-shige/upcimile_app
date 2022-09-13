@@ -1,4 +1,6 @@
 import React, { FC, useContext } from 'react'
+import Cookies from 'js-cookie'
+
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -15,6 +17,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 import { CreatorAuthContext } from '../providers/CreatorAuthProvider'
 import { NavBarUser } from './NavBarUser'
+import { MessageContext } from '../providers/MessageProvider'
+import { signInAsGuest } from '../../lib/api/auth'
 
 const pages = [['Products', '/products'], ['Creators', '/creators'], ['Companies', '/companies']]
 
@@ -23,6 +27,8 @@ const ResponsiveAppBar: FC = () => {
   const { isCreatorSignedIn, currentCreator } = useContext(CreatorAuthContext)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
+  const { setIsCompanySignedIn, setCurrentCompany } = useContext(CompanyAuthContext)
+  const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const handleOpenNavMenu: (e: React.MouseEvent<HTMLElement>) => void = (e) => {
     setAnchorElNav(e.currentTarget)
   }
@@ -39,6 +45,34 @@ const ResponsiveAppBar: FC = () => {
   }
 
   const navigation = useNavigate()
+
+  const clickLoginAsGuest: () => Promise<void> = async () => {
+    try {
+      const res = await signInAsGuest()
+      console.log(res.headers)
+
+      if (res.status === 200) {
+        Cookies.set('_access_token', res.headers['access-token'])
+        Cookies.set('_client', res.headers.client)
+        Cookies.set('_uid', res.headers.uid)
+
+        setIsCompanySignedIn(true)
+        setCurrentCompany(res.data.data)
+        console.log(res.data.data)
+
+        setOpen(true)
+        setMessage('ログインしました')
+        setSeverity('success')
+
+        navigation('/companies/mypage')
+      } else throw Error()
+    } catch (err) {
+      console.log(err)
+      setOpen(true)
+      setMessage('ログインに失敗しました')
+      setSeverity('error')
+    }
+  }
 
   return (
     <AppBar position="static" sx={{ bgcolor: 'inherit', color: 'primary.dark' }}>
@@ -114,7 +148,7 @@ const ResponsiveAppBar: FC = () => {
               textDecoration: 'none'
             }}
           >
-            UPCIMILEs
+            UPCIMILE
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -165,6 +199,9 @@ const ResponsiveAppBar: FC = () => {
                     </MenuItem>
                     <MenuItem onClick={() => { handleCloseUserMenu(); navigation('/creators/signin') }}>
                       クリエイターログイン
+                    </MenuItem>
+                    <MenuItem onClick={() => { handleCloseUserMenu(); void clickLoginAsGuest() }}>
+                      ゲストログイン
                     </MenuItem>
                 </Menu>
               </Box>

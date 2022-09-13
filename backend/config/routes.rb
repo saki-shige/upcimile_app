@@ -18,6 +18,10 @@ Rails.application.routes.draw do
       resources :creators, only: [:index, :show]
       resources :offers, only: [:index,:create]
       put '/offers/:id', to: 'offers#accept'
+
+      devise_scope :api_v1_company do
+        post "auth/guest_sign_in", to: "auth/sessions#guest_sign_in"
+      end
     end
   end
 end

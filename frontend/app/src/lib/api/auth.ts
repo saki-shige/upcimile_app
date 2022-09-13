@@ -20,6 +20,10 @@ export const signIn: (data: SignInData) => Promise<AxiosResponse<SignInResponse>
   return await client.post('auth/sign_in', data)
 }
 
+export const signInAsGuest: () => Promise<AxiosResponse<SignInResponse>> = async () => {
+  return await client.post('auth/guest_sign_in', {})
+}
+
 export const signOut: () => Promise<AxiosResponse> = async () => {
   console.log('signoutatart')
   return await client.delete('auth/sign_out', {

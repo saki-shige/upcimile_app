@@ -17,4 +17,12 @@ class Company < ActiveRecord::Base
                              allow_blank: true
   validates :number_of_employees, allow_nil: true, numericality: { greater_than_or_equal_to: 0, less_than: 100_000_000 }
   validates :capital, allow_nil: true, numericality: { greater_than_or_equal_to: 0, less_than: 10_000_000_000_000 }
+
+  def self.guest
+    guest_company = Company.find_or_create_by!(email: 'guest@example.com') do |company|
+      company.name = "ゲスト"
+      company.password = SecureRandom.urlsafe_base64
+    end
+    guest_company
+  end
 end
