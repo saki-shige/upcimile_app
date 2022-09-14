@@ -12,7 +12,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     product = Product.find(params[:id])
-    related_products = Product.where(category_id: product.category_id).where.not(id: product.id).recent
+    related_products = Product.where(category_id: product.category_id).where.not(id: product.id).available.recent
     company = product.company
     render json: { product:, related_products:, company: }
   end
