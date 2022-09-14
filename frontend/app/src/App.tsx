@@ -1,26 +1,70 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-function App() {
+import CssBaseline from '@mui/material/CssBaseline'
+import { ThemeProvider, Box } from '@mui/material'
+
+import { appTheme } from './assets/theme/theme'
+import ResponsiveAppBar from './components/layouts/ResponsiveAppBar'
+import { MessageSnackbar } from './components/layouts/MessageSnackbar'
+import { Footer } from './components/layouts/Footer'
+import Home from './components/pages/Home'
+import CompanySignIn from './components/pages/CompanySignIn'
+import CompanySignUp from './components/pages/CompanySignup'
+import Products from './components/pages/Products'
+import SingleProduct from './components/pages/SingleProduct'
+import CreateProduct from './components/pages/CreateProduct'
+import EditProduct from './components/pages/EditProduct'
+import Companies from './components/pages/Companies'
+import SingleCompany from './components/pages/SingleCompany'
+import EditCompany from './components/pages/EditCompany'
+import CompanyMyPage from './components/pages/CompanyMypage'
+import CreatorSignIn from './components/pages/CreatorSignin'
+import Creators from './components/pages/Creators'
+import SingleCreator from './components/pages/SingleCreator'
+import CreatorMyPage from './components/pages/CreatorMyPage'
+import ScrollToTop from './lib/ScrollToTop'
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ThemeProvider theme={appTheme}>
+    <CssBaseline />
+      <BrowserRouter>
+      <ScrollToTop />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh'
+        }}
+      >
+        <ResponsiveAppBar />
+        <MessageSnackbar />
+        <Routes>
+          <Route path='/' element={<Home />} />;
+          <Route path='/companies/signin' element={<CompanySignIn />} />;
+          <Route path='/companies/signup' element={<CompanySignUp />} />;
+          <Route path='/products' element={<Products />} />;
+          <Route path='/products/:id' element={<SingleProduct />} />;
+          <Route path='/products/new' element={<CreateProduct />} />;
+          <Route path='/products/edit/:id' element={<EditProduct />} />;
+          <Route path='/companies' element={<Companies />} />;
+          <Route path='/companies/:id' element={<SingleCompany />} />;
+          <Route path='/companies/edit/:id' element={<EditCompany />} />;
+          <Route path='/creators/signin' element={<CreatorSignIn />} />;
+          <Route path='/creators' element={<Creators />} />;
+          <Route path='/creators/:id' element={<SingleCreator />} />;
+          <Route path='/creators/mypage' element={<CreatorMyPage />} />;
+          <Route path='/companies/mypage' element={<CompanyMyPage />} />;
+        </Routes>
+        <Footer
+        title="UPCIMILE"
+        description="upcicle with smile!"
+        />
+      </Box>
+      </BrowserRouter>
+    </ThemeProvider>
+  )
 }
 
-export default App;
+export default App

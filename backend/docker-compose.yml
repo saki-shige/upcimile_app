@@ -10,18 +10,24 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: pssword
     security_opt:
       - seccomp:unconfined
+  redis:
+    image: "redis:5.0.5"
+    ports:
+      - "6379:6379"
+    command: redis-server
+    volumes:
+      - "./data/redis:/data"
   backend:
     build:
-      context: ./backend/
+      context: .
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
     volumes:
-      - ./backend:/myapp
-      - bundle:/usr/local/bundle
+      - ./:/myapp
     command: bash -c "rm -rf tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     depends_on:
       - db
@@ -29,15 +35,7 @@ services:
       - "3001:3000"
     environment:
       TZ: Asia/Tokyo
-  frontend:
-    build:
-      context: ./frontend/
-      dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/usr/src/app
-    command: sh -c "cd app && npm start"
-    ports:
-      - "3000:3000"
+      REDIS_URL: redis://redis:6379/0
 volumes:
   db:
     driver: local
