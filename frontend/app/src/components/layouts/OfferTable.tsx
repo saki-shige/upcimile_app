@@ -51,8 +51,7 @@ export const BasicTable: FC<Props> = ({ type }) => {
     if (currentUser != null) {
       const idToken = await currentUser.getIdToken(true)
       console.log(idToken)
-      const data = { idToken }
-      const res = await getMyOffers(data)
+      const res = await getMyOffers({ idToken })
       setOffers(res.data)
       console.log(res.data)
     } else {
@@ -102,14 +101,24 @@ export const BasicTable: FC<Props> = ({ type }) => {
                 {(type === 'myOffers')
                   ? (
                     <>
-                      <TableCell align="right">{offer.product.company?.name}</TableCell>
+                      <TableCell align="right">
+                        <Link to={`/companies/${String(offer.product.company?.id)}`}>
+                          {offer.product.company?.name}
+                        </Link>
+                      </TableCell>
                       <TableCell align="right">{commentForStatus(offer.isAccepted)}</TableCell>
                     </>
                     )
                   : (
                     <>
-                      <TableCell align="right">{'creator' in offer && offer.creator.name}</TableCell>
-                      <TableCell align="right">{commentForStatus(offer.isAccepted)}</TableCell>
+                      <TableCell align="right">
+                        <Link to={`/creators/${offer.creatorId}`}>
+                          {'creator' in offer && offer.creator.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell align="right">
+                        {commentForStatus(offer.isAccepted)}
+                      </TableCell>
                       <TableCell align="center">
                           <Button disabled={offer.isAccepted === false} onClick={() => { void handleRespondToOffer(offer.id, 'decline') }}>否認する</Button>
                           <Button disabled={offer.isAccepted} onClick={() => { void handleRespondToOffer(offer.id, 'accept') }}>承認する</Button>
@@ -127,18 +136,18 @@ export const BasicTable: FC<Props> = ({ type }) => {
             {(type === 'offersToMe')
               ? (
                 <>
-              <Typography variant='subtitle1'>
-                あなたへのオファーはありません。商品を登録してお待ちください。
-              </Typography>
-              <Button onClick={() => { navigation('/products/new') }}>商品を登録する</Button>
-              </>
+                  <Typography variant='subtitle1'>
+                    あなたへのオファーはありません。商品を登録してお待ちください。
+                  </Typography>
+                  <Button onClick={() => { navigation('/products/new') }}>商品を登録する</Button>
+                </>
                 )
               : (
               <>
-              <Typography variant='subtitle1'>
-                あなたのオファーはありません。気になる商品を見つけてオファーを送りましょう。
-              </Typography>
-              <Button onClick={() => { navigation('/products') }}>商品を探す</Button>
+                <Typography variant='subtitle1'>
+                  あなたのオファーはありません。気になる商品を見つけてオファーを送りましょう。
+                </Typography>
+                <Button onClick={() => { navigation('/products') }}>商品を探す</Button>
               </>
                 )}
           </Container>
