@@ -110,7 +110,7 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
             </MenuItem>
               {type === 'companies'
                 ? (
-                <>
+                <div>
                   <MenuItem onClick={() => { setAnchorElUser(null); navigation('/products/new') }}>
                     商品を登録する
                   </MenuItem>
@@ -122,7 +122,7 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
                  <MenuItem onClick={() => { void clickCompanySignOut() }}>
                    ログアウト
                  </MenuItem>
-                </>
+                </div>
                   )
                 : (
             <MenuItem onClick={() => { void clickCreatorSignOut() }}>
