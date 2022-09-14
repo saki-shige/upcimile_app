@@ -120,8 +120,18 @@ export const BasicTable: FC<Props> = ({ type }) => {
                         {commentForStatus(offer.isAccepted)}
                       </TableCell>
                       <TableCell align="center">
-                          <Button disabled={offer.isAccepted === false} onClick={() => { void handleRespondToOffer(offer.id, 'decline') }}>否認する</Button>
-                          <Button disabled={offer.isAccepted} onClick={() => { void handleRespondToOffer(offer.id, 'accept') }}>承認する</Button>
+                          <Button
+                            disabled={offer.isAccepted === false}
+                            onClick={() => { void handleRespondToOffer(offer.id, 'decline') }}
+                          >
+                            否認する
+                          </Button>
+                          <Button
+                            disabled={offer.isAccepted}
+                            onClick={() => { void handleRespondToOffer(offer.id, 'accept') }}
+                          >
+                            承認する
+                          </Button>
                       </TableCell>
                     </>
                     )}
