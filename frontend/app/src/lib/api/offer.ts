@@ -1,6 +1,6 @@
 import client from './client'
 import Cookies from 'js-cookie'
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import { MyOffers, OffersToMe } from '../../interface'
 
 export const makeOffer: (data: { idToken: string, product_id: string }) => Promise<AxiosResponse> = async (data) => {
