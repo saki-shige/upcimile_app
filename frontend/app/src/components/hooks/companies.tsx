@@ -25,13 +25,13 @@ export const useHandleGetCompanies: (limit?: number) => Company[] | undefined = 
   return (companies)
 }
 
-export const useHandleGetSingleCompany: (id: string | undefined, update?: boolean) => Company | undefined = (id, update) => {
+export const useHandleGetSingleCompany: (id: string | undefined, update?: boolean, mypage?: boolean) => Company | undefined = (id, update, mypage) => {
   const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const [company, setCompany] = useState<Company>()
 
   useEffect(() => {
     if (id != null) {
-      getSingleCompany(id)
+      getSingleCompany(id, mypage)
         .then((res) => {
           if (res.status === 200) {
             setCompany(res.data)

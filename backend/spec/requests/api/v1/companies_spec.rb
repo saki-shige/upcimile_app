@@ -20,23 +20,40 @@ RSpec.describe 'Companies', type: :request do
   end
 
   describe 'GET /api/v1/pcompanies/:id' do
-    let!(:related_products) { create_list(:product, 4, company:) }
+    let!(:related_available_products) { create_list(:product, 4, company:) }
+    let!(:related_not_available_products) { create_list(:product, 3, company:, available_from: Date.tomorrow) }
     let!(:other_products) { create_list(:product, 5, name: 'other_product') }
 
-    before do
-      get "/api/v1/companies/#{company.id}"
+    context 'マイページからアクセスした場合' do
+      let(:token) { sign_in company }
+
+      before do
+        get "/api/v1/companies/#{company.id}?mypage=true", headers: token
+      end
+
+      it '企業情報と掲載期間を含むすべての関連商品を取得する' do
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json['name']).to eq(company.name)
+        expect(json['introduction']).to eq(company.introduction)
+        expect(json['products'].length).to eq(related_available_products.length + related_not_available_products.length)
+        expect(json['products'][0]['name']).to eq(related_available_products[0].name)
+      end
     end
 
-    it 'レスポンスが返ってくる' do
-      expect(response.status).to eq(200)
-    end
+    context 'マイページ以外からアクセスした場合' do
+      before do
+        get "/api/v1/companies/#{company.id}"
+      end
 
-    it '企業情報と関連商品のみを取得する' do
-      json = JSON.parse(response.body)
-      expect(json['name']).to eq(company.name)
-      expect(json['introduction']).to eq(company.introduction)
-      expect(json['products'].length).to eq(related_products.length)
-      expect(json['products'][0]['name']).to eq(related_products[0].name)
+      it '企業情報と掲載期間内の関連商品のみを取得する' do
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json['name']).to eq(company.name)
+        expect(json['introduction']).to eq(company.introduction)
+        expect(json['products'].length).to eq(related_available_products.length)
+        expect(json['products'][0]['name']).to eq(related_available_products[0].name)
+      end
     end
   end
 

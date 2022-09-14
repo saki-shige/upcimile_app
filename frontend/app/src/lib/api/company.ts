@@ -11,8 +11,8 @@ export const getCompanies: (limit?: number) => Promise<AxiosResponse<Company[]>>
   return await client.get((limit !== undefined) ? `companies?limit=${limit}` : 'companies')
 }
 
-export const getSingleCompany: (id: string) => Promise<AxiosResponse<Company>> = async (id) => {
-  return await client.get(`companies/${id}`, {
+export const getSingleCompany: (id: string, mypage?: boolean) => Promise<AxiosResponse<Company>> = async (id, mypage) => {
+  return await client.get(`companies/${id}?mypage=${String(mypage === true)}`, {
     headers: {
       'access-token': Cookies.get('_access_token') ?? '',
       client: Cookies.get('_client') ?? '',
