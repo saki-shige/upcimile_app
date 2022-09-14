@@ -18,6 +18,7 @@ const CreatorSignIn: FC = () => {
   provider.addScope('https://www.googleapis.com/auth/youtube.readonly')
 
   const clickLogin: () => Promise<void> = async () => {
+    (auth.currentUser != null) && await signOut(auth)
     try {
       const res = await signInWithPopup(auth, provider)
       console.log('signed in with google')
