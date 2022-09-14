@@ -78,7 +78,7 @@ const SingleCreator: FC = () => {
                     }}>
                       {video.introduction}
                     </Typography>
-                    <Typography component='a' href={video.url}>
+                    <Typography target="_blank" component='a' href={video.url}>
                       Youtubeでこの動画を見る
                     </Typography>
                   </CardContent>
