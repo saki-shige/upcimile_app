@@ -39,7 +39,7 @@ const CreatorMyPage: FC = () => {
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Typography variant="subtitle2">
               <CelebrationIcon />
-              あなたへのオファー
+              あなたのオファー
               <CelebrationIcon />
             </Typography>
           </Box>
