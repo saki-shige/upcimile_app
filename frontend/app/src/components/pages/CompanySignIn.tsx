@@ -27,7 +27,6 @@ const CompanySignIn: React.FC = () => {
 
     try {
       const res = await signIn(data)
-      console.log(res)
 
       if (res.status === 200) {
         Cookies.set('_access_token', res.headers['access-token'])
@@ -42,11 +41,8 @@ const CompanySignIn: React.FC = () => {
         setSeverity('success')
 
         navigation('/companies/mypage')
-
-        console.log('Signed in successfully!')
       } else throw Error()
     } catch (err) {
-      console.log(err)
       setOpen(true)
       setMessage('ログインに失敗しました')
       setSeverity('error')

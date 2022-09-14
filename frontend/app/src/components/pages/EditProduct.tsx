@@ -69,8 +69,6 @@ const EditProduct: FC = () => {
       setNewProduct({ ...newProduct, [name]: value })
     }
   }
-  console.log(changeImage)
-  console.log(croppedFile)
 
   const handleFormData: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void> = async (e) => {
     e.preventDefault()
@@ -88,9 +86,7 @@ const EditProduct: FC = () => {
 
     if (id != null) {
       try {
-        console.log(formData)
         const res = await updateProduct(id, formData)
-        console.log(res)
 
         if (res.status === 200) {
           setOpen(true)
@@ -101,7 +97,6 @@ const EditProduct: FC = () => {
           throw new Error()
         }
       } catch (err) {
-        console.log(err)
         setOpen(true)
         setMessage('商品の編集に失敗しました。')
         setSeverity('error')

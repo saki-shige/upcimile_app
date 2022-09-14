@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Container, Typography } from '@mui/material'
 import Table from '@mui/material/Table'
@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper'
 import { respondToOffer, getMyOffers, getOffersToMe } from '../../lib/api/offer'
 import { MyOffers, OffersToMe } from '../../interface'
 import { auth } from '../../lib/api/firebase'
+import { MessageContext } from '../providers/MessageProvider'
 
 interface Props {
   type: 'myOffers' | 'offersToMe'
@@ -19,6 +20,7 @@ interface Props {
 export const BasicTable: FC<Props> = ({ type }) => {
   const [offers, setOffers] = useState<MyOffers[] | OffersToMe[]>()
   const navigation = useNavigate()
+  const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
   const commentForStatus: (status: boolean | undefined) => string | undefined = (status) => {
     let comment
 
@@ -38,31 +40,26 @@ export const BasicTable: FC<Props> = ({ type }) => {
   }
 
   const handleRespondToOffer: (id: number, type: 'accept' | 'decline') => Promise<void> = async (id, type) => {
-    console.log(type)
     const res = await respondToOffer(id, type)
-    console.log(res.data)
     await handleGetOffers()
   }
 
   const handleGetMyOffers: () => Promise<void> = async () => {
-    console.log('offer')
     const currentUser = auth.currentUser
-    console.log(currentUser)
     if (currentUser != null) {
       const idToken = await currentUser.getIdToken(true)
-      console.log(idToken)
       const res = await getMyOffers({ idToken })
       setOffers(res.data)
-      console.log(res.data)
     } else {
-      console.log('ログインしてください')
+      setOpen(true)
+      setMessage('サインインしてください')
+      setSeverity('error')
     }
   }
 
   const handleGetOffersToMe: () => Promise<void> = async () => {
     const res = await getOffersToMe()
     setOffers(res.data)
-    console.log(res.data)
   }
 
   const handleGetOffers: () => Promise<void> = async () => {

@@ -13,8 +13,6 @@ const SingleCompany: FC = () => {
   const { id } = useParams<{id: string}>()
   const company = useHandleGetSingleCompany(id)
 
-  console.log(company)
-
   return (
     <>
     {(company != null)

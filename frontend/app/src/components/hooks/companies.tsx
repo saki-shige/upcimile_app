@@ -11,7 +11,6 @@ export const useHandleGetCompanies: (limit?: number) => Company[] | undefined = 
     getCompanies(limit)
       .then((res) => {
         if (res.status === 200) {
-          console.log('ユーザー一覧を取得しました')
           setCompanies(res.data)
         } else {
           throw new Error()
@@ -35,7 +34,6 @@ export const useHandleGetSingleCompany: (id: string | undefined, update?: boolea
       getSingleCompany(id)
         .then((res) => {
           if (res.status === 200) {
-            console.log('ユーザー情報を取得しました')
             setCompany(res.data)
           } else {
             throw new Error()

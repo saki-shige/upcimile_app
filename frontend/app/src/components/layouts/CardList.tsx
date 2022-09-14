@@ -33,7 +33,6 @@ export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }
       const res = await deleteProduct(String(item.id))
 
       if (res.status === 200) {
-        console.log(res.data)
         setOpen(true)
         setMessage('商品を削除しました。')
         setSeverity('success')
@@ -41,8 +40,7 @@ export const CardList: FC<Props> = ({ items, type, provider, update, setUpdate }
       } else {
         throw new Error()
       }
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
       setOpen(true)
       setMessage('商品の削除に失敗しました。')
       setSeverity('error')

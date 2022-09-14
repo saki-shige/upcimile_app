@@ -11,7 +11,6 @@ export const useHandleGetCreators: (limit?: number) => Creator[] | undefined = (
     getCreators(limit)
       .then((res) => {
         if (res.status === 200) {
-          console.log('ユーザー一覧を取得しました')
           setCreators(res.data)
         } else {
           throw new Error()
@@ -36,7 +35,6 @@ export const useHandleGetSingleCreator: (id: string | undefined) => {creator: Cr
       getSingleCreator(id)
         .then((res) => {
           if (res.status === 200) {
-            console.log('ユーザー一覧を取得しました')
             setCreator(res.data.creatorInfo)
             setVideos(res.data.creatorVideos)
           } else {

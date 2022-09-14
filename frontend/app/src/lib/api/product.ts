@@ -12,7 +12,6 @@ interface SingleProductResponse {
 export const getProducts: (limit?: number, category?: number) => Promise<AxiosResponse<Product[]>> = async (limit, category) => {
   const categoryQuery = (category != null) ? `category=${category}` : ''
   const limitQuery = (limit != null) ? `limit=${limit}` : ''
-  console.log(`products?${categoryQuery}${limitQuery}`)
   return await client.get(`products?${categoryQuery}${limitQuery}`)
 }
 

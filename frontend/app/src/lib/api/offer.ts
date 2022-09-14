@@ -1,7 +1,7 @@
 import client from './client'
 import Cookies from 'js-cookie'
-import { AxiosResponse } from 'axios'
 import { MyOffers, OffersToMe } from '../../interface'
+import { AxiosResponse } from 'axios'
 
 export const makeOffer: (data: { idToken: string, product_id: string }) => Promise<AxiosResponse> = async (data) => {
   return await client.post('/offers', data)

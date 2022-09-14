@@ -47,7 +47,6 @@ const CompanySignUp: FC = () => {
       setConfirmationError(!ok)
       valid = ok
     }
-    console.log(valid)
     return valid
   }
 
@@ -61,26 +60,19 @@ const CompanySignUp: FC = () => {
 
     try {
       const res = await signUp(data)
-      console.log(res)
 
       if (res.status === 200) {
         Cookies.set('_access_token', res.headers['access-token'])
         Cookies.set('_client', res.headers.client)
         Cookies.set('_uid', res.headers.uid)
-
         setIsCompanySignedIn(true)
         setCurrentCompany(res.data.data)
-
         setOpen(true)
         setMessage('ログインしました')
         setSeverity('success')
-
         navigation('/companies/mypage')
-
-        console.log('Signed in successfully!')
       } else throw Error()
     } catch (err) {
-      console.log(err)
       setOpen(true)
       setMessage('ログインに失敗しました')
       setSeverity('error')
@@ -168,7 +160,7 @@ const CompanySignUp: FC = () => {
               variant="outlined"
               color="primary"
               disabled={!(name.length > 0 && password.length > 0 && passwordConfirmation.length > 0)}
-              onClick={() => { if (formValidation()) { console.log('success'); void handleSubmit() } } }
+              onClick={() => { if (formValidation()) { void handleSubmit() } } }
               sx={{ mt: 3, mb: 2 }}
             >
               登録

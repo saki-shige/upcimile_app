@@ -26,10 +26,8 @@ const SingleProduct: FC = () => {
     const currentUser = auth.currentUser
     if ((currentUser != null) && (id !== undefined)) {
       const idToken = await currentUser.getIdToken(true)
-      console.log(idToken)
       const config = { idToken, product_id: id }
       const res = await makeOffer(config)
-      console.log(res)
       setOpen(true)
       setMessage('提供を希望しました。企業からの返事をお待ちください。')
       setSeverity('success')

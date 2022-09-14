@@ -49,25 +49,19 @@ const ResponsiveAppBar: FC = () => {
   const clickLoginAsGuest: () => Promise<void> = async () => {
     try {
       const res = await signInAsGuest()
-      console.log(res.headers)
 
       if (res.status === 200) {
         Cookies.set('_access_token', res.headers['access-token'])
         Cookies.set('_client', res.headers.client)
         Cookies.set('_uid', res.headers.uid)
-
         setIsCompanySignedIn(true)
         setCurrentCompany(res.data.data)
-        console.log(res.data.data)
-
         setOpen(true)
         setMessage('ログインしました')
         setSeverity('success')
-
         navigation('/companies/mypage')
       } else throw Error()
     } catch (err) {
-      console.log(err)
       setOpen(true)
       setMessage('ログインに失敗しました')
       setSeverity('error')

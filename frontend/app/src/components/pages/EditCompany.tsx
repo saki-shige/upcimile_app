@@ -28,13 +28,12 @@ const EditCompany: React.FC = () => {
     let valid = true
 
     const addressValue = (corporateSiteRef != null) ? corporateSiteRef.current : null
-    console.log(addressValue)
     if (addressValue != null) {
       const ok = addressValue.validity.valid
       setCorporateSiteError(!ok)
       valid = ok
     }
-    console.log(valid)
+
     return valid
   }
 
@@ -70,10 +69,7 @@ const EditCompany: React.FC = () => {
 
     if (id != null) {
       try {
-        console.log(formData)
-
         const res = await updateCompany(id, formData)
-        console.log(res)
 
         if (res.status === 200) {
           setCurrentCompany(res.data.company)
@@ -82,7 +78,6 @@ const EditCompany: React.FC = () => {
           throw new Error()
         }
       } catch (err) {
-        console.log(err)
         setOpen(true)
         setMessage('商品の編集に失敗しました。')
         setSeverity('error')

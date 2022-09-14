@@ -17,6 +17,7 @@ import { signOut as firebaseSignOut } from 'firebase/auth'
 import { signOut } from '../../lib/api/auth'
 import { CompanyAuthContext } from '../providers/CompanyAuthProvider'
 import { CreatorAuthContext } from '../providers/CreatorAuthProvider'
+import { MessageContext } from '../providers/MessageProvider'
 
 interface Props {
   name: string
@@ -28,6 +29,7 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
   const { setIsCompanySignedIn, currentCompany } = useContext(CompanyAuthContext)
   const { setIsCreatorSignedIn } = useContext(CreatorAuthContext)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
+  const { setOpen, setMessage, setSeverity } = useContext(MessageContext)
 
   const handleOpenUserMenu: (e: React.MouseEvent<HTMLElement>) => void = (e) => {
     setAnchorElUser(e.currentTarget)
@@ -50,12 +52,13 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
 
         setIsCompanySignedIn(false)
         navigation('/')
-        console.log('signed out successfully')
       } else {
-        console.log('Failed to sign out')
+        throw new Error()
       }
     } catch (err) {
-      console.log(err)
+      setOpen(true)
+      setMessage('ログアウトに失敗しました')
+      setSeverity('error')
     }
     setAnchorElUser(null)
   }
@@ -63,11 +66,12 @@ export const NavBarUser: FC<Props> = ({ name, image, type }) => {
   const clickCreatorSignOut: () => Promise<void> = async () => {
     try {
       await firebaseSignOut(auth)
-      console.log('ログアウトしました')
       setIsCreatorSignedIn(false)
       navigation('/')
     } catch (error) {
-      console.log(error)
+      setOpen(true)
+      setMessage('ログアウトに失敗しました')
+      setSeverity('error')
     }
     setAnchorElUser(null)
   }

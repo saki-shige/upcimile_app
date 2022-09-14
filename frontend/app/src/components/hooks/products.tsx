@@ -11,13 +11,11 @@ export const useHandleGetProducts: (props: {limit?: number, category?: number}) 
     getProducts(limit, category)
       .then((res) => {
         if (res.status === 200) {
-          console.log('商品一覧を取得しました')
           setProducts(res.data)
         } else {
           throw new Error()
         }
-      }).catch((error) => {
-        console.log(error)
+      }).catch(() => {
         setOpen(true)
         setMessage('商品情報を取得できませんでした。')
         setSeverity('error')
@@ -47,8 +45,7 @@ export const useHandleGetSingleProduct: (id: string | undefined) => {
           } else {
             throw new Error()
           }
-        }).catch((error) => {
-          console.log(error)
+        }).catch(() => {
           setOpen(true)
           setMessage('商品情報を取得できませんでした。')
           setSeverity('error')

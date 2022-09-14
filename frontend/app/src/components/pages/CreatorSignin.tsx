@@ -21,7 +21,6 @@ const CreatorSignIn: FC = () => {
     (auth.currentUser != null) && await signOut(auth)
     try {
       const res = await signInWithPopup(auth, provider)
-      console.log('signed in with google')
       const credential = GoogleAuthProvider.credentialFromResult(res)
       const accessToken = (credential != null) ? credential.accessToken : undefined
       const currentUser = auth.currentUser
@@ -36,7 +35,6 @@ const CreatorSignIn: FC = () => {
         navigation('/creators/mypage')
       } else { throw new Error() }
     } catch (err) {
-      console.log('err')
       isCreatorSignedIn && setIsCreatorSignedIn(false);
       (auth.currentUser != null) && await signOut(auth)
       setOpen(true)
@@ -46,9 +44,7 @@ const CreatorSignIn: FC = () => {
   }
 
   const handleLogin: (data: {idToken: string, accessToken: string}) => Promise<void> = async (data) => {
-    console.log('handleLogin')
     const res = await login(data)
-    console.log(res.data)
     setCurrentCreator(res.data.creatorInfo)
     setIsCreatorSignedIn(true)
   }

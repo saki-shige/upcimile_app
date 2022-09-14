@@ -25,7 +25,6 @@ export const signInAsGuest: () => Promise<AxiosResponse<SignInResponse>> = async
 }
 
 export const signOut: () => Promise<AxiosResponse> = async () => {
-  console.log('signoutatart')
   return await client.delete('auth/sign_out', {
     headers: {
       'access-token': Cookies.get('_access_token') ?? '',

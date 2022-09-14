@@ -59,7 +59,6 @@ const CreateProduct: FC = () => {
       valid = ok
     }
 
-    console.log(valid)
     return valid
   }
 
@@ -75,9 +74,7 @@ const CreateProduct: FC = () => {
     formData.append('product[categoryId]', (categoryId != null) ? String(categoryId) : '')
 
     try {
-      console.log(formData)
       const res = await createProduct(formData)
-      console.log(res)
 
       if (res.status === 200) {
         setOpen(true)
@@ -88,7 +85,6 @@ const CreateProduct: FC = () => {
         throw new Error()
       }
     } catch (err) {
-      console.log(err)
       setOpen(true)
       setMessage('商品の登録に失敗しました')
       setSeverity('error')
