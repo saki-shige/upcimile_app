@@ -77,7 +77,7 @@ const EditCompany: React.FC = () => {
 
         if (res.status === 200) {
           setCurrentCompany(res.data.company)
-          navigation('/companies')
+          navigation('/companies/mypage')
         } else {
           throw new Error()
         }
