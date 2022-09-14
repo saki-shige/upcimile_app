@@ -17,7 +17,8 @@ import { StyledTitleBox } from '../styled/Styled'
 const CompanyMyPage: FC = () => {
   const { currentCompany } = useContext(CompanyAuthContext)
   const [update, setUpdate] = useState(false)
-  const company = useHandleGetSingleCompany(String(currentCompany?.id), update)
+  const mypage = true
+  const company = useHandleGetSingleCompany(String(currentCompany?.id), update, mypage)
   const navigation = useNavigate()
 
   return (
