@@ -83,7 +83,6 @@ const CompanyMyPage: FC = () => {
             : (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography>商品が登録されていません</Typography>
-                <Typography>商品を登録する</Typography>
               </Box>
               )}
         </Container>
