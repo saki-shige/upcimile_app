@@ -62,17 +62,18 @@ const Home: React.FC = () => {
             >
               <Typography
                 variant='h4'
-                sx={{ my: 5 }}
+                sx={{ my: 4 }}
                 gutterBottom
                 textAlign={'center'}
               >
                 UPCICLE with SMILE
               </Typography>
-              <Container sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', mb: 5 }}>
+
+              <Container sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant='h6'>COMPANY</Typography>
                   <DiamondIcon fontSize="large"/>
-                  <Typography>隠れた価値を提供</Typography>
+                  <Typography>商品を提供</Typography>
                 </Box>
                 <Box>
                   <ArrowRightAltIcon fontSize="large" />
@@ -80,7 +81,7 @@ const Home: React.FC = () => {
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant='h6'>CREATOR</Typography>
                   <BuildIcon fontSize="large" />
-                  <Typography>価値の発掘、配信</Typography>
+                  <Typography>動画撮影</Typography>
                 </Box>
                 <Box>
                   <ArrowRightAltIcon fontSize="large" />
@@ -91,19 +92,19 @@ const Home: React.FC = () => {
                   <Typography>SMILE!!</Typography>
                 </Box>
               </Container>
+              <Container sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+                <Typography variant='h6'>
+                  台風によって傷ついた作物、
+                  商品の製造過程で生じた副産物、
+                  使われなくなった倉庫。<br/>
+                  発想を加えることで、新たな魅力が見つかるかもしれません。<br/>
+                </Typography>
+              </Container>
               <Typography variant='h6' paragraph>
-                台風によって傷ついた作物、
-                パッケージが傷ついてしまった商品、
-                商品の製造過程で生じた副産物、
-                使われなくなった倉庫。
-              </Typography>
-              <Typography variant='h6' paragraph>
-                一般的には価値が認識されていないけれど...<br/>
-                発想を加えることで、新たな価値が見つかるかもしれません。
-              </Typography>
-              <Typography variant='h6' paragraph>
-                UPCIMILEでは、隠れた価値を持つ企業と<br/>
-                独創的な視点と幅広い影響力を持つクリエイター（youtuber）を結びつけます。
+                UPCIMILEは商品を提供したい企業とクリエイター（youtuber）とを結びつけます。<br/>
+                UPCIMILE上の「商品」とは、廃棄されたり、倉庫に眠ってしまっているもののこと。<br/>
+                企業は商品をUPCIMILEに登録、クリエイターは企業に対し「オファー」（商品の提供を希望すること）をすることができます。<br/>
+                クリエイターは提供された商品にアイディアを加えて活用し、企業、クリエイター自身、そして視聴者が笑顔になるような動画を撮影します。<br/>
               </Typography>
             </Box>
           </Grid>
@@ -182,7 +183,7 @@ const Home: React.FC = () => {
         </Typography>
         <Typography paragraph sx={{ mb: 2 }}>
           <Button
-            onClick={() => { navigation('/creators') }}
+            onClick={() => { navigation('/companies') }}
             startIcon={<ArrowRightIcon />}
           >
             企業一覧を見る
