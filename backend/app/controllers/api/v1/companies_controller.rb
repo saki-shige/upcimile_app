@@ -7,13 +7,7 @@ class Api::V1::CompaniesController < ApplicationController
   end
 
   def show
-    company = Company.find(params[:id])
-    products = if params[:mypage] && company.id == current_api_v1_company.id
-                 company.products
-               else
-                 company.products.available
-               end
-    company = company.attributes.merge({ products: })
+    company = Company.formatted_company_with_products(params[:id], params[:mypage])
     render json: company
   end
 
