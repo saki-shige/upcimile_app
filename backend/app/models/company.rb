@@ -25,17 +25,13 @@ class Company < ActiveRecord::Base
     end
   end
 
-  def self.formatted_company_with_products(id, mypage)
-    company = Company.find(id)
-    products = if mypage && company.id == current_api_v1_company.id
-                 company.products
-               else
-                 company.products.available
-               end
-    company.format_company_to_array.merge(products:)
+  def format_company_with_products(is_mypage)
+    products = is_mypage ? self.products : self.products.available
+    format_company_to_array.merge(products:)
   end
 
   def format_company_to_array
-    { id:, name:, image:, email:, introduction:, address:, number_of_employees:, capital:, date_of_establishment: }
+    { id:, name:, image: { url: image.url }, email:, introduction:, address:, number_of_employees:, capital:,
+      date_of_establishment: }
   end
 end
