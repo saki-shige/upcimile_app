@@ -24,4 +24,18 @@ class Company < ActiveRecord::Base
       company.password = SecureRandom.urlsafe_base64
     end
   end
+
+  def self.formatted_company_with_products(id, mypage)
+    company = Company.find(id)
+    products = if mypage && company.id == current_api_v1_company.id
+                 company.products
+               else
+                 company.products.available
+               end
+    company.format_company_to_array.merge(products:)
+  end
+
+  def format_company_to_array
+    { id:, name:, image:, email:, introduction:, address:, number_of_employees:, capital:, date_of_establishment: }
+  end
 end
